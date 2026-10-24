@@ -12,7 +12,7 @@ Read the **Notes**, then work through six steps in order. Every exercise uses ea
 2. **K-means by hand**: distances → sort the points → new centroids → repeat → WCSS, in 2D or 3D, with an easy squared-distance mode.
 3. **WCSS & elbow**: add up squared distances per cluster, then pick K on an elbow chart.
 4. **Sorting lab**: sort data types, then build pixel and colour masks.
-5. **Code lab**: fill the blank, predict the output, put the worksheet code in order, and build the 3D homework K-means.
+5. **Code lab**: starts with **Explain the line**: a random line from the worksheet with either one answer to pick or several true statements to tick. Also: fill the blank, predict the output, put the code in order, and build the 3D homework K-means.
 6. **Quiz**: 79 multiple-choice questions on decks 02–05 and the code worksheet, as a final check.
 
 Also included:
