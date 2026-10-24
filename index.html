@@ -76,10 +76,10 @@ html:not(.js) .xp-chip, html:not(.js) .rank-chip, html:not(.js) .tabs { display:
 .panel { position: relative; background: var(--sheet); border-radius: 4px; padding: 1.25rem; min-width: 0; box-shadow: 0 1px 0 rgba(0,0,0,.05), 0 14px 30px -22px rgba(0,0,0,.45); }
 @media (min-width: 640px) { .panel { padding: 2rem 2.25rem; } }
 /* the first sheet on each page gets the green envelope flap */
-#view > .stack > .panel:first-child { margin: 22px 0 0 12px; }
-#view > .stack > .panel:first-child::before, #view > .stack > .panel:first-child::after { content: ""; position: absolute; background: var(--green); pointer-events: none; }
-#view > .stack > .panel:first-child::before { left: -12px; top: -20px; width: min(78%, 40rem); height: 30px; clip-path: polygon(0 38%, 100% 0, 99% 100%, 0 100%); }
-#view > .stack > .panel:first-child::after { left: -12px; top: -20px; width: 24px; height: min(88%, 22rem); clip-path: polygon(0 0, 100% 0, 72% 100%, 22% 100%); }
+#view > .stack > .panel:first-child, #drill-root > .stack > .panel:first-child { margin: 22px 0 0 12px; }
+#view > .stack > .panel:first-child::before, #drill-root > .stack > .panel:first-child::before, #view > .stack > .panel:first-child::after, #drill-root > .stack > .panel:first-child::after { content: ""; position: absolute; background: var(--green); pointer-events: none; }
+#view > .stack > .panel:first-child::before, #drill-root > .stack > .panel:first-child::before { left: -12px; top: -20px; width: min(78%, 40rem); height: 30px; clip-path: polygon(0 38%, 100% 0, 99% 100%, 0 100%); }
+#view > .stack > .panel:first-child::after, #drill-root > .stack > .panel:first-child::after { left: -12px; top: -20px; width: 24px; height: min(88%, 22rem); clip-path: polygon(0 0, 100% 0, 72% 100%, 22% 100%); }
 .grid2 > * { min-width: 0; }
 .card { background: var(--sheet); border-radius: 4px; border: 1px solid var(--line); padding: 1rem 1.15rem; }
 .stack > * + * { margin-top: 1rem; }
@@ -387,10 +387,6 @@ svg.plot3d { touch-action: pan-y; cursor: grab; user-select: none; }
 .lineitem .n { color: var(--ink-2); margin-right: 8px; }
 .built { min-height: 3rem; padding: 8px; border: 1.5px dashed var(--rule); border-radius: 8px; background: var(--paper); }
 #drill-root section[id] { scroll-margin-top: 8rem; }
-#drill-root > .stack > .panel:first-child { margin: 22px 0 0 12px; }
-#drill-root > .stack > .panel:first-child::before, #drill-root > .stack > .panel:first-child::after { content: ""; position: absolute; background: var(--green); pointer-events: none; }
-#drill-root > .stack > .panel:first-child::before { left: -12px; top: -20px; width: min(78%, 40rem); height: 30px; clip-path: polygon(0 38%, 100% 0, 99% 100%, 0 100%); }
-#drill-root > .stack > .panel:first-child::after { left: -12px; top: -20px; width: 24px; height: min(88%, 22rem); clip-path: polygon(0 0, 100% 0, 72% 100%, 22% 100%); }
 </style>
 <script>document.documentElement.classList.add("js");</script>
 </head>
@@ -879,7 +875,6 @@ function say(container, text) { const b = $(".bibi", container); if (b) b.outerH
 const LEVELS = [
   { id: "home", label: "Map", icon: "cloud" },
   { id: "notes", label: "Notes", icon: "note", blurb: "Plain-language explanations of both decks, worked examples, an exam cheat sheet, and your own notes.", render: renderNotes },
-  { id: "summary", label: "Summary 02–05", icon: "note", eyebrow: "Study notes", blurb: "One page per deck (02 data & stats, 03 K-means, 04 elbow, 05 images) plus the code patterns.", render: (v) => Drill.mount(v, "summary") },
   { id: "l1", label: "Distance dash", icon: "star", blurb: "Euclidean distance in 2D and 3D, plus the centre of points.", render: renderL1 },
   { id: "l2", label: "Assign it", icon: "chat", blurb: "Play the slide example A–H by hand until K-means converges.", render: renderL2 },
   { id: "l3", label: "WCSS workshop", icon: "bulb", blurb: "Compute the within-cluster sum of squares from the slides.", render: renderL3 },
@@ -889,7 +884,7 @@ const LEVELS = [
   { id: "l7", label: "3D lab", icon: "rocket", blurb: "Run K-means on 30 3D points and check your Colab results.", render: renderL7 },
   { id: "quiz", label: "Quiz", icon: "bulb", eyebrow: "Practice", blurb: "About 140 multiple-choice questions from decks 02–05 and the code worksheet.", render: (v) => Drill.mount(v, "quiz") },
   { id: "cluster", label: "Cluster sort", icon: "star", eyebrow: "Practice", blurb: "K-means by hand in 2D or 3D with easy whole numbers. New numbers every attempt.", render: (v) => Drill.mount(v, "cluster") },
-  { id: "sortlab", label: "Sorting lab", icon: "chat", eyebrow: "Practice", blurb: "Sort data types, build pixel and colour masks, read the elbow.", render: (v) => Drill.mount(v, "sortlab") },
+  { id: "sortlab", label: "Sorting lab", icon: "chat", eyebrow: "Practice", blurb: "Sort data types, then build pixel and colour masks.", render: (v) => Drill.mount(v, "sortlab") },
   { id: "code", label: "Code lab", icon: "book", eyebrow: "Practice", blurb: "Fill the blank, predict the output, put the worksheet lines in order.", render: (v) => Drill.mount(v, "code") },
   { id: "hw", label: "Homework", icon: "chest", blurb: "Assignment 2 checklist, due 10/12 at 11:59 p.m.", render: renderHW },
 ];
@@ -962,7 +957,7 @@ function renderHome(view) {
     <div class="levels" id="levelGrid"></div>
   </div>`));
   $("#openNotes", view).onclick = () => go("notes"); $("#openL1", view).onclick = () => go("l1");
-  const picks = [["notes", "the notes"], ["l1", "distance"], ["l2", "K-means steps"], ["l3", "WCSS"], ["l4", "the elbow"], ["l5", "bugs"], ["l6", "3D code"], ["l7", "3D lab"], ["quiz", "the quiz"], ["cluster", "cluster sort"], ["sortlab", "sorting"], ["code", "code lab"], ["summary", "decks 02–05"]];
+  const picks = [["notes", "the notes"], ["l1", "distance"], ["l2", "K-means steps"], ["l3", "WCSS"], ["l4", "the elbow"], ["l5", "bugs"], ["l6", "3D code"], ["l7", "3D lab"], ["quiz", "the quiz"], ["cluster", "cluster sort"], ["sortlab", "data types"], ["code", "code lab"]];
   picks.forEach(([id, t]) => { const b = el(`<button type="button">e.g. ${t}</button>`); b.onclick = () => go(id); $("#heroPicks", view).appendChild(b); });
   let warmed = false;
   $("#warm", view).onsubmit = (e) => {
@@ -1042,6 +1037,28 @@ function renderNotes(view) {
   const dotK = k => `<i class="dot" style="background:${C.cl[k]}"></i>`;
 
   const sections = [
+    { id: "types", title: "Types of data (deck 02)", play: "sortlab", body: `
+      <p>Data comes in many forms: numbers, categories, text, images and time-series. Different types need different analysis methods. <b>Data type</b> tells us what the data contains; <b>data structure</b> tells us how it is organised.</p>
+      <div class="tablewrap"><table class="t"><tr><th>Type</th><th>Meaning</th><th>Examples from the slides</th></tr>
+        <tr><td>Nominal</td><td>categories, no order</td><td>genre, director, actors, title</td></tr>
+        <tr><td>Ordinal</td><td>categories with an order</td><td>rating level Low → Medium → High</td></tr>
+        <tr><td>Discrete</td><td>counted numbers</td><td>35 students, 120 clicks, IMDb votes</td></tr>
+        <tr><td>Continuous</td><td>measured numbers</td><td>sepal length 5.1 cm, IMDb rating 8.1, revenue</td></tr></table></div>
+      <h3>Structure</h3>
+      <ul><li><b>Structured:</b> rows and columns, each column has a meaning (IMDb, Iris).</li><li><b>Semi-structured:</b> no fixed table, but tags, keys or labels (JSON, XML, HTML).</li><li><b>Unstructured:</b> no fixed format; information must be extracted first (reviews, posters, photos, videos).</li></ul>
+      <h3>Common pandas operations</h3>
+      <ul><li>Most common genre → <code>split()</code> + <code>explode()</code> + <code>value_counts()</code> (one cell holds several genres).</li><li>Most frequent director → <code>value_counts()</code>.</li><li>Movies with rating &gt; 8.0 → filtering.</li><li>Average score per class → group-by on a nominal column (A = 85, B = 80).</li></ul>`,
+      exam: "For any variable, ask two questions: is it a category or a number? Then: ordered or not (categories), counted or measured (numbers)." },
+    { id: "stats", title: "Are they really different? Statistical tests (deck 02)", play: "quiz", body: `
+      <p>The Iris dataset has 150 flowers, 4 continuous features and 3 species. Before analysing it, look at its statistics (mean, variance, min, max, <code>describe()</code>) and plot it.</p>
+      <p>Samples always vary, so a difference in averages might be luck. A <b>statistical test</b> checks whether the difference is likely real. The <b>p-value</b> is the evidence: p &lt; 0.05 → reject H₀ (significant); p ≥ 0.05 → fail to reject H₀.</p>
+      <div class="tablewrap"><table class="t"><tr><th>Test</th><th>When to use</th></tr>
+        <tr><td>t-test</td><td>2 groups, 1 dependent variable</td></tr><tr><td>One-way ANOVA</td><td>1 factor (3+ groups), 1 DV</td></tr><tr><td>Two-way ANOVA</td><td>2 factors, 1 DV</td></tr>
+        <tr><td>ANCOVA</td><td>1+ factors, 1 DV, with a covariate</td></tr><tr><td>MANOVA</td><td>1+ factors, 2+ DVs</td></tr><tr><td>MANCOVA</td><td>1+ factors, 2+ DVs, with a covariate</td></tr></table></div>
+      <h3>Worked example: do the three species have different petal lengths?</h3>
+      <ul><li><b>IV</b> = species (3 groups). <b>DV</b> = petal length.</li><li><b>H₀:</b> all three have the same mean. <b>H₁:</b> at least one mean differs.</li><li>One-way ANOVA: p ≈ 4.17 × 10⁻⁸⁵, far below 0.05 → significant. Length F = 1180.16, width F = 960.01.</li><li>Setosa petals are smallest (1.462 cm × 0.246 cm); Virginica largest (5.552 cm × 2.026 cm).</li></ul>
+      <p>Write results in this order: overall finding → numbers → statistical evidence → meaning → conclusion.</p>`,
+      exam: "Name the IV and DV before choosing a test, and never write \"we proved H₀\": with p ≥ 0.05 you only fail to reject it." },
     { id: "problem", title: "What is the problem with data?", body: `
       <p>The Iris dataset has 150 flowers. Each one has four measurements: sepal length, sepal width, petal length and petal width. Normally we also know the species (setosa, versicolor, virginica).</p>
       <p>Now imagine the species column is <b>missing</b>. We still have all the numbers, but no labels. Can we find the groups using only the numbers?</p>
@@ -1154,13 +1171,28 @@ while changed:
     centroids = new_centroids
 plot clusters + centroids in 3D</pre>`,
       exam: "Keep your debugging history: when a cell fails, don't edit it. Add a new cell with the fix and a short note saying what broke and why." },
+    { id: "image", title: "What is an image? (deck 05)", play: "sortlab", body: `
+      <p>A camera needs measurable <b>energy</b>: light reflected from the object. In the eye, <b>cones</b> see colour in bright light and <b>rods</b> work in dim light (night vision, black and white).</p>
+      <p>The <b>image sensor</b> turns each cell into a pixel value from <b>0 (dark) to 255 (bright)</b>. The number of pixels is the <b>spatial resolution</b>.</p>
+      <p>The eye has three types of cones, so a colour camera stores three channels: <b>RGB</b>. (255, 255, 0) is yellow, (255, 0, 255) purple, (0, 0, 0) black, (255, 255, 255) white.</p>
+      <h3>Images in NumPy (Example 04)</h3>
+      <ul><li>An image is a 3-D array: <code>(height, width, 3)</code>, e.g. <code>(360, 540, 3)</code>. <code>image_array[0][0]</code> is the top-left pixel.</li><li><code>np.zeros([300, 300, 3])</code> is black; <code>img.fill(255)</code> makes it white.</li><li><code>img[100:200, 100:200] = (0, 0, 0)</code> paints a square: rows first, then columns.</li><li><b>OpenCV is BGR</b>, PIL and Matplotlib are RGB. Yellow in OpenCV is (0, 255, 255). Convert with <code>cv2.cvtColor(img, cv2.COLOR_BGR2RGB)</code> before <code>plt.imshow()</code>.</li></ul>`,
+      exam: "If a colour looks wrong in your plot, check BGR vs RGB first." },
+    { id: "masks", title: "Segmentation, masks and thresholds (deck 05)", play: "sortlab", body: `
+      <p>Computer-vision tasks: <b>classification</b> (what is it), <b>localization</b> (where is it), <b>segmentation</b> (which pixels belong to it). Segmentation can be <b>semantic</b> (a label for every pixel), <b>instance</b> (each object separately) or <b>panoptic</b> (both). Brain MRI is segmented into white matter, gray matter and CSF.</p>
+      <h3>Masks</h3>
+      <p>A <b>mask</b> M is an array of 0s and 1s. <code>I_masked = I * M</code> keeps the pixels where M = 1 and sets the rest to 0.</p>
+      <h3>Threshold segmentation (Example 05)</h3>
+      <ul><li><code>image_array[np.any(image_array &lt; threshold, axis=-1)] = mask_pixel</code>: any channel below the threshold → paint the pixel.</li><li>Colour masks use a lower and upper bound per channel, e.g. green = R ≤ 10, G 128–255, B ≤ 10, combined with <code>&amp;</code> (and). Join masks with <code>|</code> (or).</li></ul>
+      <p>Hand-picked thresholds break down with millions of pixels and many colours, which is the same problem as Iris thresholds. That is why we let algorithms like K-means find the groups.</p>`,
+      exam: "Be able to compute I × M by hand for a small grid, and explain why one fixed threshold fails on real photos." }
   ];
 
   view.appendChild(el(`<div class="stack">
     <div class="panel stack">
-      <div class="eyebrow">Study notes · Week 03–05</div>
-      <h1>Clustering, K-means and the elbow</h1>
-      <p class="muted prose">Everything from the two lecture decks, in order, explained in plain language. Each topic ends with an exam tip, a link to the matching level, and a box for your own notes.</p>
+      <div class="eyebrow">Study notes · Decks 02–05</div>
+      <h1>Data, clustering, K-means and images</h1>
+      <p class="muted prose">Everything from the four lecture decks and the code worksheet, in order, explained in plain language. Each topic ends with an exam tip, a link to the matching practice, and a box for your own notes.</p>
       <nav class="toc">${sections.map((x, i) => `<a href="#n-${x.id}">${i + 1}. ${x.title.replace(/\?$/, "")}</a>`).join("")}<a href="#n-cheat">Cheat sheet</a><a href="#n-check">Self-check</a></nav>
     </div>
     ${sections.map((x, i) => `<section class="panel stack note-sec" id="n-${x.id}">
@@ -1168,7 +1200,7 @@ plot clusters + centroids in 3D</pre>`,
       <h2>${x.title}</h2>
       <div class="prose stack">${x.body}</div>
       <div class="callout exam"><b>Exam tip.</b> ${x.exam}</div>
-      ${x.play ? `<div><button class="btn ghost" data-play="${x.play}">Practise this in level ${x.play.slice(1)} →</button></div>` : ""}
+      ${x.play ? `<div><button class="btn ghost" data-play="${x.play}">Practise this in ${/^l\d$/.test(x.play) ? "level " + x.play.slice(1) : LEVELS.find(L => L.id === x.play).label} →</button></div>` : ""}
       ${noteBox(x.id, "Questions, things the teacher said, things you got wrong…")}
     </section>`).join("")}
     <section class="panel stack note-sec" id="n-cheat">
@@ -1186,7 +1218,23 @@ plot clusters + centroids in 3D</pre>`,
         <tr><td>WCSS</td><td class="mono">Σ squared distance to own centroid</td></tr>
         <tr><td>Elbow</td><td>plot K vs WCSS, pick where the drop flattens</td></tr>
         <tr><td>Slide answer</td><td class="mono">centroids (3.67, 9) · (7, 4.33) · (1.5, 3.5); WCSS ≈ 14.34</td></tr>
+        <tr><td>Data types</td><td>nominal · ordinal (categories) · discrete · continuous (numbers)</td></tr>
+        <tr><td>p-value</td><td>p &lt; 0.05 → reject H₀ (significant) · p ≥ 0.05 → fail to reject</td></tr>
+        <tr><td>Pick a test</td><td>t-test (2 groups) · ANOVA (3+ groups) · ANCOVA (+ covariate) · MANOVA (2+ DVs)</td></tr>
+        <tr><td>Pixel</td><td>0 dark → 255 bright · image shape (height, width, 3) · OpenCV = BGR</td></tr>
+        <tr><td>Mask</td><td class="mono">I_masked = I * M (keep where M = 1)</td></tr>
       </table></div>
+      <h3>Code patterns from the worksheet</h3>
+      <pre class="code">distances = np.linalg.norm(points[:, None] - centroids[None, :], axis=2)   # (n, k)
+labels = np.argmin(distances, axis=1)                  # nearest centroid per point
+new_centroids = np.array([points[labels == i].mean(axis=0) for i in range(k)])
+if np.linalg.norm(new_centroids - centroids) &lt; tol: break
+clusters = [points[labels == i] for i in range(k)]
+wcss = custom_wcss(clusters)                            # squared distances, no sqrt
+img[100:200, 100:200] = (0, 0, 0)                       # rows, then columns
+image_array[np.any(image_array &lt; threshold, axis=-1)] = mask_pixel
+mask = mask_red | mask_green | mask_blue                # | = or, &amp; = and</pre>
+      <div class="callout"><b>Bugs from the homework:</b> save the result (<code>centroids, labels = kmeans(...)</code>); run a function's cell before calling it (NameError); <code>-O img_shiba_bw.</code> saves a file ending in a dot.</div>
       ${noteBox("cheat", "Anything you want on your own cheat sheet…")}
     </section>
     <section class="panel stack note-sec" id="n-check">
@@ -1913,15 +1961,6 @@ setTimeout(() => { if (!notesStore.ref) connectNotes(); }, 2500);
 // t: data = deck 02, kmeans = deck 03, elbow = deck 04, image = deck 05, code = code worksheet
 const BANK = [
 // ---------- Deck 02: What is the problem with data? ----------
-{t:"data", q:"A movie's Genre (Action, Adventure, Comedy) is which type of data?", o:["Nominal (categories without order)","Ordinal (categories with an order)","Discrete numerical","Continuous numerical"], e:"Genres are labels with no natural order, so they are nominal."},
-{t:"data", q:"Rating Level: Low → Medium → High is which type of data?", o:["Ordinal","Nominal","Discrete","Continuous"], e:"The categories have an order (Low < Medium < High), so they are ordinal."},
-{t:"data", q:"\"Number of clicks: 120\" is which type of data?", o:["Discrete numerical (counted)","Continuous numerical (measured)","Ordinal","Nominal"], e:"Clicks are counted in whole numbers, so they are discrete."},
-{t:"data", q:"\"Sepal Length: 5.1 cm\" is which type of data?", o:["Continuous numerical (measured)","Discrete numerical (counted)","Ordinal","Nominal"], e:"Length is measured and can take any value, so it is continuous."},
-{t:"data", q:"In the IMDb table, Votes = 757,074. What type is it?", o:["Numerical (Discrete)","Numerical (Continuous)","Nominal","Ordinal"], e:"Votes are counted, so the slide lists them as discrete."},
-{t:"data", q:"In the IMDb table, Revenue = 333.13. What type is it?", o:["Numerical (Continuous)","Numerical (Discrete)","Ordinal","Nominal"], e:"Revenue is a measured amount with decimals: continuous."},
-{t:"data", q:"JSON, XML and HTML are examples of…", o:["Semi-structured data","Structured data","Unstructured data","Time-series data"], e:"They don't follow a fixed table but use tags, keys or labels to organise information."},
-{t:"data", q:"Movie reviews, posters, photos and videos are examples of…", o:["Unstructured data","Structured data","Semi-structured data","Ordinal data"], e:"They have no fixed table format; information must be extracted before analysis."},
-{t:"data", q:"The IMDb dataset and the Iris dataset are organised into rows and columns where each column has a defined meaning. They are…", o:["Structured data","Semi-structured data","Unstructured data","Categorical data only"], e:"Rows + columns with defined meaning = structured. Easy to store, search and analyse."},
 {t:"data", q:"Which sentence matches the slide?", o:["Data type tells us what the data contains; data structure tells us how the data is organised.","Data type tells us how the data is organised; data structure tells us what it contains.","Data type and data structure mean the same thing.","Data structure only matters for images."], e:"Type = what it contains. Structure = how it is organised."},
 {t:"data", q:"\"Which genre is most common?\" in the IMDb data. Which pandas steps does the slide use?", o:["split() + explode() + value_counts()","value_counts() only","Filtering","groupby().mean()"], e:"Genre cells hold several genres (\"Action,Adventure,Sci-Fi\"), so you split, explode to one per row, then count."},
 {t:"data", q:"\"Who appears most frequently?\" (Director). Which operation?", o:["value_counts()","split() + explode()","Filtering","describe()"], e:"One director per cell, so value_counts() is enough."},
@@ -1949,18 +1988,9 @@ const BANK = [
 {t:"kmeans", q:"In the Iris rule \"petal length < 5 cm and width < 1.8 cm\", the values 5 cm and 1.8 cm are called…", o:["Thresholds","Centroids","Clusters","Labels"], e:"Manually chosen cut-off values are thresholds."},
 {t:"kmeans", q:"Which is NOT one of the slide's problems with simple thresholds?", o:["Thresholds are always too slow to compute","Some observations may fall into the wrong group","Different groups may overlap","A pattern may depend on multiple variables together"], e:"Speed was not the issue. The problem is wrong groups, overlap and multi-variable patterns."},
 {t:"kmeans", q:"Euclidean distance between (x₁, y₁) and (x₂, y₂) is…", o:["√((x₂−x₁)² + (y₂−y₁)²)","|x₂−x₁| + |y₂−y₁|","(x₂−x₁)² + (y₂−y₁)²","max(|x₂−x₁|, |y₂−y₁|)"], e:"It comes from the Pythagorean theorem. (|dx|+|dy| is Manhattan; max is Supremum.)"},
-{t:"kmeans", q:"Distance from A(2, 10) to D(5, 8)?", o:["√13 ≈ 3.6","√5 ≈ 2.2","5.0","13"], e:"(5−2)² + (8−10)² = 9 + 4 = 13 → √13 ≈ 3.6 (matches the slide table)."},
-{t:"kmeans", q:"Distance from B(2, 5) to G(1, 2)?", o:["√10 ≈ 3.2","√8 ≈ 2.8","4.0","10"], e:"(1)² + (3)² = 10 → √10 ≈ 3.16 ≈ 3.2."},
 {t:"kmeans", q:"The centre of A(x₁, y₁) and B(x₂, y₂) is…", o:["((x₁+x₂)/2, (y₁+y₂)/2)","(x₁+x₂, y₁+y₂)","((x₂−x₁)/2, (y₂−y₁)/2)","(x₁·x₂, y₁·y₂)"], e:"The centroid is the average of each coordinate."},
 {t:"kmeans", q:"Which is listed on the slide as an extension of Euclidean distance?", o:["Manhattan distance","Hamming loss","Mean squared error","Accuracy"], e:"Extensions listed: Manhattan distance, Supremum distance, Cosine similarity."},
 {t:"kmeans", q:"In K-means, K means…", o:["the number of clusters","the number of data points","the number of features","the number of iterations"], e:"K = how many clusters you ask for."},
-{t:"kmeans", q:"In the A–H class example, which points were the starting centroids?", o:["A(2,10), D(5,8), G(1,2)","A, B, C","B, E, H","C, F, G"], e:"The slides randomly assigned A, D and G as the initial centres."},
-{t:"kmeans", q:"Round 1: B(2,5) has distances 5.0 (to A), 4.2 (to D), 3.2 (to G). Which cluster?", o:["G (the smallest distance)","A","D","None, it is a tie"], e:"Each point joins the centroid with the smallest distance."},
-{t:"kmeans", q:"After round 1, cluster D = {C(8,4), D(5,8), E(7,5), F(6,4), H(4,9)}. New centroid?", o:["(6, 6)","(5, 6)","(6, 5)","(7, 6)"], e:"x = (8+5+7+6+4)/5 = 30/5 = 6; y = (4+8+5+4+9)/5 = 30/5 = 6."},
-{t:"kmeans", q:"After round 1, cluster G = {B(2,5), G(1,2)}. New centroid?", o:["(1.5, 3.5)","(1, 3)","(3, 7)","(2, 3.5)"], e:"((2+1)/2, (5+2)/2) = (1.5, 3.5)."},
-{t:"kmeans", q:"In round 2 of the class example, which point switched cluster?", o:["H moved from D to A","B moved from G to D","C moved from D to G","No point moved"], e:"H(4,9): distance to A-centre (2,10) = 2.2 but to D-centre (6,6) = 3.6, so H joins A."},
-{t:"kmeans", q:"The final centroids of the A–H example are about…", o:["(3.67, 9), (7, 4.33), (1.5, 3.5)","(2, 10), (5, 8), (1, 2)","(6, 6), (2, 10), (1.5, 3.5)","(4, 4), (5, 5), (6, 6)"], e:"Cluster A = {A, D, H}, D = {C, E, F}, G = {B, G}."},
-{t:"kmeans", q:"When does K-means stop?", o:["When no data point changes to a new cluster (centroids stop moving)","After exactly 3 rounds","When WCSS reaches 0","When every cluster has the same size"], e:"Repeat assign → update until nothing changes."},
 {t:"kmeans", q:"The 9-picture grouping example (by object, by colour, by location) shows that…", o:["the best grouping depends on the situation","there is only one correct grouping","colour is always the best feature","clustering needs labels"], e:"Different features give different groups."},
 {t:"kmeans", q:"The two repeating steps of K-means are…", o:["Assign each point to its nearest centroid, then move each centroid to the mean of its points","Sort the points, then delete outliers","Label the data, then train a model","Compute p-values, then group"], e:"Assign (argmin of distances) → update (mean) → repeat."},
 // ---------- Deck 04: Elbow & WCSS ----------
@@ -1970,10 +2000,6 @@ const BANK = [
 {t:"elbow", q:"WCSS uses which distance for each point?", o:["The squared distance to its centroid (no square root)","The Euclidean distance with a square root","The Manhattan distance","The distance to the furthest point"], e:"The worksheet notes: \"Calculate the squared distance, not Euclidean distance, so no np.linalg.norm\"."},
 {t:"elbow", q:"As K increases, WCSS usually…", o:["goes down","goes up","stays the same","becomes negative"], e:"More clusters = points sit closer to some centroid."},
 {t:"elbow", q:"The \"elbow\" is…", o:["the K after which adding more clusters gives only a small improvement","the K with the smallest WCSS","always K = 2","the point where WCSS becomes 0"], e:"The curve bends: big drops before, small drops after."},
-{t:"elbow", q:"Why not just choose the K with the smallest WCSS?", o:["WCSS keeps falling as K grows; with K = number of points it is 0, which tells you nothing","The smallest WCSS is always wrong","WCSS cannot be compared across K","It takes too long to compute"], e:"Every point alone in its own cluster gives WCSS 0 but no useful grouping."},
-{t:"elbow", q:"Cluster {B(2,5), G(1,2)} with centroid (1.5, 3.5). WCSS of this cluster?", o:["5.0","2.5","3.16","10"], e:"B: 0.5² + 1.5² = 2.5. G: 0.5² + 1.5² = 2.5. Total 5.0."},
-{t:"elbow", q:"In the slides, WCSS_A = 6.67, WCSS_D = 2.67, WCSS_G = 5.00. Total WCSS for K = 3?", o:["14.34","6.67","9.34","12.0"], e:"6.67 + 2.67 + 5.00 = 14.34."},
-{t:"elbow", q:"Class example: WCSS for K = 1…5 is about [100, 68, 14, 9, 3]. Best K?", o:["3","1","5","2"], e:"Big drop 68 → 14 at K = 3, then only small drops: the elbow is at 3."},
 {t:"elbow", q:"Iris WCSS: K=1 ≈ 681, K=2 ≈ 152, K=3 ≈ 79, K=4 ≈ 57, K=5 ≈ 50. Best K?", o:["3","2","5","8"], e:"After K = 3 the curve flattens, and 3 also matches the three species."},
 {t:"elbow", q:"Why does the slide switch to Python after K = 3?", o:["Calculating WCSS by hand for every K takes too much work","Python gives a different answer","Excel cannot compute squares","K-means only works in Python"], e:"\"Calculating WCSS for just K = 3 already takes a lot of work.\""},
 // ---------- Deck 05: Image data formats ----------
@@ -1996,15 +2022,9 @@ const BANK = [
 {t:"image", q:"Why is simple thresholding not enough for real images?", o:["Images have millions of pixels, many colours and complex patterns, so fixed rules are hard to choose","Thresholds can only be 100","Thresholds only work on Iris","It makes images too bright"], e:"This is the same problem as Iris thresholds, which leads to letting the computer find groups (K-means)."},
 {t:"image", q:"In the \"Who's that Pokémon?\" warm-up, what are you really doing?", o:["Recognising an object from key visual features like shape and colour","Counting pixels","Computing WCSS","Running a t-test"], e:"It introduces how images carry features we use to identify objects."},
 // ---------- Code worksheet ----------
-{t:"code", q:"What does this print?", c:"for i in range(10):\n    print(i)", o:["0 to 9","1 to 10","0 to 10","1 to 9"], e:"range(10) gives 0, 1, …, 9."},
-{t:"code", q:"What is the last number printed?", c:"j = 0\nfor i in range(10):\n    j = j + 1\n    print(j)\n    if j > 5:\n        break", o:["6","5","10","9"], e:"It prints 1…6. When j = 6, j > 5 is True and the loop breaks."},
-{t:"code", q:"Output?", c:"v = [3, 4]\ndist = 0\nfor i in v:\n    dist = dist + i**2\nprint(dist)", o:["25","5.0","7","12"], e:"3² + 4² = 25. Without **0.5 there is no square root."},
-{t:"code", q:"Output?", c:"p1 = np.array([2, 5])\np2 = np.array([6, 8])\nprint(np.linalg.norm(p1 - p2))", o:["5.0","25","7","3.6"], e:"√((6−2)² + (8−5)²) = √25 = 5.0."},
 {t:"code", q:"np.linalg.norm needs its input as…", o:["a NumPy array (np.array)","a Python string","a pandas column name","a tuple of labels"], e:"The worksheet comment: \"you have to define the value in np.array form\"."},
 {t:"code", q:"8 points (shape (8, 2)) and 3 centroids (shape (3, 2)). What is the shape of distances?", c:"distances = np.linalg.norm(points[:, None] - centroids[None, :], axis=2)", o:["(8, 3)","(3, 8)","(8, 2)","(8, 3, 2)"], e:"Broadcasting gives (8, 3, 2); the norm over axis=2 removes the last axis → (8, 3): one row per point, one column per centroid."},
 {t:"code", q:"Shape of the difference before the norm (8 points, 3 centroids, 2D)?", c:"points[:, None] - centroids[None, :]", o:["(8, 3, 2)","(8, 2)","(3, 2)","(8, 3)"], e:"(8, 1, 2) − (1, 3, 2) broadcasts to (8, 3, 2)."},
-{t:"code", q:"Output?", c:"arr = np.array([8, 3, 5, 1])\nprint(np.argmin(arr))", o:["3","1","0","8"], e:"argmin returns the POSITION of the smallest value. 1 is at index 3."},
-{t:"code", q:"Output?", c:"matrix = np.array([[10, 2, 8],\n                   [ 5, 7, 1]])\nprint(np.argmin(matrix, axis=1))", o:["[1 2]","[0 1]","[2 1]","[1 0 1]"], e:"axis=1 → index of the min in each ROW: row 0 min 2 at col 1; row 1 min 1 at col 2."},
 {t:"code", q:"In K-means, why do we use argmin with axis=1 on distances?", o:["Each row is a point; we want the column (centroid) with the smallest distance","Each column is a point","To find the furthest centroid","To sort the points"], e:"labels[i] = index of the nearest centroid for point i."},
 {t:"code", q:"What does replace=False do here?", c:"centroids = points[np.random.choice(len(points), k, replace=False)]", o:["Picks k different points, so no point is chosen twice as a starting centroid","Replaces the points with zeros","Keeps the old centroids","Makes the choice not random"], e:"Two identical starting centroids would leave one cluster empty."},
 {t:"code", q:"What does this line compute?", c:"new_centroids = np.array([points[labels == i].mean(axis=0) for i in range(k)])", o:["For each cluster i, the mean x and mean y of its points (the new centroid)","The distance to each centroid","The label of each point","The WCSS"], e:"labels == i selects cluster i's rows; mean(axis=0) averages each column."},
@@ -2013,34 +2033,16 @@ const BANK = [
 {t:"code", q:"labels = [0, 2, 1, 1, 1, 1, 2, 1] for points A–H. Which points are in cluster 2?", o:["B and G","A and H","C, D, E, F, H","Only G"], e:"Index 1 (B) and index 6 (G) have label 2."},
 {t:"code", q:"Homework 02's first cell gave NameError: name 'kmeans' is not defined. Why?", o:["The cell that defined the kmeans function was deleted, so the name doesn't exist","kmeans is a NumPy function","K was 0","The points were 3D"], e:"A function must be defined (its cell run) before you call it."},
 {t:"code", q:"Homework 02 Problem 1: the plot showed the starting centroids, not the final ones. Why?", o:["kmeans(...) was called but its result was never saved into centroids, labels","The plot used 3D","tol was too small","The seed was 0"], e:"Fix: centroids, labels = kmeans(...) so the plot uses the returned values."},
-{t:"code", q:"In the while-loop version, what happens if you forget j = j + 1 and the centroids never settle?", o:["The loop never ends (j stays 0 < max_iter)","It stops after 100 rounds","It raises NameError","It runs once"], e:"The counter is what makes while j < max_iter eventually false."},
-{t:"code", q:"Output?", c:"cluster = [[2, 5], [1, 2]]\ncentroid = [1.5, 3.5]\nWCSS = 0\nfor point in cluster:\n    WCSS += (point[0]-centroid[0])**2 + (point[1]-centroid[1])**2\nprint(WCSS)", o:["5.0","2.5","3.5","0.5"], e:"Each point gives 0.25 + 2.25 = 2.5. Two points → 5.0."},
-{t:"code", q:"Output?", c:"cluster = [[6, 7], [3, 6]]\nsum_x = 0; sum_y = 0\nfor point in cluster:\n    sum_x += point[0]\n    sum_y += point[1]\nprint(sum_x / len(cluster), sum_y / len(cluster))", o:["4.5 6.5","9 13","4 6","3 1"], e:"(6+3)/2 = 4.5 and (7+6)/2 = 6.5."},
-{t:"code", q:"How many values of k does this loop try?", c:"for k in range(1, 6):\n    ...", o:["5 (k = 1, 2, 3, 4, 5)","6","4","1"], e:"range(1, 6) stops before 6."},
-{t:"code", q:"To test K = 1, 2, …, 8 (Homework 03), which range?", o:["range(1, 9)","range(1, 8)","range(0, 8)","range(8)"], e:"The stop value is excluded, so use 9."},
-{t:"code", q:"Output?", c:"wcss_list = [100.75, 68.27, 14.33, 9.33, 3.67]\nprint([int(w) for w in wcss_list])", o:["[100, 68, 14, 9, 3]","[101, 68, 14, 9, 4]","[100.0, 68.0, 14.0, 9.0, 3.0]","[100, 68, 14, 9]"], e:"int() cuts off the decimals; it doesn't round (3.67 → 3)."},
 {t:"code", q:"Homework 03: what is the shape of points_4d?", c:"features = ['sepal_length', 'sepal_width', 'petal_length', 'petal_width']\npoints_4d = iris_df[features].to_numpy()", o:["(150, 4)","(4, 150)","(150, 5)","(50, 4)"], e:"150 flowers × 4 features. Species is not included."},
 {t:"code", q:"Homework 03 accuracy: which species was matched worst by K = 3?", o:["Virginica (72%)","Setosa (100%)","Versicolor (96%)","All 100%"], e:"Setosa 100%, Versicolor 96%, Virginica 72% → overall 89.3%."},
-{t:"code", q:"In plt.scatter(centroids[:, 0], centroids[:, 1], marker='X', s=200), what are s and marker?", o:["s = marker size; marker='X' draws the centroids as big X shapes","s = number of clusters; marker = colour","s = seed; marker = label","s = scale of the axes"], e:"Centroids are drawn as big X's to stand out."},
-{t:"code", q:"How do you make a 3D Matplotlib axis?", o:["fig.add_subplot(projection='3d')","plt.scatter3d()","plt.figure(dim=3)","ax.set_zlabel('3d')"], e:"Then ax.scatter(x, y, z, ...)."},
 {t:"code", q:"np.array([[1, 2, 3], [4, 5, 6]]) is a…", o:["2-D array with shape (2, 3)","1-D array of 6 values","3-D array","2-D array with shape (3, 2)"], e:"2 rows, 3 columns."},
-{t:"code", q:"Output?", c:"arr = np.array([[1,2,3,4,5], [6,7,8,9,10]])\nprint(arr[0, 2])", o:["3","2","8","7"], e:"Row 0, column 2 (third value) = 3."},
-{t:"code", q:"What colour image does this make?", c:"img = np.zeros([300, 300, 3])\nimg.fill(255)", o:["White","Black","Grey","Yellow"], e:"Every channel 255 = white. fill(0) would be black."},
-{t:"code", q:"cv2_imshow uses OpenCV's channel order. Which tuple gives yellow?", c:"img_yellow[:, :, 0:3] = ( ?, ?, ? )", o:["(0, 255, 255)","(255, 255, 0)","(255, 0, 255)","(0, 0, 255)"], e:"OpenCV is BGR: Blue = 0, Green = 255, Red = 255 → yellow."},
 {t:"code", q:"Why is (255, 0, 255) purple in both RGB and BGR?", o:["Swapping the first and last channel doesn't change it: red and blue are both 255","OpenCV ignores the middle channel","Purple has no blue","It's a special constant"], e:"The order only matters when the first and last values differ."},
 {t:"code", q:"What does this draw on a 300 × 300 yellow image?", c:"img_yellow[100:200, 100:200, 0:3] = (0, 0, 0)", o:["A black 100 × 100 square in the middle","A black line","A white square","Nothing, the slice is empty"], e:"[rows 100–199, cols 100–199] set to black."},
-{t:"code", q:"Before plt.imshow() of an image loaded with cv2.imread, you should…", o:["convert it with cv2.cvtColor(img, cv2.COLOR_BGR2RGB)","multiply by 255","flip it upside down","convert to a mask"], e:"Otherwise red and blue are swapped in the plot."},
 {t:"code", q:"Which library loads images as BGR by default?", o:["OpenCV (cv2)","Pillow (PIL)","Matplotlib","imageio"], e:"OpenCV uses BGR for historical compatibility; PIL and Matplotlib use RGB."},
-{t:"code", q:"Output (I_masked)?", c:"I = np.array([[10, 50], [200, 220]])\nM = np.array([[0, 1], [1, 0]])\nprint(I * M)", o:["[[0 50] [200 0]]","[[10 0] [0 220]]","[[0 1] [1 0]]","[[10 50] [200 220]]"], e:"Element-wise multiply: keeps I where M is 1, else 0."},
-{t:"code", q:"Output?", c:"arr = np.array([100, 155, 200])\nprint(arr < 150)", o:["[ True False False]","[False True True]","[100]","True"], e:"The comparison is applied to each element."},
-{t:"code", q:"Output?", c:"a = np.array([0, 0, 5, 0])\nprint(np.any(a))", o:["True","False","5","[False False True False]"], e:"np.any is True if at least one element is non-zero."},
 {t:"code", q:"What does this line do to an RGB image?", c:"image_array[np.any(image_array < threshold, axis=-1)] = mask_pixel", o:["Every pixel with at least one channel below the threshold becomes mask_pixel","Every channel below the threshold becomes 0","It deletes dark pixels","It counts dark pixels"], e:"axis=-1 checks across the 3 colour channels of each pixel."},
 {t:"code", q:"image_array.shape is (360, 540, 3). What do the numbers mean?", o:["360 rows (height), 540 columns (width), 3 colour channels","360 wide, 540 high, 3 images","360 pixels, 540 colours, 3 masks","3 rows of 360 × 540"], e:"NumPy images are (height, width, channels)."},
 {t:"code", q:"image_array[0][0] returns array([255, 255, 255]). What is that pixel?", o:["The top-left pixel, and it is white","The centre pixel, black","The mask value 1","The bottom-right pixel"], e:"[0][0] is row 0, column 0."},
-{t:"code", q:"Which pixel does mask_green select?", c:"lower = np.array([0, 128, 0])\nupper = np.array([10, 255, 10])\nmask_green = np.all(img >= lower, axis=-1) & np.all(img <= upper, axis=-1)", o:["[5, 200, 0]","[20, 200, 0]","[0, 100, 0]","[0, 200, 50]"], e:"R ≤ 10, G between 128 and 255, B ≤ 10. Only [5, 200, 0] fits all three."},
-{t:"code", q:"What does the | symbol do here?", c:"mask = mask_red | mask_green | mask_blue", o:["\"or\": a pixel is in the mask if it is in any of the three masks","\"and\": in all three masks","adds the colours","divides the masks"], e:"| is element-wise OR for boolean arrays (& is AND)."},
 {t:"code", q:"What was wrong with this download line?", c:"!gdown --id 1-8J8DAbDSts20ThDqugSu-isEi9eq5-I -O img_shiba_bw.", o:["The file name ends with a dot, so Image.open('img_shiba_bw.jpg') can't find it","--id is not a gdown option","The id is too long","-O should be -o"], e:"-O sets the output file name exactly as written, including the trailing dot."},
-{t:"code", q:"In custom_wcss, how is centroid_x computed for each cluster?", o:["sum_x / len(cluster)","sum_x * len(cluster)","np.argmin(cluster)","max(x) − min(x)"], e:"The centroid is the mean of the cluster's x values."},
 ];
 
 // ================= helpers =================
@@ -2076,42 +2078,15 @@ const SUB = { sortlab: "types", code: "blank" };
 let VIEW = "quiz";
 function render() {
   const root = document.getElementById("drill-root"); if (!root) return;
-  root.innerHTML = ({ quiz: quizView, cluster: clusterView, sortlab: sortlabView, code: codeView, summary: notesView })[VIEW]();
+  root.innerHTML = ({ quiz: quizView, cluster: clusterView, sortlab: sortlabView, code: codeView })[VIEW]();
 }
 function mount(view, id) { VIEW = id; view.innerHTML = '<div id="drill-root"></div>'; render(); }
 
 // ================= QUIZ =================
 const TOPICS = [["all", "Everything"], ["slides", "Slides only"], ["code", "Code only"], ["data", "02 Data & stats"], ["kmeans", "03 K-means"], ["elbow", "04 Elbow & WCSS"], ["image", "05 Images"]];
 let QZ = { topic: "all", len: 10, run: null };
-// questions with fresh random numbers (code + clustering arithmetic)
-function genQuizQs() {
-  const out = [];
-  { // distance
-    const t = pick([[3, 4, 5], [6, 8, 10], [5, 12, 13], [8, 6, 10]]); const a = [ri(0, 5), ri(0, 5)]; const b = [a[0] + t[0], a[1] + t[1]];
-    out.push({ t: "kmeans", q: `Euclidean distance from P(${a}) to Q(${b})?`, o: [String(t[2]), String(t[0] + t[1]), String(t[2] * t[2]), String(Math.max(t[0], t[1]))], e: `√(${t[0]}² + ${t[1]}²) = √${t[2] * t[2]} = ${t[2]}. (${t[0] + t[1]} would be Manhattan distance.)` });
-  }
-  { // centroid of 3 points with integer mean
-    const c = [ri(2, 8), ri(2, 8)]; const o1 = [ri(-2, 2), ri(-2, 2)], o2 = [ri(-2, 2), ri(-2, 2)]; const o3 = [-o1[0] - o2[0], -o1[1] - o2[1]];
-    const P = [o1, o2, o3].map(o => [c[0] + o[0], c[1] + o[1]]);
-    out.push({ t: "kmeans", q: `New centroid of the cluster {(${P[0]}), (${P[1]}), (${P[2]})}?`, o: [`(${c[0]}, ${c[1]})`, `(${c[0] + 1}, ${c[1]})`, `(${c[0]}, ${c[1] - 1})`, `(${P[0][0] + P[1][0] + P[2][0]}, ${P[0][1] + P[1][1] + P[2][1]})`], e: `Sum each coordinate and divide by 3: x = ${P.map(p => p[0]).join(" + ")} = ${3 * c[0]} → ${c[0]}; y = ${P.map(p => p[1]).join(" + ")} = ${3 * c[1]} → ${c[1]}.` });
-  }
-  { // WCSS of 2 points
-    const a = [ri(0, 8), ri(0, 8)], b = [a[0] + pick([2, 4]), a[1] + pick([0, 2, 4])]; const m = [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2];
-    const w = ((a[0] - m[0]) ** 2 + (a[1] - m[1]) ** 2) * 2;
-    out.push({ t: "elbow", q: `Cluster {(${a}), (${b})}. Its centroid is (${m}). What is this cluster's WCSS?`, o: [...new Set([w, w / 2, Math.sqrt(w), w * 2, w + 1, w + 3].map(fmt))].slice(0, 4), e: `Each point is ${fmt(w / 2)} (squared distance) from the centroid, so WCSS = ${fmt(w / 2)} + ${fmt(w / 2)} = ${fmt(w)}.` });
-  }
-  { // argmin
-    const arr = shuffle([ri(1, 3), ri(4, 6), ri(7, 9), ri(10, 14)]); const idx = arr.indexOf(Math.min(...arr));
-    out.push({ t: "code", q: "Output?", c: `arr = np.array([${arr.join(", ")}])\nprint(np.argmin(arr))`, o: [String(idx)].concat([0, 1, 2, 3].filter(x => x !== idx).map(String)), e: `The smallest value is ${Math.min(...arr)}, at index ${idx}. argmin returns the index, not the value.` });
-  }
-  { // elbow
-    const { w, kStar } = makeElbow(6);
-    out.push({ t: "elbow", q: `WCSS for K = 1…6 is [${w.join(", ")}]. Where is the elbow?`, o: [`K = ${kStar}`, `K = 6`, `K = 1`, `K = ${kStar === 2 ? 3 : kStar - 1}`], e: `Big drops until K = ${kStar} (${w[kStar - 2]} → ${w[kStar - 1]}), then only small ones. K = 6 has the smallest WCSS but adds little.` });
-  }
-  return out;
-}
 function quizPool() {
-  const all = BANK.concat(genQuizQs());
+  const all = BANK;
   const t = QZ.topic;
   return all.filter(q => t === "all" || (t === "slides" ? q.t !== "code" : q.t === t));
 }
@@ -2125,7 +2100,7 @@ function quizView() {
   const head = `<div class="row between"><div><div class="eyebrow">Multiple choice</div><h2>Quiz</h2></div>${QZ.run ? `<button class="btn ghost sm" data-act="quiz-restart">New attempt</button>` : ""}</div>`;
   if (!QZ.run) {
     return `<div class="stack"><div class="panel vstack">${head}
-      <p class="muted">Pick a topic and a length. Questions and answer order are shuffled every attempt, and the arithmetic and code-output questions get new numbers.</p>
+      <p class="muted">Pick a topic and a length. Questions and answer order are shuffled every attempt. Hands-on calculations live in the levels, Cluster sort and Code lab.</p>
       <div><div class="small muted" style="margin-bottom:6px">Topic</div><div class="row">${TOPICS.map(([k, n]) => `<button class="pill" aria-pressed="${QZ.topic === k}" data-qtopic="${k}">${n}</button>`).join("")}</div></div>
       <div><div class="small muted" style="margin-bottom:6px">Questions</div><div class="row">${[10, 20, 40, "all"].map(n => `<button class="pill" aria-pressed="${QZ.len === n}" data-qlen="${n}">${n === "all" ? "All " + quizPool().length : n}</button>`).join("")}</div></div>
       <div><button class="btn lime" data-act="quiz-start">Start quiz</button></div>
@@ -2473,31 +2448,10 @@ function newColor() {
   SORTERS.cm = { items: cols.map((c, i) => ({ id: String(i), html: `<span class="swatch" style="background:rgb(${c})"></span><span class="mono">[${c.join(", ")}]</span>`, cat: rgbClass(c) })), buckets: [["mask_red", "[128..255, 0..10, 0..10]"], ["mask_green", "[0..10, 128..255, 0..10]"], ["mask_blue", "[0..10, 0..10, 128..255]"], ["No mask", "fails every rule"]].map((b, j) => ({ id: String(j), title: `<code>${b[0]}</code>`, sub: b[1] })), place: {}, sel: null, marks: {} };
   CM = { fb: null };
 }
-// elbow
-let EB = null;
-// whole-number WCSS curve with a clear elbow: big drops up to K*, then small ones
-function makeElbow(maxK) {
-  const kStar = pick([2, 3, 4]); let v = ri(20, 40) * 10; const w = [v];
-  for (let k = 2; k <= maxK; k++) { v = k <= kStar ? Math.round(v * (0.35 + Math.random() * 0.2)) : Math.max(1, v - Math.max(1, Math.round(v * 0.08) + ri(0, 2))); w.push(v); }
-  return { w, kStar };
-}
-function newElbow() {
-  const { w, kStar } = makeElbow(7);
-  EB = { w, kStar, pick: null, inp: {}, marks: {}, fb: null, fb2: null, done: false };
-}
-function elbowSVG(w, mark) {
-  const W = 340, H = 220, x = k => 40 + (k - 1) * 46, max = Math.ceil(w[0] / 50) * 50, y = v => 190 - v / max * 165;
-  let s = `<svg class="plot" viewBox="0 0 ${W} ${H}" role="img" aria-label="Elbow chart of WCSS against K">`;
-  for (let t = 0; t <= max; t += max / 5) s += `<line class="sv-grid" x1="40" x2="${x(7)}" y1="${y(t)}" y2="${y(t)}"/><text class="sv-t" x="34" y="${y(t) + 3}" text-anchor="end">${t}</text>`;
-  s += `<line class="sv-axis" x1="40" y1="190" x2="${x(7) + 6}" y2="190"/>`;
-  s += `<polyline class="sv-line" points="${w.map((v, i) => `${x(i + 1)},${y(v)}`).join(" ")}"/>`;
-  w.forEach((v, i) => { s += `<circle class="sv-dot" cx="${x(i + 1)}" cy="${y(v)}" r="${mark === i + 1 ? 7 : 4.5}" ${mark === i + 1 ? 'style="fill:var(--green)"' : ""}/><text class="sv-t" x="${x(i + 1)}" y="206" text-anchor="middle">${i + 1}</text><text class="sv-t" x="${x(i + 1) + 6}" y="${y(v) - 8}">${v}</text>`; });
-  return s + `<text class="sv-t" x="${x(7)}" y="218" text-anchor="end">K</text></svg>`;
-}
 function sortlabView() {
-  if (!TY) newTypes(); if (!MK) newMask(); if (!CM) newColor(); if (!EB) newElbow();
+  if (!TY) newTypes(); if (!MK) newMask(); if (!CM) newColor();
   const sub = SUB.sortlab;
-  const subs = [["types", "Data types"], ["mask", "Pixel mask"], ["color", "Colour mask"], ["elbow", "Elbow"]];
+  const subs = [["types", "Data types"], ["mask", "Pixel mask"], ["color", "Colour mask"]];
   let body = "";
   const fbH = f => f ? `<div class="feedback ${f[0]}" aria-live="polite">${f[1]}</div>` : "";
   if (sub === "types") {
@@ -2528,17 +2482,6 @@ mask_red = np.all(img &gt;= lower, axis=-1) &amp; np.all(img &lt;= upper, axis=-
       <p class="small muted">Pixels are [R, G, B]. Each mask needs the main channel between 128 and 255 and both other channels at 10 or less.</p>
       <div id="sorter-cm">${sorterHTML("cm")}</div>
       <div class="row"><button class="btn" data-act="cm-check">Check</button></div>${fbH(CM.fb)}`;
-  } else {
-    const w = EB.w;
-    body = `<div class="row between"><h3>Read the elbow (deck 04)</h3><button class="btn lime sm" data-act="eb-new">New attempt</button></div>
-      <pre class="code">k_list = [1, 2, 3, 4, 5, 6, 7]
-wcss_list = [${w.join(", ")}]</pre>
-      ${elbowSVG(w, EB.pick)}
-      <p><b>1.</b> Which K is the elbow?</p>
-      <div class="row">${w.map((_, i) => `<button class="pill" aria-pressed="${EB.pick === i + 1}" data-eb="${i + 1}" ${EB.fb && EB.fb[0] === "ok" ? "disabled" : ""}>K = ${i + 1}</button>`).join("")}</div>${fbH(EB.fb)}
-      <p><b>2.</b> How much does WCSS drop from K = ${EB.kStar - 1} to K = ${EB.kStar}? <input type="text" class="num ${EB.marks.a || ""}" data-eb-in="a" inputmode="numeric" autocomplete="off" value="${esc(EB.inp.a ?? "")}"></p>
-      <p><b>3.</b> And from K = ${EB.kStar} to K = ${EB.kStar + 1}? <input type="text" class="num ${EB.marks.b || ""}" data-eb-in="b" inputmode="numeric" autocomplete="off" value="${esc(EB.inp.b ?? "")}"></p>
-      <div class="row"><button class="btn" data-act="eb-check">Check 2 and 3</button></div>${fbH(EB.fb2)}`;
   }
   return `<div class="stack"><div class="panel vstack">
     <div><div class="eyebrow">Sorting practice</div><h2>Sorting lab</h2></div>
@@ -2563,8 +2506,6 @@ const BLANKS = [
   { c: "for k in range(1, ____):   # test K = 1 ... 8\n    centroids, labels = custom_kmeans(points_4d, k, 100, 1e-4)", a: ["9"], e: "range stops before the end value, so 9 gives 1…8." },
   { c: "k_list.append(k)\nwcss_list.______(wcss)", a: ["append"], e: "Add this K's WCSS to the list for the elbow plot." },
   { c: "j = 0\nwhile j < max_iter:\n    ...\n    centroids = new_centroids\n    j = ______", a: ["j + 1", "j+1"], e: "Count one round, or the while loop never ends." },
-  { c: "fig = plt.figure(figsize=(8, 6))\nax = fig.add_subplot(projection='______')", a: ["3d"], e: "projection='3d' makes a 3D axis." },
-  { c: "plt.scatter(centroids[:, 0], centroids[:, 1], marker='____', s=200)", a: ["X", "x"], e: "Centroids are drawn as big X markers." },
   { c: "img = np.zeros([300, 300, 3])\nimg.fill(______)   # white image", a: ["255"], e: "255 in every channel is white." },
   { c: "img_yellow = np.zeros([300, 300, 3], dtype=np.uint8)\nimg_yellow[:, :, 0:3] = (0, 255, ______)   # BGR yellow", a: ["255"], e: "BGR (0, 255, 255): green + red = yellow." },
   { c: "I_masked = I ____ M", a: ["*"], e: "Element-wise multiply keeps pixels where M is 1." },
@@ -2614,11 +2555,7 @@ const ORDERS = [
     ["  wcss = custom_wcss(clusters)", 4], ["  k_list.append(k)", 5], ["  wcss_list.append(wcss)", 5], ["plt.plot(k_list, wcss_list, marker='*')", 6], ["plt.show()", 7]] },
   { title: "Threshold mask on a picture (code 05, 02)", lines: [
     ["image_rgb = Image.open(\"img_shiba_bw.jpg\")", 0], ["image_array = np.array(image_rgb)", 1], ["mask_pixel = [255, 0, 0]", 2], ["threshold = 100", 2],
-    ["image_array[np.any(image_array < threshold, axis=-1)] = mask_pixel", 3], ["image_array", 4]] },
-  { title: "3D K-means with a while loop (homework 02)", lines: [
-    ["j = 0", 0], ["while j < max_iter:", 1], ["    distances = np.linalg.norm(points[:, None] - centroids[None, :], axis=2)", 2], ["    labels = np.argmin(distances, axis=1)", 3],
-    ["    new_centroids = np.array([points[labels == i].mean(axis=0) for i in range(k)])", 4], ["    if np.linalg.norm(new_centroids - centroids) < tol:", 5], ["        break", 6],
-    ["    centroids = new_centroids", 7], ["    j = j + 1", 8], ["print(centroids)", 9]] },
+    ["image_array[np.any(image_array < threshold, axis=-1)] = mask_pixel", 3], ["image_array", 4]] }
 ];
 let CD = null;
 function newBlanks() { CD.blanks = shuffle(BLANKS).slice(0, 8).map(b => ({ ...b, inp: "", mark: "" })); CD.bfb = null; }
@@ -2662,58 +2599,6 @@ function codeView() {
   </div></div>`;
 }
 
-// ================= NOTES =================
-function notesView() {
-  return `<div class="stack"><div class="panel vstack prose" style="max-width:none">
-  <div><div class="eyebrow">Decks 02–05 + code worksheet</div><h2>Summary</h2></div>
-  <div class="toc"><a href="#n02">02 Data</a><a href="#n03">03 K-means</a><a href="#n04">04 Elbow</a><a href="#n05">05 Images</a><a href="#ncode">Code patterns</a></div>
-  <section class="prose" id="n02"><h3>02 · What is the problem with data?</h3>
-  <ul><li><b>Data types:</b> numbers, categories, text, images, time-series. Type = what the data contains; structure = how it is organised.</li>
-  <li><b>Categorical:</b> nominal (no order: genre, director) and ordinal (ordered: Low → Medium → High).</li>
-  <li><b>Numerical:</b> discrete (counted: 35 students, 120 clicks, votes) and continuous (measured: 5.1 cm, rating 8.1, revenue).</li>
-  <li><b>Structure:</b> structured (rows and columns: IMDb, Iris), semi-structured (JSON, XML, HTML), unstructured (reviews, posters, photos, videos).</li>
-  <li><b>pandas:</b> most common genre → <code>split()</code> + <code>explode()</code> + <code>value_counts()</code>; most frequent director → <code>value_counts()</code>; rating &gt; 8.0 → filtering; average by class → group-by.</li>
-  <li><b>Iris:</b> 150 flowers, 4 continuous features, 3 species (Setosa, Versicolor, Virginica).</li></ul>
-  <div class="tablewrap"><table class="t"><tr><th>Test</th><th>When</th></tr><tr><td>t-test</td><td>2 groups, 1 DV</td></tr><tr><td>One-way ANOVA</td><td>1 factor (3+ groups), 1 DV</td></tr><tr><td>Two-way ANOVA</td><td>2 factors, 1 DV</td></tr><tr><td>ANCOVA</td><td>1+ factors, 1 DV, with a covariate</td></tr><tr><td>MANOVA</td><td>1+ factors, 2+ DVs</td></tr><tr><td>MANCOVA</td><td>1+ factors, 2+ DVs, with a covariate</td></tr></table></div>
-  <ul><li>p &lt; 0.05 → reject H₀ → significant. p ≥ 0.05 → fail to reject H₀.</li><li>IV = species (groups). DV = petal length (measurement). H₀: same mean. H₁: at least one mean differs.</li>
-  <li>Petal ANOVA: length F = 1180.16, width F = 960.01, both p &lt; .001. Setosa petals are smallest (1.462 cm, 0.246 cm); Virginica largest (5.552 cm, 2.026 cm).</li>
-  <li>Write results as: overall finding → numbers → statistical evidence → meaning → conclusion.</li></ul>
-  <div class="callout exam"><b>The problem:</b> if the Species column is missing, can we discover the groups from the four measurements alone? That is clustering.</div></section>
-  <section class="prose" id="n03"><h3>03 · Clustering: K-means</h3>
-  <ul><li>Thresholds (petal length 5 cm, width 1.8 cm) fail when groups overlap, points fall in the wrong group, or the pattern needs several variables.</li>
-  <li><b>Clustering</b> groups similar points without labels: finding natural groups automatically.</li>
-  <li><b>Euclidean distance</b> d = √((x₂−x₁)² + (y₂−y₁)²), from Pythagoras, works in any dimension. Extensions: Manhattan, Supremum, Cosine similarity.</li>
-  <li><b>Centre</b> of two points = ((x₁+x₂)/2, (y₁+y₂)/2). Centroid = mean of all points in the cluster.</li></ul>
-  <div class="flow"><div><b>1. Pick K</b>Choose K starting centroids (A, D, G in class).</div><div><b>2. Distances</b>Every point to every centroid.</div><div><b>3. Assign</b>Each point joins its nearest centroid.</div><div><b>4. Update</b>Centroid = mean of its points.</div><div><b>5. Repeat</b>Stop when no point changes cluster.</div></div>
-  <p class="small" style="margin-top:.8rem">Class example A(2,10) B(2,5) C(8,4) D(5,8) E(7,5) F(6,4) G(1,2) H(4,9): round 1 centroids → (2,10), (6,6), (1.5,3.5); H moves to A in round 2; final ≈ (3.67, 9), (7, 4.33), (1.5, 3.5) with clusters {A, D, H}, {C, E, F}, {B, G}.</p></section>
-  <section class="prose" id="n04"><h3>04 · Finding the best K: Elbow method</h3>
-  <ul><li>Try K = 1, 2, 3 … and compute <b>WCSS</b> (Within-Cluster Sum of Squares) for each: the sum of squared distances from each point to its own centroid.</li>
-  <li>Smaller WCSS = more compact clusters. WCSS always falls as K rises (K = n gives 0), so pick the <b>elbow</b>: the K after which the improvement becomes small.</li>
-  <li>Class example K = 3: WCSS_A = 6.67, WCSS_D = 2.67, WCSS_G = 5.00 → 14.34. Python: [100.75, 68.27, 14.33, 9.33, 3.67] → elbow at K = 3.</li>
-  <li>Iris (4 features): ≈ 681 → 152 → 79 → 57 → 50 … elbow at K = 3, matching the 3 species. K = 3 matched Setosa 100%, Versicolor 96%, Virginica 72% (89.3% overall).</li></ul></section>
-  <section class="prose" id="n05"><h3>05 · Image data formats and filtering</h3>
-  <ul><li>A camera measures energy (light). Cones = colour in bright light; rods = dim light and night vision.</li>
-  <li>The image sensor turns each cell into a pixel value in [0, 255]. Number of pixels = spatial resolution.</li>
-  <li>Three cone types → RGB. (255,255,0) yellow, (255,0,255) purple, (0,0,0) black, (255,255,255) white.</li>
-  <li>Vision tasks: classification, localization, segmentation. Segmentation: semantic (label every pixel), instance (each object), panoptic (both). MRI: white matter, gray matter, CSF.</li>
-  <li><b>Mask</b> = 0/1 array; image × mask keeps the pixels where the mask is 1. <b>Threshold segmentation:</b> pixel &lt; 100 → paint [0, 0, 255].</li>
-  <li>Hand-picked thresholds break down for millions of pixels and many colours, so we need computers to find patterns themselves.</li></ul></section>
-  <section class="prose" id="ncode"><h3>Code patterns to know by heart</h3>
-  <pre class="code">distances = np.linalg.norm(points[:, None] - centroids[None, :], axis=2)  <span class="cm"># (n, k)</span>
-labels = np.argmin(distances, axis=1)                                     <span class="cm"># nearest centroid per point</span>
-new_centroids = np.array([points[labels == i].mean(axis=0) for i in range(k)])
-if np.linalg.norm(new_centroids - centroids) &lt; tol: break                  <span class="cm"># converged</span>
-clusters = [points[labels == i] for i in range(k)]
-wcss = custom_wcss(clusters)                                              <span class="cm"># squared distances, no sqrt</span>
-img = np.zeros([300, 300, 3], dtype=np.uint8); img[:, :, 0:3] = (0, 255, 255)  <span class="cm"># BGR yellow</span>
-img[100:200, 100:200] = (0, 0, 0)                                         <span class="cm"># rows, cols</span>
-I_masked = I * M
-image_array[np.any(image_array &lt; threshold, axis=-1)] = mask_pixel
-mask = mask_red | mask_green | mask_blue                                  <span class="cm"># | = or, &amp; = and</span></pre>
-  <div class="callout" style="margin-top:.8rem"><b>Common bugs from your homework:</b> call the function and save the result (<code>centroids, labels = kmeans(...)</code>); define a function before calling it (NameError); a while loop needs <code>j = j + 1</code>; OpenCV is BGR; <code>-O img_shiba_bw.</code> saves a file ending in a dot.</div></section>
-  </div></div>`;
-}
-
 // ================= events =================
 document.addEventListener("click", e => {
   if (!e.target.closest || !e.target.closest("#drill-root")) return;
@@ -2730,7 +2615,6 @@ document.addEventListener("click", e => {
   if (d.rot) { rotatePlot(+d.rot * 0.35, 0); return; }
   if (d.chg) { const R = CL.g.rounds[CL.r]; const ok = (d.chg === "yes") === R.changed; grade(`chg${CL.r}`, ok); if (ok) { CL.solved = true; CL.fb = ["ok", R.changed ? "Yes: at least one point switched cluster, so K-means keeps going." : "Right: nothing moved, so the centroids stay put. K-means has converged."]; } else CL.fb = ["no", "Compare the two columns point by point."]; rerenderCluster(); return; }
   if (d.cell != null) { if (MK.checked) return; const i = +d.cell; MK.M[i] = MK.M[i] ? 0 : 1; MK.marks = {}; MK.fb = null; render(); return; }
-  if (d.eb) { if (EB.fb && EB.fb[0] === "ok") return; EB.pick = +d.eb; const ok = EB.pick === EB.kStar; EB.fb = ok ? ["ok", `Yes. WCSS falls fast until K = ${EB.kStar}, then each extra cluster only removes a little.`] : ["no", EB.pick > EB.kStar ? "Smaller WCSS is not the goal. Look for where the big drops stop." : "The curve is still dropping steeply there. Look a bit further right."]; if (ok && !EB.done) { EB.done = true; addXP(5); } render(); return; }
   if (d.build != null) { CD.order.built.push(+d.build); CD.order.marks = {}; CD.order.fb = null; render(); return; }
   if (d.unbuild != null) { CD.order.built.splice(+d.unbuild, 1); CD.order.marks = {}; CD.order.fb = null; render(); return; }
   const act = d.act; if (!act) return;
@@ -2751,8 +2635,6 @@ document.addEventListener("click", e => {
     case "mk-check2": { let all = true; MK.qs.forEach(q => { const r = Math.floor(q / 4), c = q % 4, v = MK.I[r][c] * MK.M[q]; const ok = numOk(MK.ans[q] ?? "", v, 0); MK.marks["q" + q] = ok ? "ok" : "bad"; if (!ok) all = false; }); const cnt = MK.M.filter(Boolean).length; const okc = numOk(MK.ans.cnt ?? "", cnt, 0); MK.marks.cnt = okc ? "ok" : "bad"; if (!okc) all = false; MK.fb2 = all ? ["ok", "Correct. Where M = 0 the pixel becomes 0; where M = 1 it keeps its value."] : ["no", `I_masked = I × M. Answers: ${MK.qs.map(q => `[${Math.floor(q / 4)}, ${q % 4}] = ${MK.I[Math.floor(q / 4)][q % 4] * MK.M[q]}`).join(", ")}; ${cnt} pixels with M = 1.`]; if (all && !MK.done) { MK.done = true; addXP(6); } render(); break; }
     case "cm-new": newColor(); render(); break;
     case "cm-check": checkSorter("cm", "fb", CM); render(); break;
-    case "eb-new": newElbow(); render(); break;
-    case "eb-check": { const w = EB.w, k = EB.kStar; const a = w[k - 2] - w[k - 1], b = w[k - 1] - w[k]; const oa = numOk(EB.inp.a ?? "", a, 0), ob = numOk(EB.inp.b ?? "", b, 0); EB.marks = { a: oa ? "ok" : "bad", b: ob ? "ok" : "bad" }; EB.fb2 = oa && ob ? ["ok", `${a} versus ${b}: a big drop, then a small one. That contrast is the elbow.`] : ["no", `Subtract: ${w[k - 2]} − ${w[k - 1]} = ${a}, and ${w[k - 1]} − ${w[k]} = ${b}.`]; if (oa && ob) addXP(4); render(); break; }
     case "bl-new": newBlanks(); render(); break;
     case "bl-check": { let right = 0; CD.blanks.forEach(b => { const v = b.inp.replace(/\s+/g, "").replace(/^["']|["']$/g, ""); const ok = b.a.some(a => a.replace(/\s+/g, "") === v); b.mark = ok ? "ok" : "bad"; if (ok) right++; }); CD.bfb = [right === CD.blanks.length ? "ok" : "no", `${right} of ${CD.blanks.length} correct.`]; saveBest("code", right, CD.blanks.length); addXP(right * 2); render(); break; }
     case "out-new": newOuts(); render(); break;
@@ -2768,7 +2650,6 @@ document.addEventListener("input", e => {
   const d = e.target.dataset;
   if (d.in) { CL.inp[d.in] = e.target.value; if (CL.marks[d.in] && CL.marks[d.in] !== "shown") { delete CL.marks[d.in]; e.target.classList.remove("ok", "bad"); } }
   else if (d.mk) MK.ans[d.mk] = e.target.value;
-  else if (d.ebIn) EB.inp[d.ebIn] = e.target.value;
   else if (d.bl != null) CD.blanks[+d.bl].inp = e.target.value;
   else if (d.out != null) CD.outs[+d.out].inp = e.target.value;
 });
@@ -2787,7 +2668,7 @@ document.addEventListener("pointerdown", e => { if (e.target.closest && e.target
 document.addEventListener("pointermove", e => { if (!DRAG) return; const dx = e.clientX - DRAG.x, dy = e.clientY - DRAG.y; DRAG = { x: e.clientX, y: e.clientY }; rotatePlot(dx * 0.012, dy * 0.006); });
 ["pointerup", "pointercancel"].forEach(t => document.addEventListener(t, () => { DRAG = null; }));
 
-window.Drill = { mount, debug: () => ({ CL, CLO, SORTERS, QZ, MK, CM, EB, CD, TY, r1, fmt, sqd, genCluster, genQuizQs, genOutQs, makeElbow, newMask, newColor, sameOut, newOrder, ORDERS, startQuiz, render, rotatePlot }) };
+window.Drill = { mount, debug: () => ({ CL, CLO, SORTERS, QZ, MK, CM, CD, TY, r1, fmt, sqd, genCluster, genOutQs, newMask, newColor, sameOut, newOrder, ORDERS, startQuiz, render, rotatePlot }) };
 })();
 </script>
 </body>

@@ -6,13 +6,12 @@ Study notes and practice games for Data Science decks 02–05: data types and st
 
 ## What's inside
 
-- **Notes**: plain-language explanations of the lecture topics, worked examples, an exam cheat sheet and self-check questions.
+- **Notes**: one tab for all four decks (02 data types and statistical tests, 03 K-means, 04 WCSS and the elbow, 05 images and masks), with worked examples, exam tips, a cheat sheet with the worksheet's code patterns, and self-check questions.
 - **7 levels**: Distance dash, Assign it, WCSS workshop, Elbow hunter, Bug hunt, Code builder, 3D lab.
 - **Homework checklist** for the 3D K-means assignment.
-- **Summary 02–05**: one page per deck plus the code patterns from the worksheet.
-- **Quiz**: about 140 multiple-choice questions from decks 02–05 and the code worksheet, filtered by topic.
+- **Quiz**: 78 multiple-choice questions from decks 02–05 and the code worksheet, filtered by topic. Nothing repeats what the levels, Cluster sort or Code lab already practise.
 - **Cluster sort**: K-means by hand in 2D or 3D, K = 2 or 3. Every centroid is a whole number, so squared distances and WCSS are whole numbers too. Every new attempt has new numbers.
-- **Sorting lab**: sort data types, build pixel and colour masks, read an elbow chart.
+- **Sorting lab**: sort data types, then build pixel and colour masks.
 - **Code lab**: fill the blank, predict the output, put the worksheet code back in order.
 
 ## Works offline
