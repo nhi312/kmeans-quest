@@ -395,6 +395,9 @@ svg.plot3d { touch-action: pan-y; cursor: grab; user-select: none; }
 .pill code { background: none; border: 0; padding: 0; white-space: pre-wrap; }
 #drill-root table.t td.small { white-space: normal; min-width: 6.5rem; }
 @media (max-width: 480px) { input.num { width: 3.4rem; } #drill-root table.t th, #drill-root table.t td { padding: 6px 5px; } }
+#drill-root .opt.sel { border-color: var(--ink); background: var(--info-bg); }
+#drill-root .opt.missed { border: 1.5px dashed var(--green-ink); background: var(--sheet-hi); }
+#drill-root .exopt .k { font-family: var(--font-sans); font-size: 1.05rem; line-height: 1.2; }
 </style>
 <script>document.documentElement.classList.add("js");</script>
 </head>
@@ -1589,7 +1592,7 @@ function saveBest(key, right, total) {
 }
 
 // ================= routing (mounted inside K-means Quest) =================
-const SUB = { sortlab: "types", code: "blank" };
+const SUB = { sortlab: "types", code: "explain" };
 let VIEW = "quiz";
 function render() {
   const root = document.getElementById("drill-root"); if (!root) return;
@@ -2027,6 +2030,132 @@ function buildHTML() {
       ${b.picked != null ? `<div class="small ${b.picked === 0 ? "" : "muted"}">${b.picked === 0 ? "✓ " : "Answer: <code>" + esc(b.opts[0]) + "</code>. "}${esc(b.why)}</div>` : ""}</div>`).join("")}
     <div class="feedback info">${answered}/${CD.build.length} answered · ${right} right first try</div>`;
 }
+
+// ================= CODE LAB: EXPLAIN THE LINE =================
+// one: pick the single best explanation (o[0] is right). multi: tick every true statement (a = indexes of the true ones).
+const EXPLAIN = [
+  { src: "Example 02 · K-means", c: "distances = np.linalg.norm(points[:, None] - centroids[None, :], axis=2)", kind: "one",
+    o: ["Finds the distance from every point to every centroid, giving a table with one row per point and one column per centroid", "Finds the distance between neighbouring points only", "Moves every centroid to the mean of its points", "Gives the index of the nearest centroid"],
+    e: "Broadcasting makes every point–centroid difference; norm over axis=2 turns each (dx, dy) into one distance. 8 points and 3 centroids give an (8, 3) table." },
+  { src: "Example 02 · K-means", c: "labels = np.argmin(distances, axis=1)", kind: "one",
+    o: ["For each point, gives the number of its nearest centroid", "Gives the smallest distance in the whole table", "Sorts the points from near to far", "For each centroid, gives its nearest point"],
+    e: "Each row of distances is one point. argmin with axis=1 returns the column (centroid) with the smallest value in that row." },
+  { src: "Example 02 · K-means", c: "new_centroids = np.array([points[labels == i].mean(axis=0) for i in range(k)])", kind: "multi",
+    o: ["labels == i selects the points that belong to cluster i", "mean(axis=0) averages each column (x, then y)", "The result has one row per cluster", "This line calculates distances", "The centroids stay where they were"], a: [0, 1, 2],
+    e: "This is the update step: each new centroid is the mean of its cluster's points. No distances are computed here." },
+  { src: "Example 02 · K-means", c: "centroids = points[np.random.choice(len(points), k, replace=False)]", kind: "one",
+    o: ["Picks k different points at random to be the starting centroids", "Picks k random numbers between 0 and 1 as centroids", "Removes k points from the data", "Picks the k points nearest the centre"],
+    e: "np.random.choice picks k row numbers; replace=False means no row is picked twice, so no two starting centroids are the same." },
+  { src: "Example 02 · K-means", c: "if np.linalg.norm(new_centroids - centroids) < tol:\n    break", kind: "one",
+    o: ["Stops the loop when the centroids have barely moved (converged)", "Stops the loop when WCSS reaches 0", "Stops when every cluster has the same size", "Skips one iteration and keeps going"],
+    e: "tol = 1e-4 is the \"close enough\" limit. If the total movement is smaller, the clusters won't change any more." },
+  { src: "Example 02 · K-means", c: "np.random.seed(0)", kind: "one",
+    o: ["Makes the random choices the same every time the notebook runs", "Sets the number of clusters to 0", "Starts the random numbers at zero, so every pick is 0", "Removes randomness from the data points"],
+    e: "Same seed, same random starting centroids, same result: your run can be reproduced." },
+  { src: "Example 02 · distance from scratch", c: "dist = dist + (p1[i] - p2[i])**2", kind: "multi",
+    o: ["It adds the squared difference of coordinate i", "It runs once per coordinate inside the for loop", "It already takes the square root", "Squaring makes negative differences count as positive", "It works for 3D points without changes"], a: [0, 1, 3, 4],
+    e: "The loop adds one squared gap per coordinate, so the same line works in 2D or 3D. The square root comes later, with **0.5." },
+  { src: "Example 02 · distance from scratch", c: "dist = dist**0.5", kind: "one",
+    o: ["Takes the square root, turning the sum of squares into the Euclidean distance", "Halves the distance", "Squares the distance", "Rounds the distance to 0.5"],
+    e: "x**0.5 is the square root of x. Without this line you have the squared distance, which is what WCSS uses." },
+  { src: "Example 03 · WCSS", c: "distance_squared = (point[0] - centroid_x)**2 + (point[1] - centroid_y)**2", kind: "multi",
+    o: ["It is the squared distance from one point to its centroid", "There is no square root on purpose", "It uses the centroid of the point's own cluster", "It is the Euclidean distance", "It adds up the whole cluster"], a: [0, 1, 2],
+    e: "WCSS adds squared distances, so no square root. One point at a time; the loop adds them up." },
+  { src: "Example 03 · WCSS", c: "centroid_x = sum_x / len(cluster)", kind: "one",
+    o: ["The mean x of the points in this cluster", "The largest x in the cluster", "How many points are in the cluster", "The x distance between two points"],
+    e: "Sum of the x values divided by the number of points = the centroid's x coordinate." },
+  { src: "Example 03 · WCSS", c: "wcss = wcss + distance_squared", kind: "multi",
+    o: ["It keeps a running total across points", "It must be inside the loop over points", "It resets wcss to 0 for every point", "After the loops, wcss holds the total for all clusters"], a: [0, 1, 3],
+    e: "wcss starts at 0 before the loops; this line adds each point's squared distance, so at the end it is the total WCSS." },
+  { src: "Example 03 · WCSS", c: "clusters = [points[labels == i] for i in range(k)]", kind: "one",
+    o: ["Splits the points into a list with one array per cluster", "Counts how many points are in each cluster", "Picks k random points", "Sorts the labels from 0 to k"],
+    e: "Each points[labels == i] keeps the rows of cluster i; the list holds all k groups, ready for custom_wcss." },
+  { src: "Example 03 · elbow", c: "for k in range(1, 9):", kind: "one",
+    o: ["Tries K = 1, 2, …, 8", "Tries K = 1, 2, …, 9", "Tries K = 0, 1, …, 8", "Runs K-means 9 times with K = 9"],
+    e: "range stops before its end value, so 9 gives 1 to 8." },
+  { src: "Example 03 · elbow", c: "wcss_list.append(wcss)", kind: "one",
+    o: ["Stores this K's WCSS so the elbow chart can be drawn later", "Adds wcss to every value in the list", "Replaces the list with one value", "Sorts the WCSS values"],
+    e: "After the loop, wcss_list has one WCSS per K, matching k_list." },
+  { src: "Example 03 · elbow", c: "plt.plot(k_list, wcss_list, marker='*')", kind: "multi",
+    o: ["K goes on the x-axis", "WCSS goes on the y-axis", "Each K gets a star marker", "It draws a 3D scatter plot", "You look for the bend (elbow) in this line"], a: [0, 1, 2, 4],
+    e: "This is the elbow plot: K against WCSS, joined by a line, with * markers." },
+  { src: "Homework 02 · 3D", c: "j = j + 1", kind: "one",
+    o: ["Counts one round, so the while loop stops at max_iter", "Moves to the next point", "Adds one cluster", "Increases the tolerance"],
+    e: "In while j < max_iter, j must grow or the loop could run forever." },
+  { src: "Homework 02 · 3D", c: "ax = fig.add_subplot(projection='3d')", kind: "one",
+    o: ["Creates a 3D axis so ax.scatter can take x, y and z", "Draws three 2D plots side by side", "Rotates the plot by 3 degrees", "Adds a third colour"],
+    e: "Without projection='3d' the z values are misread and you get a flat plot." },
+  { src: "Example 02 · plot", c: "plt.scatter(centroids[:, 0], centroids[:, 1], marker='X', s=200)", kind: "multi",
+    o: ["centroids[:, 0] is the x of every centroid", "centroids[:, 1] is the y of every centroid", "marker='X' and s=200 make big X shapes", "It draws the data points", "s=200 sets the number of centroids"], a: [0, 1, 2],
+    e: "[:, 0] means every row, column 0. The big X makes the centroids stand out from the points." },
+  { src: "Homework 03 · Iris", c: "points_4d = iris_df[features].to_numpy()", kind: "multi",
+    o: ["It keeps the four measurement columns", "The species column is left out", "The result is a NumPy array", "Its shape is (150, 4)", "It runs K-means"], a: [0, 1, 2, 3],
+    e: "features lists the four measurements, so species (the label) is not used for clustering." },
+  { src: "Homework 03 · Iris", c: "sepal_table = pd.crosstab(iris_df['species'], best_labels)", kind: "one",
+    o: ["Counts how many flowers of each species landed in each cluster", "Adds a cluster column to iris_df", "Draws the sepal plot", "Computes WCSS per species"],
+    e: "A table of species × cluster counts. It shows that setosa is one clean cluster while the other two mix." },
+  { src: "Example 04 · arrays", c: "img = np.zeros([300, 300, 3])", kind: "multi",
+    o: ["It is 300 pixels high and 300 wide", "Each pixel has 3 colour channels", "Every pixel starts black", "Every pixel starts white", "It is a 1-D list of 900 numbers"], a: [0, 1, 2],
+    e: "All zeros = black. img.fill(255) would make it white." },
+  { src: "Example 04 · arrays", c: "img_yellow[:, :, 0:3] = (0, 255, 255)", kind: "one",
+    o: ["Paints every pixel yellow, using OpenCV's BGR order", "Paints every pixel cyan in RGB", "Paints only the first 3 rows", "Makes the image transparent"],
+    e: "BGR: blue 0, green 255, red 255. Green + red = yellow." },
+  { src: "Example 04 · arrays", c: "img_yellow[100:200, 100:200, 0:3] = (0, 0, 0)", kind: "one",
+    o: ["Paints a black 100 × 100 square: rows 100–199, columns 100–199", "Paints a black line 100 pixels long", "Paints the whole image black", "Paints a 200 × 200 square"],
+    e: "Slices are [rows, columns, channels]; the end value is not included." },
+  { src: "Example 05 · masks", c: "I_masked = I * M", kind: "one",
+    o: ["Keeps the pixels where M is 1 and sets the others to 0", "Matrix multiplication of I and M", "Adds the mask to the image", "Counts the masked pixels"],
+    e: "* in NumPy is element by element: 1 keeps the value, 0 removes it." },
+  { src: "Example 05 · masks", c: "image_array[np.any(image_array < threshold, axis=-1)] = mask_pixel", kind: "multi",
+    o: ["axis=-1 checks across each pixel's 3 colour channels", "A pixel changes if at least one channel is below the threshold", "All three channels must be below the threshold", "It changes image_array itself", "Changed pixels become mask_pixel"], a: [0, 1, 3, 4],
+    e: "np.any means at least one. np.all would need every channel below the threshold." },
+  { src: "Example 05 · masks", c: "mask_green = np.all(img >= lower, axis=-1) & np.all(img <= upper, axis=-1)", kind: "multi",
+    o: ["It is True only where every channel is between lower and upper", "& means \"and\"", "The result has one True/False per pixel", "& means \"or\"", "It changes the colours of the image"], a: [0, 1, 2],
+    e: "Two checks per pixel (above the lower bound, below the upper bound), combined with and. It only builds a mask; out[mask_green] = ... changes pixels later." },
+  { src: "Example 05 · masks", c: "mask = mask_red | mask_green | mask_blue", kind: "one",
+    o: ["A pixel is in the mask if it is in any of the three masks", "A pixel must be in all three masks", "It adds the three colours together", "It divides the masks"],
+    e: "| is element-wise or for True/False arrays." },
+  { src: "Example 05 · images", c: "img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)", kind: "one",
+    o: ["Swaps OpenCV's BGR order to RGB so plt.imshow shows the right colours", "Turns the image black and white", "Makes the image smaller", "Saves the image to disk"],
+    e: "Without it, red and blue are swapped in a Matplotlib plot." },
+  { src: "Example 05 · images", c: "image_array = np.array(image_rgb)", kind: "one",
+    o: ["Turns the PIL image into a NumPy array of numbers, shape (height, width, 3)", "Opens the image file", "Shows the image", "Turns the image into a mask"],
+    e: "Image.open gives a picture object; np.array gives the pixel values you can compare and change." },
+  { src: "Example 05 · images", c: "w, h = image_color_array.shape[0:2]", kind: "multi",
+    o: ["It takes the first two numbers of the shape", "shape[0] is really the height, so w ends up holding the height", "The number of channels is not included", "It returns the file size"], a: [0, 1, 2],
+    e: "NumPy images are (height, width, channels). The names are swapped here, so be careful when using them." },
+  { src: "Homework 02 · 3D", c: "centroids, labels = custom_kmeans(points, k)", kind: "one",
+    o: ["Runs K-means and saves both returned values for plotting", "Defines the custom_kmeans function", "Only prints the result", "Runs K-means twice"],
+    e: "Calling without saving was the Problem 1 bug: the plot then used the starting centroids." },
+  { src: "Example 03 · WCSS", c: "labels == 0", kind: "one",
+    o: ["Gives True for every point in cluster 0 and False for the rest", "Sets every label to 0", "Counts the points in cluster 0", "Checks that there are no labels"],
+    e: "== compares element by element. The True/False array is then used to select rows: points[labels == 0]." },
+  { src: "Example 05 · download", c: "!gdown --id 1MAwWu6Dh19J6HijhQgOz0HxK0cGz9Xad -O img_shiba_gray", kind: "one",
+    o: ["Downloads a Google Drive file and saves it as img_shiba_gray", "Opens the image in Python", "Uploads the image to Google Drive", "Turns the image gray"],
+    e: "! runs a shell command in Colab; -O sets the file name exactly as written." },
+];
+function newExplain() {
+  const singles = shuffle(EXPLAIN.filter(x => x.kind === "one")), multis = shuffle(EXPLAIN.filter(x => x.kind === "multi"));
+  const pickSet = shuffle(singles.slice(0, 5).concat(multis.slice(0, 3)));
+  CD.explain = pickSet.map(x => ({ ...x, a: x.kind === "one" ? [0] : x.a, order: shuffle(x.o.map((_, i) => i)), sel: [], checked: false }));
+  CD.exFb = null;
+}
+function explainHTML() {
+  const mark = (q, o) => {
+    if (!q.checked) return q.sel.includes(o) ? "sel" : "";
+    const right = q.a.includes(o), picked = q.sel.includes(o);
+    return right && picked ? "right" : picked ? "wrong" : right ? "missed" : "";
+  };
+  const box = (q, o) => q.kind === "one" ? (q.sel.includes(o) ? "●" : "○") : (q.sel.includes(o) ? "☑" : "☐");
+  return `<div class="row between"><h3>What is this line doing?</h3><button class="btn lime sm" data-act="ex-new">New lines</button></div>
+    <p class="small muted">Every line comes from your worksheet. <b>○</b> pick one answer · <b>☐</b> tick every statement that is true. Press Check all when you're done.</p>
+    ${CD.explain.map((q, i) => `<div class="card vstack"><div class="row between small"><b>${i + 1}. ${q.kind === "one" ? "What does this line do?" : "Which statements are true? Tick all that apply."}</b><span class="muted">${esc(q.src)}</span></div>
+      <pre class="code">${codeHTML(q.c)}</pre>
+      <div class="opts" role="${q.kind === "one" ? "radiogroup" : "group"}">${q.order.map(o => `<button class="opt exopt ${mark(q, o)}" data-ex="${i}:${o}" role="${q.kind === "one" ? "radio" : "checkbox"}" aria-checked="${q.sel.includes(o)}" ${q.checked ? "disabled" : ""}><span class="k">${box(q, o)}</span><span>${esc(q.o[o])}</span></button>`).join("")}</div>
+      ${q.checked ? `<div class="feedback ${sameSet(q.sel, q.a) ? "ok" : "no"}"><b>${sameSet(q.sel, q.a) ? "Correct." : q.kind === "one" ? "Not quite." : "Not quite. Green = true; dashed = a true one you missed."}</b> ${esc(q.e)}</div>` : ""}</div>`).join("")}
+    <div class="row"><button class="btn" data-act="ex-check">Check all</button></div>${CD.exFb ? `<div class="feedback ${CD.exFb[0]}" aria-live="polite">${CD.exFb[1]}</div>` : ""}`;
+}
+const sameSet = (a, b) => a.length === b.length && a.every(v => b.includes(v));
 // ================= shared sorter (tap or drag) =================
 const SORTERS = {};
 function sorterHTML(name) {
@@ -2208,9 +2337,9 @@ function newOrder(i) {
   CD.order = { idx, pool, built: [], marks: {}, fb: null };
 }
 function codeView() {
-  if (!CD) { CD = {}; newBlanks(); newOuts(); newOrder(); newBuild(); }
+  if (!CD) { CD = {}; newExplain(); newBlanks(); newOuts(); newOrder(); newBuild(); }
   const sub = SUB.code;
-  const subs = [["blank", "Fill the blank"], ["out", "Predict the output"], ["order", "Line order"], ["build", "Build 3D K-means"]];
+  const subs = [["explain", "Explain the line"], ["blank", "Fill the blank"], ["out", "Predict the output"], ["order", "Line order"], ["build", "Build 3D K-means"]];
   const fbH = f => f ? `<div class="feedback ${f[0]}" aria-live="polite">${f[1]}</div>` : "";
   let body = "";
   if (sub === "blank") {
@@ -2223,6 +2352,8 @@ function codeView() {
       <p class="small muted">New numbers every attempt. Type the output as Python shows it, e.g. <code>5.0</code>, <code>[1 2]</code>, <code>(300, 540, 3)</code>, <code>[ True False]</code>. Spacing and brackets don't matter; the numbers and True/False do.</p>
       ${CD.outs.map((q, i) => `<div class="card vstack"><div class="small"><b>${i + 1}.</b> ${esc(q.q)}</div><pre class="code">${codeHTML(q.c)}</pre><div class="row"><span class="small">Output:</span><input type="text" class="wide ${q.mark}" data-out="${i}" autocomplete="off" autocapitalize="off" spellcheck="false" value="${esc(q.inp)}" aria-label="Output ${i + 1}"></div>${q.mark ? `<pre class="out">${esc(q.a)}</pre><div class="small muted">${esc(q.e)}</div>` : ""}</div>`).join("")}
       <div class="row"><button class="btn" data-act="out-check">Check all</button></div>${fbH(CD.ofb)}`;
+  } else if (sub === "explain") {
+    body = explainHTML();
   } else if (sub === "build") {
     body = buildHTML();
   } else {
@@ -2236,7 +2367,7 @@ function codeView() {
       <div class="row"><button class="btn" data-act="or-check">Check</button><button class="btn ghost sm" data-act="or-clear">Clear</button></div>${fbH(O.fb)}`;
   }
   return `<div class="stack"><div class="panel vstack">
-    ${head0("code", "Practise the code from your worksheet: fill blanks, predict what Python prints, order the lines, and build the 3D homework.")}
+    ${head0("code", "Practise the code from your worksheet. Start with Explain the line: read a line and choose what it does.")}
     <div class="row">${subs.map(([k, n]) => `<button class="pill" aria-pressed="${sub === k}" data-sub="code:${k}">${n}</button>`).join("")}</div>
     ${body}
   </div>${stepNav("code")}</div>`;
@@ -2252,6 +2383,7 @@ document.addEventListener("click", e => {
   if (d.chip != null) { e.stopPropagation(); const S = SORTERS[d.sorter]; if (S.locked) return; S.sel = S.sel === d.chip ? null : d.chip; sorterRefresh(d.sorter); return; }
   if (d.bucket != null && d.sorter) { const S = SORTERS[d.sorter]; if (S.sel != null) sorterMove(d.sorter, S.sel, d.bucket); return; }
   if (d.step) { window.go(d.step); return; }
+  if (d.ex) { const [i, o] = d.ex.split(":").map(Number); const q = CD.explain[i]; if (q.checked) return; if (q.kind === "one") q.sel = [o]; else q.sel = q.sel.includes(o) ? q.sel.filter(v => v !== o) : q.sel.concat(o); render(); return; }
   if (d.bd) { const [i, o] = d.bd.split(":").map(Number); const b = CD.build[i]; if (b.picked != null) return; b.picked = o; if (o === 0) addXP(4); if (CD.build.every(x => x.picked != null)) done("code"); render(); return; }
   if (d.eb) { if (WS.okB) return; WS.pick = +d.eb; WS.okB = WS.pick === WS.kStar; WS.efb = WS.okB ? ["ok", `Yes. WCSS falls fast until K = ${WS.kStar}, then each extra cluster only removes a little.`] : ["no", WS.pick > WS.kStar ? "Smaller WCSS is not the goal. Look for where the big drops stop." : "The curve is still dropping steeply there. Look a bit further right."]; if (WS.okB) addXP(5); wcssDone(); render(); return; }
   if (d.qtopic) { QZ.topic = d.qtopic; render(); return; }
@@ -2288,6 +2420,8 @@ document.addEventListener("click", e => {
     case "ws-check": { let all = true; const total = WS.cl.reduce((a, c) => a + c.w, 0); WS.cl.forEach((cl, j) => { const ok = numOk(WS.inp["w" + j] ?? "", cl.w, 0.011); WS.marks["w" + j] = ok ? "ok" : "bad"; if (!ok) all = false; }); const okT = numOk(WS.inp.t ?? "", total, 0.011); WS.marks.t = okT ? "ok" : "bad"; if (!okT) all = false; WS.fb = all ? ["ok", "All correct."] : ["no", "Square each difference, add per point, then add the points of the cluster. Show working lists the terms."]; if (all && !WS.okA) { WS.okA = true; addXP(6); } wcssDone(); render(); break; }
     case "eb-check": { const w = WS.w, k = WS.kStar; const a = w[k - 2] - w[k - 1], b = w[k - 1] - w[k]; const oa = numOk(WS.einp.a ?? "", a, 0), ob = numOk(WS.einp.b ?? "", b, 0); WS.emarks = { a: oa ? "ok" : "bad", b: ob ? "ok" : "bad" }; WS.efb2 = oa && ob ? ["ok", `${a} versus ${b}: a big drop, then a small one. That contrast is the elbow.`] : ["no", `Subtract: ${w[k - 2]} − ${w[k - 1]} = ${a}, and ${w[k - 1]} − ${w[k]} = ${b}.`]; if (oa && ob && !WS.okC) { WS.okC = true; addXP(4); } wcssDone(); render(); break; }
     case "bd-new": newBuild(); render(); break;
+    case "ex-new": newExplain(); render(); break;
+    case "ex-check": { const open = CD.explain.filter(q => !q.checked && q.sel.length); open.forEach(q => { q.checked = true; if (sameSet(q.sel, q.a)) addXP(q.kind === "one" ? 3 : 5); }); const done_ = CD.explain.filter(q => q.checked), right = done_.filter(q => sameSet(q.sel, q.a)).length, left = CD.explain.length - done_.length; CD.exFb = [right === CD.explain.length ? "ok" : left ? "info" : "no", `${right} of ${CD.explain.length} correct${left ? ` · ${left} not answered yet` : ""}.`]; if (right === CD.explain.length) done("code"); render(); break; }
     case "bl-new": newBlanks(); render(); break;
     case "bl-check": { let right = 0; CD.blanks.forEach(b => { const v = b.inp.replace(/\s+/g, "").replace(/^["']|["']$/g, ""); const ok = b.a.some(a => a.replace(/\s+/g, "") === v); b.mark = ok ? "ok" : "bad"; if (ok) right++; }); CD.bfb = [right === CD.blanks.length ? "ok" : "no", `${right} of ${CD.blanks.length} correct.`]; saveBest("code", right, CD.blanks.length); addXP(right * 2); if (right === CD.blanks.length) done("code"); render(); break; }
     case "out-new": newOuts(); render(); break;
