@@ -303,6 +303,94 @@ details.q[open] summary { margin-bottom: 6px; }
 .flow div:nth-child(odd) { transform: rotate(-0.8deg); } .flow div:nth-child(even) { transform: rotate(0.7deg); }
 .flow div b { display: block; color: var(--blue); font-weight: 700; }
 .kbd { font-family: var(--font-mono); font-size: 0.75rem; border: 1px solid var(--line-2); border-radius: 6px; padding: 1px 6px; }
+
+/* ---------- practice sections (quiz, cluster sort, sorting lab, code lab, summary) ---------- */
+:root { --c0: #3D7FEA; --c1: #EF5B2B; --c2: #12A86A; --c3: #9B6BD6; --on-blue: #FFFFFF; --code-dim: #8A877F; }
+#drill-root .vstack { display: grid; gap: 0.9rem; min-width: 0; }
+#drill-root .vstack > * { min-width: 0; }
+#drill-root .between { justify-content: space-between; }
+#drill-root code { background: var(--sheet-hi); border: 1px solid var(--line); border-radius: 4px; padding: 0 4px; }
+#drill-root pre.code code { background: none; border: 0; padding: 0; }
+#drill-root .card { background: var(--sheet-hi); min-width: 0; }
+.dgrid { display: grid; gap: 1.25rem; grid-template-columns: 1fr; }
+.dgrid > * { min-width: 0; }
+@media (min-width: 900px) { .dgrid { grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); align-items: start; } .dgrid .dsticky { position: sticky; top: 8rem; } }
+.pill { display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 9999px; border: 1.5px solid var(--line-2); background: transparent; cursor: pointer; font-size: 0.86rem; color: var(--ink); }
+.pill:hover { border-color: var(--ink); }
+.pill[aria-pressed="true"] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.pill[disabled] { cursor: default; }
+.btn.sm { padding: 6px 14px; font-size: 0.84rem; }
+input.num { width: 4.6rem; font-family: var(--font-mono); text-align: center; font-size: 0.95rem; }
+input.wide { width: 100%; max-width: 22rem; font-family: var(--font-mono); }
+input.ok { background: var(--ok-bg); border-bottom: 2px solid var(--green-ink); }
+input.bad { background: var(--bad-bg); border-bottom: 2px solid var(--orange); }
+input.shown { background: var(--info-bg); border-bottom: 2px solid var(--blue); }
+#drill-root .opt { display: flex; gap: 10px; align-items: baseline; }
+#drill-root .opt .k { font-family: var(--font-mono); font-size: 0.8rem; color: var(--ink-2); flex: none; }
+pre.code .cm { color: var(--code-dim); }
+pre.out { margin: 0; background: var(--sheet-hi); border: 1px dashed var(--line-2); border-radius: 6px; padding: 0.6rem 0.9rem; font-size: 0.8rem; overflow-x: auto; }
+table.t td.min { background: var(--ok-bg); font-weight: 700; }
+table.t td { vertical-align: middle; }
+.c3bg { background: var(--c3); }
+.hint { display: block; font-size: 0.72rem; color: var(--ink-2); font-family: var(--font-mono); text-align: center; }
+.qcount { font-variant-numeric: tabular-nums; }
+.lime-banner .big { font-size: 2.2rem; font-weight: 700; letter-spacing: -0.03em; color: #fff; }
+.lime-banner { flex-wrap: wrap; }
+.steps { display: flex; flex-wrap: wrap; gap: 6px; }
+.steps span { font-size: 0.76rem; padding: 3px 10px; border-radius: 9999px; border: 1.5px solid var(--line-2); color: var(--ink-2); }
+.steps span.round { border-color: var(--ink); color: var(--ink); }
+.steps span.now { border-color: var(--ink); color: var(--ink); background: var(--green); font-weight: 500; }
+.steps span.done { border-color: var(--green-ink); color: var(--green-ink); }
+/* sorter: tray + buckets */
+.tray { display: flex; flex-wrap: wrap; gap: 8px; min-height: 3rem; padding: 10px; border: 1.5px dashed var(--line-2); border-radius: 10px; background: var(--sheet-hi); }
+.tray:empty::after { content: "All sorted. Press Check."; color: var(--ink-2); font-size: 0.85rem; align-self: center; }
+.chip { display: inline-flex; align-items: center; gap: 6px; padding: 7px 12px; border-radius: 9999px; border: 1.5px solid var(--ink); background: var(--sheet); cursor: pointer; font-size: 0.88rem; user-select: none; touch-action: manipulation; color: var(--ink); }
+.chip.sel { background: var(--ink); color: var(--paper); transform: translateY(-2px) rotate(-2deg); }
+.chip.ok { background: var(--ok-bg); border-color: var(--green-ink); }
+.chip.bad { background: var(--bad-bg); border-color: var(--orange); }
+.chip .mono { font-size: 0.8rem; }
+.buckets { display: grid; gap: 10px; grid-template-columns: repeat(auto-fit, minmax(10.5rem, 1fr)); }
+.bucket { border: 1.5px solid var(--ink); border-radius: 4px; background: var(--sheet); padding: 0.6rem 0.7rem 0.75rem; min-height: 6.5rem; cursor: pointer; display: flex; flex-direction: column; gap: 8px; }
+.bucket:nth-child(odd) { transform: rotate(-0.5deg); } .bucket:nth-child(even) { transform: rotate(0.5deg); }
+.bucket.armed { border-style: dashed; border-color: var(--blue); background: var(--info-bg); }
+.bucket.over { background: var(--info-bg); }
+.bucket h4 { margin: 0; font-size: 0.92rem; display: flex; align-items: center; gap: 6px; }
+.bucket .sub { font-size: 0.75rem; color: var(--ink-2); font-family: var(--font-mono); }
+.bucket .in { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip:focus-visible, .pill:focus-visible, .cell:focus-visible, .bucket:focus-visible, .lineitem:focus-visible { outline: 2px solid var(--blue); outline-offset: 3px; }
+/* plots */
+svg.plot { display: block; width: 100%; max-width: 30rem; height: auto; margin-inline: auto; background: var(--cv-card); border: 1px solid var(--line); border-radius: 6px; }
+svg.plot3d { touch-action: pan-y; cursor: grab; user-select: none; }
+.sv-lab { fill: var(--cv-ink); font: 700 11px var(--font-sans); }
+.f0 { fill: var(--c0); } .f1 { fill: var(--c1); } .f2 { fill: var(--c2); } .f3 { fill: var(--c3); }
+.s0 { stroke: var(--c0); } .s1 { stroke: var(--c1); } .s2 { stroke: var(--c2); } .s3 { stroke: var(--c3); }
+.sv-old { opacity: 0.35; }
+.sv-move { stroke: var(--cv-ink); stroke-width: 1.4; stroke-dasharray: 4 3; fill: none; }
+.sv-link { stroke-width: 1; stroke-opacity: 0.35; fill: none; }
+.sv-drop { stroke: var(--cv-muted); stroke-width: 1; stroke-dasharray: 2 3; opacity: 0.6; }
+.sv-dot { fill: var(--cv-card); stroke: var(--blue); stroke-width: 2; }
+/* pixel grid */
+.pgrid { display: grid; gap: 4px; width: fit-content; max-width: 100%; }
+.cell { width: 3.4rem; height: 3.4rem; border-radius: 4px; border: 1.5px solid var(--line-2); display: grid; place-items: center; font-family: var(--font-mono); font-size: 0.85rem; cursor: pointer; position: relative; }
+.cell.on { outline: 3px solid var(--blue); outline-offset: -3px; }
+.cell .m { position: absolute; top: 2px; right: 4px; font-size: 0.68rem; font-weight: 700; color: var(--blue); background: var(--sheet-hi); border-radius: 3px; padding: 0 3px; }
+.cell.ok { border-color: var(--green-ink); border-width: 3px; }
+.cell.bad { border-color: var(--orange); border-width: 3px; }
+@media (max-width: 420px) { .cell { width: 2.9rem; height: 2.9rem; font-size: 0.78rem; } }
+.swatch { display: inline-block; width: 16px; height: 16px; border-radius: 4px; border: 1px solid var(--line-2); vertical-align: middle; }
+/* line-order puzzle */
+.lines { display: grid; gap: 6px; }
+.lineitem { text-align: left; font-family: var(--font-mono); font-size: 0.8rem; white-space: pre; overflow-x: auto; padding: 8px 12px; border-radius: 6px; border: 1.5px solid var(--line-2); background: var(--sheet-hi); cursor: pointer; color: var(--ink); min-width: 0; }
+.lineitem:hover { border-color: var(--ink); }
+.lineitem.ok { background: var(--ok-bg); border-color: var(--green-ink); }
+.lineitem.bad { background: var(--bad-bg); border-color: var(--orange); }
+.lineitem .n { color: var(--ink-2); margin-right: 8px; }
+.built { min-height: 3rem; padding: 8px; border: 1.5px dashed var(--rule); border-radius: 8px; background: var(--paper); }
+#drill-root section[id] { scroll-margin-top: 8rem; }
+#drill-root > .stack > .panel:first-child { margin: 22px 0 0 12px; }
+#drill-root > .stack > .panel:first-child::before, #drill-root > .stack > .panel:first-child::after { content: ""; position: absolute; background: var(--green); pointer-events: none; }
+#drill-root > .stack > .panel:first-child::before { left: -12px; top: -20px; width: min(78%, 40rem); height: 30px; clip-path: polygon(0 38%, 100% 0, 99% 100%, 0 100%); }
+#drill-root > .stack > .panel:first-child::after { left: -12px; top: -20px; width: 24px; height: min(88%, 22rem); clip-path: polygon(0 0, 100% 0, 72% 100%, 22% 100%); }
 </style>
 <script>document.documentElement.classList.add("js");</script>
 </head>
@@ -791,6 +879,7 @@ function say(container, text) { const b = $(".bibi", container); if (b) b.outerH
 const LEVELS = [
   { id: "home", label: "Map", icon: "cloud" },
   { id: "notes", label: "Notes", icon: "note", blurb: "Plain-language explanations of both decks, worked examples, an exam cheat sheet, and your own notes.", render: renderNotes },
+  { id: "summary", label: "Summary 02–05", icon: "note", eyebrow: "Study notes", blurb: "One page per deck (02 data & stats, 03 K-means, 04 elbow, 05 images) plus the code patterns.", render: (v) => Drill.mount(v, "summary") },
   { id: "l1", label: "Distance dash", icon: "star", blurb: "Euclidean distance in 2D and 3D, plus the centre of points.", render: renderL1 },
   { id: "l2", label: "Assign it", icon: "chat", blurb: "Play the slide example A–H by hand until K-means converges.", render: renderL2 },
   { id: "l3", label: "WCSS workshop", icon: "bulb", blurb: "Compute the within-cluster sum of squares from the slides.", render: renderL3 },
@@ -798,6 +887,10 @@ const LEVELS = [
   { id: "l5", label: "Bug hunt", icon: "hammer", blurb: "Spot the bugs you are most likely to hit in the homework.", render: renderL5 },
   { id: "l6", label: "Code builder", icon: "book", blurb: "Assemble the 3D, K = 3, while-loop K-means piece by piece.", render: renderL6 },
   { id: "l7", label: "3D lab", icon: "rocket", blurb: "Run K-means on 30 3D points and check your Colab results.", render: renderL7 },
+  { id: "quiz", label: "Quiz", icon: "bulb", eyebrow: "Practice", blurb: "About 140 multiple-choice questions from decks 02–05 and the code worksheet.", render: (v) => Drill.mount(v, "quiz") },
+  { id: "cluster", label: "Cluster sort", icon: "star", eyebrow: "Practice", blurb: "K-means by hand in 2D or 3D with easy whole numbers. New numbers every attempt.", render: (v) => Drill.mount(v, "cluster") },
+  { id: "sortlab", label: "Sorting lab", icon: "chat", eyebrow: "Practice", blurb: "Sort data types, build pixel and colour masks, read the elbow.", render: (v) => Drill.mount(v, "sortlab") },
+  { id: "code", label: "Code lab", icon: "book", eyebrow: "Practice", blurb: "Fill the blank, predict the output, put the worksheet lines in order.", render: (v) => Drill.mount(v, "code") },
   { id: "hw", label: "Homework", icon: "chest", blurb: "Assignment 2 checklist, due 10/12 at 11:59 p.m.", render: renderHW },
 ];
 let current = "home";
@@ -845,7 +938,7 @@ function renderHome(view) {
   view.appendChild(el(`<div class="stack home">
     <section class="hero">
       <div class="env-card">
-        <div class="eyebrow">Data Science · Week 03–05</div>
+        <div class="eyebrow">Data Science · Decks 02–05</div>
         <h2 class="hero-q" style="margin-top:0.6rem">What do you want to <span class="hl-green">practise</span> today?</h2>
         <div class="hero-picks" id="heroPicks"></div>
       </div>
@@ -859,7 +952,7 @@ function renderHome(view) {
     </section>
     <div class="scallop" aria-hidden="true"></div>
     <h1 class="display">K-means Quest</h1>
-    <p class="lede">Notes and seven levels built from the two lecture decks, then a 3D lab for Assignment 2.</p>
+    <p class="lede">Notes and seven levels for K-means, a 3D lab for Assignment 2, and practice for decks 02–05: a quiz, clustering by hand in 2D and 3D, sorting games and a code lab.</p>
     <div class="illus">${HOME_ILLUS}</div>
     <div class="panel stack">
       <div class="row" style="justify-content:space-between"><span>${doneCount} of 7 levels cleared</span><span class="muted small">${state.xp} XP · ${rankName()}</span></div>
@@ -869,7 +962,7 @@ function renderHome(view) {
     <div class="levels" id="levelGrid"></div>
   </div>`));
   $("#openNotes", view).onclick = () => go("notes"); $("#openL1", view).onclick = () => go("l1");
-  const picks = [["notes", "the notes"], ["l1", "distance"], ["l2", "K-means steps"], ["l3", "WCSS"], ["l4", "the elbow"], ["l5", "bugs"], ["l6", "3D code"], ["l7", "3D lab"]];
+  const picks = [["notes", "the notes"], ["l1", "distance"], ["l2", "K-means steps"], ["l3", "WCSS"], ["l4", "the elbow"], ["l5", "bugs"], ["l6", "3D code"], ["l7", "3D lab"], ["quiz", "the quiz"], ["cluster", "cluster sort"], ["sortlab", "sorting"], ["code", "code lab"], ["summary", "decks 02–05"]];
   picks.forEach(([id, t]) => { const b = el(`<button type="button">e.g. ${t}</button>`); b.onclick = () => go(id); $("#heroPicks", view).appendChild(b); });
   let warmed = false;
   $("#warm", view).onsubmit = (e) => {
@@ -882,7 +975,7 @@ function renderHome(view) {
   };
   const grid = $("#levelGrid", view);
   LEVELS.slice(1).forEach((L) => {
-    const c = el(`<button class="levelcard">${sprite(L.icon)}<div><div class="eyebrow">${L.id === "hw" ? "Assignment 2" : L.id === "notes" ? "Study notes" : "Level " + L.id.slice(1)}</div><h3>${L.label}</h3><div class="small muted">${L.blurb}</div>${state.done[L.id] ? '<div class="done">✓ Cleared</div>' : ""}</div></button>`);
+    const c = el(`<button class="levelcard">${sprite(L.icon)}<div><div class="eyebrow">${L.eyebrow || (L.id === "hw" ? "Assignment 2" : L.id === "notes" ? "Study notes" : "Level " + L.id.slice(1))}</div><h3>${L.label}</h3><div class="small muted">${L.blurb}</div>${state.done[L.id] ? '<div class="done">✓ Cleared</div>' : ""}</div></button>`);
     c.onclick = () => go(L.id);
     grid.appendChild(c);
   });
@@ -1813,6 +1906,889 @@ catch (e) {
 }
 connectNotes();
 setTimeout(() => { if (!notesStore.ref) connectNotes(); }, 2500);
+</script>
+<script>
+(() => {
+// Question bank. o[0] is always the right answer; options are shuffled when shown.
+// t: data = deck 02, kmeans = deck 03, elbow = deck 04, image = deck 05, code = code worksheet
+const BANK = [
+// ---------- Deck 02: What is the problem with data? ----------
+{t:"data", q:"A movie's Genre (Action, Adventure, Comedy) is which type of data?", o:["Nominal (categories without order)","Ordinal (categories with an order)","Discrete numerical","Continuous numerical"], e:"Genres are labels with no natural order, so they are nominal."},
+{t:"data", q:"Rating Level: Low → Medium → High is which type of data?", o:["Ordinal","Nominal","Discrete","Continuous"], e:"The categories have an order (Low < Medium < High), so they are ordinal."},
+{t:"data", q:"\"Number of clicks: 120\" is which type of data?", o:["Discrete numerical (counted)","Continuous numerical (measured)","Ordinal","Nominal"], e:"Clicks are counted in whole numbers, so they are discrete."},
+{t:"data", q:"\"Sepal Length: 5.1 cm\" is which type of data?", o:["Continuous numerical (measured)","Discrete numerical (counted)","Ordinal","Nominal"], e:"Length is measured and can take any value, so it is continuous."},
+{t:"data", q:"In the IMDb table, Votes = 757,074. What type is it?", o:["Numerical (Discrete)","Numerical (Continuous)","Nominal","Ordinal"], e:"Votes are counted, so the slide lists them as discrete."},
+{t:"data", q:"In the IMDb table, Revenue = 333.13. What type is it?", o:["Numerical (Continuous)","Numerical (Discrete)","Ordinal","Nominal"], e:"Revenue is a measured amount with decimals: continuous."},
+{t:"data", q:"JSON, XML and HTML are examples of…", o:["Semi-structured data","Structured data","Unstructured data","Time-series data"], e:"They don't follow a fixed table but use tags, keys or labels to organise information."},
+{t:"data", q:"Movie reviews, posters, photos and videos are examples of…", o:["Unstructured data","Structured data","Semi-structured data","Ordinal data"], e:"They have no fixed table format; information must be extracted before analysis."},
+{t:"data", q:"The IMDb dataset and the Iris dataset are organised into rows and columns where each column has a defined meaning. They are…", o:["Structured data","Semi-structured data","Unstructured data","Categorical data only"], e:"Rows + columns with defined meaning = structured. Easy to store, search and analyse."},
+{t:"data", q:"Which sentence matches the slide?", o:["Data type tells us what the data contains; data structure tells us how the data is organised.","Data type tells us how the data is organised; data structure tells us what it contains.","Data type and data structure mean the same thing.","Data structure only matters for images."], e:"Type = what it contains. Structure = how it is organised."},
+{t:"data", q:"\"Which genre is most common?\" in the IMDb data. Which pandas steps does the slide use?", o:["split() + explode() + value_counts()","value_counts() only","Filtering","groupby().mean()"], e:"Genre cells hold several genres (\"Action,Adventure,Sci-Fi\"), so you split, explode to one per row, then count."},
+{t:"data", q:"\"Who appears most frequently?\" (Director). Which operation?", o:["value_counts()","split() + explode()","Filtering","describe()"], e:"One director per cell, so value_counts() is enough."},
+{t:"data", q:"\"How many movies have Rating > 8.0?\" Which operation?", o:["Filtering","value_counts()","Group-by","explode()"], e:"Keep only the rows that meet a condition: filtering."},
+{t:"data", q:"Class A scores: 80, 90. Class B scores: 70, 80, 90. Group-by-class average: which class is highest?", o:["Class A (85 vs 80)","Class B (80 vs 85)","They tie at 80","They tie at 85"], e:"A = (80+90)/2 = 85. B = (70+80+90)/3 = 80. Nominal data like Class is used for grouping."},
+{t:"data", q:"The Iris dataset contains…", o:["150 flowers, 4 numerical features, 3 species","100 flowers, 3 features, 4 species","150 flowers, 5 numerical features, 2 species","50 flowers, 4 features, 3 species"], e:"150 samples; sepal length/width and petal length/width; Setosa, Versicolor, Virginica."},
+{t:"data", q:"\"Do Setosa and Versicolor have different petal lengths?\" Which test?", o:["t-test (2 groups, 1 dependent variable)","One-way ANOVA","Two-way ANOVA","MANOVA"], e:"Only two groups and one DV → t-test."},
+{t:"data", q:"\"Do the three Iris species have different petal lengths?\" Which test?", o:["One-way ANOVA","t-test","ANCOVA","MANCOVA"], e:"1 factor with 3+ groups, 1 DV → one-way ANOVA."},
+{t:"data", q:"\"Do species and growing condition affect petal length?\" Which test?", o:["Two-way ANOVA","One-way ANOVA","t-test","MANOVA"], e:"Two factors, one DV → two-way ANOVA."},
+{t:"data", q:"\"Do the three species have different petal lengths after controlling for sepal length?\" Which test?", o:["ANCOVA","ANOVA","MANOVA","t-test"], e:"A covariate is controlled for → ANCOVA."},
+{t:"data", q:"\"Do the three species differ in petal length AND petal width together?\" Which test?", o:["MANOVA","Two-way ANOVA","ANCOVA","t-test"], e:"Two or more dependent variables together → MANOVA."},
+{t:"data", q:"Same as MANOVA, but also controlling for sepal length. Which test?", o:["MANCOVA","ANCOVA","MANOVA","Two-way ANOVA"], e:"2+ DVs with a covariate → MANCOVA."},
+{t:"data", q:"An ANOVA gives p = 0.03. What do you conclude?", o:["Reject H₀: statistically significant","Fail to reject H₀: not significant","Accept H₁ as 100% proven","The test failed"], e:"p < 0.05 → reject H₀ → significant difference."},
+{t:"data", q:"An ANOVA gives p = 0.20. What do you conclude?", o:["Fail to reject H₀: not enough evidence of a difference","Reject H₀: significant","The groups are proven identical","Use a bigger threshold"], e:"p ≥ 0.05 → fail to reject H₀. It does not prove the groups are equal."},
+{t:"data", q:"\"Do the three Iris species have different petal lengths?\" What is the independent variable (IV)?", o:["Species","Petal length","Sepal length","The p-value"], e:"The IV defines the groups being compared: Species (categorical, 3 groups)."},
+{t:"data", q:"Same question. What is the dependent variable (DV)?", o:["Petal length","Species","Petal width","Number of samples"], e:"The DV is the numerical measurement compared across groups."},
+{t:"data", q:"Which is the null hypothesis H₀ for the petal-length ANOVA?", o:["The three species have the same mean petal length.","At least one species has a different mean petal length.","Setosa has the shortest petals.","Petal length depends on sepal length."], e:"H₀ = no difference. H₁ = at least one mean is different."},
+{t:"data", q:"The petal-length ANOVA gives p = 4.17 × 10⁻⁸⁵. What does that mean?", o:["Extremely small, far below 0.05: the species differ significantly","About 4.17, so not significant","The test made an error","Exactly 0.05"], e:"10⁻⁸⁵ is a tiny number, much smaller than 0.05."},
+{t:"data", q:"Which species has the shortest and narrowest petals (avg length 1.462 cm, width 0.246 cm)?", o:["Setosa","Versicolor","Virginica","All are equal"], e:"Setosa's petals are much smaller, which makes it very different from the other two."},
+{t:"data", q:"The slide's order for describing numerical results is…", o:["Overall finding → Numbers → Statistical evidence → Meaning → Conclusion","Numbers → Conclusion → Meaning","Conclusion → Numbers → p-value","Statistical evidence → Overall finding → Numbers"], e:"Start with the big finding, back it with numbers and statistics, explain, conclude."},
+{t:"data", q:"What is \"the problem with data\" that leads into clustering?", o:["The Species column is missing, so we must find groups from the numbers alone","There are too many species","Iris has no numerical features","p-values are always small"], e:"Without labels, can we discover groups only from the measurements? That question is clustering."},
+{t:"data", q:"A statistical test helps us decide whether an observed difference…", o:["reflects a real group difference rather than random variation in the samples","is bigger than 5 cm","comes from a structured dataset","is ordinal or nominal"], e:"Samples naturally vary; the test (via the p-value) checks if the difference is likely real."},
+// ---------- Deck 03: K-means ----------
+{t:"kmeans", q:"What is clustering?", o:["Grouping similar data points together without using labels","Predicting a label using known labels","Sorting data from smallest to largest","Removing outliers from a table"], e:"Clustering = finding natural groups in data, automatically, with no labels."},
+{t:"kmeans", q:"In the Iris rule \"petal length < 5 cm and width < 1.8 cm\", the values 5 cm and 1.8 cm are called…", o:["Thresholds","Centroids","Clusters","Labels"], e:"Manually chosen cut-off values are thresholds."},
+{t:"kmeans", q:"Which is NOT one of the slide's problems with simple thresholds?", o:["Thresholds are always too slow to compute","Some observations may fall into the wrong group","Different groups may overlap","A pattern may depend on multiple variables together"], e:"Speed was not the issue. The problem is wrong groups, overlap and multi-variable patterns."},
+{t:"kmeans", q:"Euclidean distance between (x₁, y₁) and (x₂, y₂) is…", o:["√((x₂−x₁)² + (y₂−y₁)²)","|x₂−x₁| + |y₂−y₁|","(x₂−x₁)² + (y₂−y₁)²","max(|x₂−x₁|, |y₂−y₁|)"], e:"It comes from the Pythagorean theorem. (|dx|+|dy| is Manhattan; max is Supremum.)"},
+{t:"kmeans", q:"Distance from A(2, 10) to D(5, 8)?", o:["√13 ≈ 3.6","√5 ≈ 2.2","5.0","13"], e:"(5−2)² + (8−10)² = 9 + 4 = 13 → √13 ≈ 3.6 (matches the slide table)."},
+{t:"kmeans", q:"Distance from B(2, 5) to G(1, 2)?", o:["√10 ≈ 3.2","√8 ≈ 2.8","4.0","10"], e:"(1)² + (3)² = 10 → √10 ≈ 3.16 ≈ 3.2."},
+{t:"kmeans", q:"The centre of A(x₁, y₁) and B(x₂, y₂) is…", o:["((x₁+x₂)/2, (y₁+y₂)/2)","(x₁+x₂, y₁+y₂)","((x₂−x₁)/2, (y₂−y₁)/2)","(x₁·x₂, y₁·y₂)"], e:"The centroid is the average of each coordinate."},
+{t:"kmeans", q:"Which is listed on the slide as an extension of Euclidean distance?", o:["Manhattan distance","Hamming loss","Mean squared error","Accuracy"], e:"Extensions listed: Manhattan distance, Supremum distance, Cosine similarity."},
+{t:"kmeans", q:"In K-means, K means…", o:["the number of clusters","the number of data points","the number of features","the number of iterations"], e:"K = how many clusters you ask for."},
+{t:"kmeans", q:"In the A–H class example, which points were the starting centroids?", o:["A(2,10), D(5,8), G(1,2)","A, B, C","B, E, H","C, F, G"], e:"The slides randomly assigned A, D and G as the initial centres."},
+{t:"kmeans", q:"Round 1: B(2,5) has distances 5.0 (to A), 4.2 (to D), 3.2 (to G). Which cluster?", o:["G (the smallest distance)","A","D","None, it is a tie"], e:"Each point joins the centroid with the smallest distance."},
+{t:"kmeans", q:"After round 1, cluster D = {C(8,4), D(5,8), E(7,5), F(6,4), H(4,9)}. New centroid?", o:["(6, 6)","(5, 6)","(6, 5)","(7, 6)"], e:"x = (8+5+7+6+4)/5 = 30/5 = 6; y = (4+8+5+4+9)/5 = 30/5 = 6."},
+{t:"kmeans", q:"After round 1, cluster G = {B(2,5), G(1,2)}. New centroid?", o:["(1.5, 3.5)","(1, 3)","(3, 7)","(2, 3.5)"], e:"((2+1)/2, (5+2)/2) = (1.5, 3.5)."},
+{t:"kmeans", q:"In round 2 of the class example, which point switched cluster?", o:["H moved from D to A","B moved from G to D","C moved from D to G","No point moved"], e:"H(4,9): distance to A-centre (2,10) = 2.2 but to D-centre (6,6) = 3.6, so H joins A."},
+{t:"kmeans", q:"The final centroids of the A–H example are about…", o:["(3.67, 9), (7, 4.33), (1.5, 3.5)","(2, 10), (5, 8), (1, 2)","(6, 6), (2, 10), (1.5, 3.5)","(4, 4), (5, 5), (6, 6)"], e:"Cluster A = {A, D, H}, D = {C, E, F}, G = {B, G}."},
+{t:"kmeans", q:"When does K-means stop?", o:["When no data point changes to a new cluster (centroids stop moving)","After exactly 3 rounds","When WCSS reaches 0","When every cluster has the same size"], e:"Repeat assign → update until nothing changes."},
+{t:"kmeans", q:"The 9-picture grouping example (by object, by colour, by location) shows that…", o:["the best grouping depends on the situation","there is only one correct grouping","colour is always the best feature","clustering needs labels"], e:"Different features give different groups."},
+{t:"kmeans", q:"The two repeating steps of K-means are…", o:["Assign each point to its nearest centroid, then move each centroid to the mean of its points","Sort the points, then delete outliers","Label the data, then train a model","Compute p-values, then group"], e:"Assign (argmin of distances) → update (mean) → repeat."},
+// ---------- Deck 04: Elbow & WCSS ----------
+{t:"elbow", q:"K = 1 means…", o:["all data points are grouped into one cluster","each point is its own cluster","there is one feature","we run one iteration"], e:"One cluster holds everything, so WCSS is at its largest."},
+{t:"elbow", q:"WCSS stands for…", o:["Within-Cluster Sum of Squares","Weighted Cluster Similarity Score","Within-Class Standard Score","Whole Centroid Sum of Squares"], e:"It sums squared distances from each point to its own centroid."},
+{t:"elbow", q:"A smaller WCSS means…", o:["points are closer to their centroids: more compact clusters","the clusters are wrong","K is too small","the data has fewer features"], e:"Smaller WCSS → tighter clusters."},
+{t:"elbow", q:"WCSS uses which distance for each point?", o:["The squared distance to its centroid (no square root)","The Euclidean distance with a square root","The Manhattan distance","The distance to the furthest point"], e:"The worksheet notes: \"Calculate the squared distance, not Euclidean distance, so no np.linalg.norm\"."},
+{t:"elbow", q:"As K increases, WCSS usually…", o:["goes down","goes up","stays the same","becomes negative"], e:"More clusters = points sit closer to some centroid."},
+{t:"elbow", q:"The \"elbow\" is…", o:["the K after which adding more clusters gives only a small improvement","the K with the smallest WCSS","always K = 2","the point where WCSS becomes 0"], e:"The curve bends: big drops before, small drops after."},
+{t:"elbow", q:"Why not just choose the K with the smallest WCSS?", o:["WCSS keeps falling as K grows; with K = number of points it is 0, which tells you nothing","The smallest WCSS is always wrong","WCSS cannot be compared across K","It takes too long to compute"], e:"Every point alone in its own cluster gives WCSS 0 but no useful grouping."},
+{t:"elbow", q:"Cluster {B(2,5), G(1,2)} with centroid (1.5, 3.5). WCSS of this cluster?", o:["5.0","2.5","3.16","10"], e:"B: 0.5² + 1.5² = 2.5. G: 0.5² + 1.5² = 2.5. Total 5.0."},
+{t:"elbow", q:"In the slides, WCSS_A = 6.67, WCSS_D = 2.67, WCSS_G = 5.00. Total WCSS for K = 3?", o:["14.34","6.67","9.34","12.0"], e:"6.67 + 2.67 + 5.00 = 14.34."},
+{t:"elbow", q:"Class example: WCSS for K = 1…5 is about [100, 68, 14, 9, 3]. Best K?", o:["3","1","5","2"], e:"Big drop 68 → 14 at K = 3, then only small drops: the elbow is at 3."},
+{t:"elbow", q:"Iris WCSS: K=1 ≈ 681, K=2 ≈ 152, K=3 ≈ 79, K=4 ≈ 57, K=5 ≈ 50. Best K?", o:["3","2","5","8"], e:"After K = 3 the curve flattens, and 3 also matches the three species."},
+{t:"elbow", q:"Why does the slide switch to Python after K = 3?", o:["Calculating WCSS by hand for every K takes too much work","Python gives a different answer","Excel cannot compute squares","K-means only works in Python"], e:"\"Calculating WCSS for just K = 3 already takes a lot of work.\""},
+// ---------- Deck 05: Image data formats ----------
+{t:"image", q:"\"In order to capture an image a camera requires some sort of…\"", o:["measurable energy","colour filter","label","threshold"], e:"Light is the energy the camera measures (Moeslund, 2012)."},
+{t:"image", q:"Which photoreceptors help the eye see colour in bright light?", o:["Cone photoreceptors","Rod photoreceptors","Pixel sensors","Retina masks"], e:"Cones = colour, bright light. Rods = dim light, night vision, black and white."},
+{t:"image", q:"Rod photoreceptors…", o:["are sensitive in dim light and help night vision","see colour in bright light","convert light to RGB","measure resolution"], e:"Rods work in low light."},
+{t:"image", q:"The number of pixels used to represent an image is called its…", o:["spatial resolution","colour depth","threshold","segmentation"], e:"More pixels = higher spatial resolution."},
+{t:"image", q:"Each sensor cell is converted into a pixel value in the range…", o:["[0, 255]","[0, 1]","[−128, 127]","[0, 100]"], e:"8-bit values: 0 = dark, 255 = brightest."},
+{t:"image", q:"Why do colour cameras use red, green and blue?", o:["The eye has three types of cones, each sensitive to a different wavelength range","Those colours are the cheapest","Screens can only show three colours","It makes images smaller"], e:"\"A colour camera is based on the same principle as the human eye.\""},
+{t:"image", q:"RGB (255, 255, 0) is…", o:["Yellow","Purple","Cyan","White"], e:"Red + green = yellow."},
+{t:"image", q:"RGB (255, 0, 255) is…", o:["Purple (magenta)","Yellow","Green","Black"], e:"Red + blue = purple/magenta."},
+{t:"image", q:"RGB (0, 0, 0) and (255, 255, 255) are…", o:["Black and white","White and black","Grey and silver","Red and blue"], e:"All channels off = black; all channels full = white."},
+{t:"image", q:"Classifying every pixel with a semantic label (e.g. person, road) is…", o:["Semantic segmentation","Instance segmentation","Localization","Thresholding"], e:"Semantic = label per pixel."},
+{t:"image", q:"Detecting and delineating each individual object (person 1, person 2) is…", o:["Instance segmentation","Semantic segmentation","Classification","Resolution"], e:"Instance segmentation separates individual objects."},
+{t:"image", q:"Doing both semantic and instance segmentation together is called…", o:["Panoptic segmentation","Hybrid classification","Full localization","Mask filtering"], e:"Panoptic = semantic + instance."},
+{t:"image", q:"A segmentation mask contains…", o:["0s and 1s (1 = keep the pixel)","RGB values","p-values","centroids"], e:"image × mask keeps pixels where the mask is 1 and sets others to 0."},
+{t:"image", q:"Threshold segmentation on the slide: pixels with value less than 100 become…", o:["[0, 0, 255] blue","[255, 255, 255] white","[0, 0, 0] black","unchanged"], e:"\"Display pixels with colour less than 100, convert it to [0, 0, 255].\""},
+{t:"image", q:"Brain MRI segmentation usually classifies pixels into which three tissue types?", o:["White matter, gray matter, cerebrospinal fluid","Bone, muscle, skin","Red, green, blue","Cones, rods, pixels"], e:"WM, GM and CSF (Despotović et al., 2015)."},
+{t:"image", q:"Which three computer-vision tasks are compared on the COCO slide?", o:["Classification, localization, segmentation","Clustering, regression, ANOVA","Filtering, sorting, grouping","Resolution, energy, colour"], e:"What is it, where is it, which pixels belong to it."},
+{t:"image", q:"Why is simple thresholding not enough for real images?", o:["Images have millions of pixels, many colours and complex patterns, so fixed rules are hard to choose","Thresholds can only be 100","Thresholds only work on Iris","It makes images too bright"], e:"This is the same problem as Iris thresholds, which leads to letting the computer find groups (K-means)."},
+{t:"image", q:"In the \"Who's that Pokémon?\" warm-up, what are you really doing?", o:["Recognising an object from key visual features like shape and colour","Counting pixels","Computing WCSS","Running a t-test"], e:"It introduces how images carry features we use to identify objects."},
+// ---------- Code worksheet ----------
+{t:"code", q:"What does this print?", c:"for i in range(10):\n    print(i)", o:["0 to 9","1 to 10","0 to 10","1 to 9"], e:"range(10) gives 0, 1, …, 9."},
+{t:"code", q:"What is the last number printed?", c:"j = 0\nfor i in range(10):\n    j = j + 1\n    print(j)\n    if j > 5:\n        break", o:["6","5","10","9"], e:"It prints 1…6. When j = 6, j > 5 is True and the loop breaks."},
+{t:"code", q:"Output?", c:"v = [3, 4]\ndist = 0\nfor i in v:\n    dist = dist + i**2\nprint(dist)", o:["25","5.0","7","12"], e:"3² + 4² = 25. Without **0.5 there is no square root."},
+{t:"code", q:"Output?", c:"p1 = np.array([2, 5])\np2 = np.array([6, 8])\nprint(np.linalg.norm(p1 - p2))", o:["5.0","25","7","3.6"], e:"√((6−2)² + (8−5)²) = √25 = 5.0."},
+{t:"code", q:"np.linalg.norm needs its input as…", o:["a NumPy array (np.array)","a Python string","a pandas column name","a tuple of labels"], e:"The worksheet comment: \"you have to define the value in np.array form\"."},
+{t:"code", q:"8 points (shape (8, 2)) and 3 centroids (shape (3, 2)). What is the shape of distances?", c:"distances = np.linalg.norm(points[:, None] - centroids[None, :], axis=2)", o:["(8, 3)","(3, 8)","(8, 2)","(8, 3, 2)"], e:"Broadcasting gives (8, 3, 2); the norm over axis=2 removes the last axis → (8, 3): one row per point, one column per centroid."},
+{t:"code", q:"Shape of the difference before the norm (8 points, 3 centroids, 2D)?", c:"points[:, None] - centroids[None, :]", o:["(8, 3, 2)","(8, 2)","(3, 2)","(8, 3)"], e:"(8, 1, 2) − (1, 3, 2) broadcasts to (8, 3, 2)."},
+{t:"code", q:"Output?", c:"arr = np.array([8, 3, 5, 1])\nprint(np.argmin(arr))", o:["3","1","0","8"], e:"argmin returns the POSITION of the smallest value. 1 is at index 3."},
+{t:"code", q:"Output?", c:"matrix = np.array([[10, 2, 8],\n                   [ 5, 7, 1]])\nprint(np.argmin(matrix, axis=1))", o:["[1 2]","[0 1]","[2 1]","[1 0 1]"], e:"axis=1 → index of the min in each ROW: row 0 min 2 at col 1; row 1 min 1 at col 2."},
+{t:"code", q:"In K-means, why do we use argmin with axis=1 on distances?", o:["Each row is a point; we want the column (centroid) with the smallest distance","Each column is a point","To find the furthest centroid","To sort the points"], e:"labels[i] = index of the nearest centroid for point i."},
+{t:"code", q:"What does replace=False do here?", c:"centroids = points[np.random.choice(len(points), k, replace=False)]", o:["Picks k different points, so no point is chosen twice as a starting centroid","Replaces the points with zeros","Keeps the old centroids","Makes the choice not random"], e:"Two identical starting centroids would leave one cluster empty."},
+{t:"code", q:"What does this line compute?", c:"new_centroids = np.array([points[labels == i].mean(axis=0) for i in range(k)])", o:["For each cluster i, the mean x and mean y of its points (the new centroid)","The distance to each centroid","The label of each point","The WCSS"], e:"labels == i selects cluster i's rows; mean(axis=0) averages each column."},
+{t:"code", q:"Why stop when this is True?", c:"if np.linalg.norm(new_centroids - centroids) < tol:\n    break", o:["The centroids barely moved, so the clustering has converged","WCSS is zero","All points are in one cluster","max_iter was reached"], e:"tol = 1e-4 is the \"close enough\" limit."},
+{t:"code", q:"np.random.seed(0) is used to…", o:["make the random choice the same every run (reproducible)","make K-means faster","set K to 0","remove randomness from the data"], e:"Same seed → same random starting centroids → same result."},
+{t:"code", q:"labels = [0, 2, 1, 1, 1, 1, 2, 1] for points A–H. Which points are in cluster 2?", o:["B and G","A and H","C, D, E, F, H","Only G"], e:"Index 1 (B) and index 6 (G) have label 2."},
+{t:"code", q:"Homework 02's first cell gave NameError: name 'kmeans' is not defined. Why?", o:["The cell that defined the kmeans function was deleted, so the name doesn't exist","kmeans is a NumPy function","K was 0","The points were 3D"], e:"A function must be defined (its cell run) before you call it."},
+{t:"code", q:"Homework 02 Problem 1: the plot showed the starting centroids, not the final ones. Why?", o:["kmeans(...) was called but its result was never saved into centroids, labels","The plot used 3D","tol was too small","The seed was 0"], e:"Fix: centroids, labels = kmeans(...) so the plot uses the returned values."},
+{t:"code", q:"In the while-loop version, what happens if you forget j = j + 1 and the centroids never settle?", o:["The loop never ends (j stays 0 < max_iter)","It stops after 100 rounds","It raises NameError","It runs once"], e:"The counter is what makes while j < max_iter eventually false."},
+{t:"code", q:"Output?", c:"cluster = [[2, 5], [1, 2]]\ncentroid = [1.5, 3.5]\nWCSS = 0\nfor point in cluster:\n    WCSS += (point[0]-centroid[0])**2 + (point[1]-centroid[1])**2\nprint(WCSS)", o:["5.0","2.5","3.5","0.5"], e:"Each point gives 0.25 + 2.25 = 2.5. Two points → 5.0."},
+{t:"code", q:"Output?", c:"cluster = [[6, 7], [3, 6]]\nsum_x = 0; sum_y = 0\nfor point in cluster:\n    sum_x += point[0]\n    sum_y += point[1]\nprint(sum_x / len(cluster), sum_y / len(cluster))", o:["4.5 6.5","9 13","4 6","3 1"], e:"(6+3)/2 = 4.5 and (7+6)/2 = 6.5."},
+{t:"code", q:"How many values of k does this loop try?", c:"for k in range(1, 6):\n    ...", o:["5 (k = 1, 2, 3, 4, 5)","6","4","1"], e:"range(1, 6) stops before 6."},
+{t:"code", q:"To test K = 1, 2, …, 8 (Homework 03), which range?", o:["range(1, 9)","range(1, 8)","range(0, 8)","range(8)"], e:"The stop value is excluded, so use 9."},
+{t:"code", q:"Output?", c:"wcss_list = [100.75, 68.27, 14.33, 9.33, 3.67]\nprint([int(w) for w in wcss_list])", o:["[100, 68, 14, 9, 3]","[101, 68, 14, 9, 4]","[100.0, 68.0, 14.0, 9.0, 3.0]","[100, 68, 14, 9]"], e:"int() cuts off the decimals; it doesn't round (3.67 → 3)."},
+{t:"code", q:"Homework 03: what is the shape of points_4d?", c:"features = ['sepal_length', 'sepal_width', 'petal_length', 'petal_width']\npoints_4d = iris_df[features].to_numpy()", o:["(150, 4)","(4, 150)","(150, 5)","(50, 4)"], e:"150 flowers × 4 features. Species is not included."},
+{t:"code", q:"Homework 03 accuracy: which species was matched worst by K = 3?", o:["Virginica (72%)","Setosa (100%)","Versicolor (96%)","All 100%"], e:"Setosa 100%, Versicolor 96%, Virginica 72% → overall 89.3%."},
+{t:"code", q:"In plt.scatter(centroids[:, 0], centroids[:, 1], marker='X', s=200), what are s and marker?", o:["s = marker size; marker='X' draws the centroids as big X shapes","s = number of clusters; marker = colour","s = seed; marker = label","s = scale of the axes"], e:"Centroids are drawn as big X's to stand out."},
+{t:"code", q:"How do you make a 3D Matplotlib axis?", o:["fig.add_subplot(projection='3d')","plt.scatter3d()","plt.figure(dim=3)","ax.set_zlabel('3d')"], e:"Then ax.scatter(x, y, z, ...)."},
+{t:"code", q:"np.array([[1, 2, 3], [4, 5, 6]]) is a…", o:["2-D array with shape (2, 3)","1-D array of 6 values","3-D array","2-D array with shape (3, 2)"], e:"2 rows, 3 columns."},
+{t:"code", q:"Output?", c:"arr = np.array([[1,2,3,4,5], [6,7,8,9,10]])\nprint(arr[0, 2])", o:["3","2","8","7"], e:"Row 0, column 2 (third value) = 3."},
+{t:"code", q:"What colour image does this make?", c:"img = np.zeros([300, 300, 3])\nimg.fill(255)", o:["White","Black","Grey","Yellow"], e:"Every channel 255 = white. fill(0) would be black."},
+{t:"code", q:"cv2_imshow uses OpenCV's channel order. Which tuple gives yellow?", c:"img_yellow[:, :, 0:3] = ( ?, ?, ? )", o:["(0, 255, 255)","(255, 255, 0)","(255, 0, 255)","(0, 0, 255)"], e:"OpenCV is BGR: Blue = 0, Green = 255, Red = 255 → yellow."},
+{t:"code", q:"Why is (255, 0, 255) purple in both RGB and BGR?", o:["Swapping the first and last channel doesn't change it: red and blue are both 255","OpenCV ignores the middle channel","Purple has no blue","It's a special constant"], e:"The order only matters when the first and last values differ."},
+{t:"code", q:"What does this draw on a 300 × 300 yellow image?", c:"img_yellow[100:200, 100:200, 0:3] = (0, 0, 0)", o:["A black 100 × 100 square in the middle","A black line","A white square","Nothing, the slice is empty"], e:"[rows 100–199, cols 100–199] set to black."},
+{t:"code", q:"Before plt.imshow() of an image loaded with cv2.imread, you should…", o:["convert it with cv2.cvtColor(img, cv2.COLOR_BGR2RGB)","multiply by 255","flip it upside down","convert to a mask"], e:"Otherwise red and blue are swapped in the plot."},
+{t:"code", q:"Which library loads images as BGR by default?", o:["OpenCV (cv2)","Pillow (PIL)","Matplotlib","imageio"], e:"OpenCV uses BGR for historical compatibility; PIL and Matplotlib use RGB."},
+{t:"code", q:"Output (I_masked)?", c:"I = np.array([[10, 50], [200, 220]])\nM = np.array([[0, 1], [1, 0]])\nprint(I * M)", o:["[[0 50] [200 0]]","[[10 0] [0 220]]","[[0 1] [1 0]]","[[10 50] [200 220]]"], e:"Element-wise multiply: keeps I where M is 1, else 0."},
+{t:"code", q:"Output?", c:"arr = np.array([100, 155, 200])\nprint(arr < 150)", o:["[ True False False]","[False True True]","[100]","True"], e:"The comparison is applied to each element."},
+{t:"code", q:"Output?", c:"a = np.array([0, 0, 5, 0])\nprint(np.any(a))", o:["True","False","5","[False False True False]"], e:"np.any is True if at least one element is non-zero."},
+{t:"code", q:"What does this line do to an RGB image?", c:"image_array[np.any(image_array < threshold, axis=-1)] = mask_pixel", o:["Every pixel with at least one channel below the threshold becomes mask_pixel","Every channel below the threshold becomes 0","It deletes dark pixels","It counts dark pixels"], e:"axis=-1 checks across the 3 colour channels of each pixel."},
+{t:"code", q:"image_array.shape is (360, 540, 3). What do the numbers mean?", o:["360 rows (height), 540 columns (width), 3 colour channels","360 wide, 540 high, 3 images","360 pixels, 540 colours, 3 masks","3 rows of 360 × 540"], e:"NumPy images are (height, width, channels)."},
+{t:"code", q:"image_array[0][0] returns array([255, 255, 255]). What is that pixel?", o:["The top-left pixel, and it is white","The centre pixel, black","The mask value 1","The bottom-right pixel"], e:"[0][0] is row 0, column 0."},
+{t:"code", q:"Which pixel does mask_green select?", c:"lower = np.array([0, 128, 0])\nupper = np.array([10, 255, 10])\nmask_green = np.all(img >= lower, axis=-1) & np.all(img <= upper, axis=-1)", o:["[5, 200, 0]","[20, 200, 0]","[0, 100, 0]","[0, 200, 50]"], e:"R ≤ 10, G between 128 and 255, B ≤ 10. Only [5, 200, 0] fits all three."},
+{t:"code", q:"What does the | symbol do here?", c:"mask = mask_red | mask_green | mask_blue", o:["\"or\": a pixel is in the mask if it is in any of the three masks","\"and\": in all three masks","adds the colours","divides the masks"], e:"| is element-wise OR for boolean arrays (& is AND)."},
+{t:"code", q:"What was wrong with this download line?", c:"!gdown --id 1-8J8DAbDSts20ThDqugSu-isEi9eq5-I -O img_shiba_bw.", o:["The file name ends with a dot, so Image.open('img_shiba_bw.jpg') can't find it","--id is not a gdown option","The id is too long","-O should be -o"], e:"-O sets the output file name exactly as written, including the trailing dot."},
+{t:"code", q:"In custom_wcss, how is centroid_x computed for each cluster?", o:["sum_x / len(cluster)","sum_x * len(cluster)","np.argmin(cluster)","max(x) − min(x)"], e:"The centroid is the mean of the cluster's x values."},
+];
+
+// ================= helpers =================
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const ri = (a, b) => a + Math.floor(Math.random() * (b - a + 1));
+const pick = a => a[Math.floor(Math.random() * a.length)];
+const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = ri(0, i); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+const esc = s => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+const fmt = v => String(Math.round(v * 100) / 100);
+const r1 = v => (Math.round(v * 10) / 10).toFixed(1);
+const L = "ABCDEFGHIJ";
+const parseNum = s => { const v = parseFloat(String(s).trim().replace(",", ".")); return isFinite(v) ? v : NaN; };
+const numOk = (s, truth, tol) => { const v = parseNum(s); return !isNaN(v) && Math.abs(v - truth) <= tol; };
+// compare outputs by their tokens: numbers (5 == 5.0) and True/False
+const toks = s => (String(s).toLowerCase().match(/-?\d+(?:\.\d+)?|true|false/g) || []).map(t => (t === "true" || t === "false") ? t : String(parseFloat(t)));
+const sameOut = (a, b) => { const x = toks(a), y = toks(b); return x.length > 0 && x.length === y.length && x.every((t, i) => t === y[i]); };
+const codeHTML = c => esc(c).replace(/(#[^\n]*)/g, '<span class="cm">$1</span>').replace(/_{4,}/g, m => `<span class="blank">${m}</span>`);
+
+const store = {
+  get(k, d) { try { const v = localStorage.getItem("dsdrill:" + k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
+  set(k, v) { try { localStorage.setItem("dsdrill:" + k, JSON.stringify(v)); } catch (e) {} }
+};
+const BEST = store.get("best", {});
+const addXP = n => { if (n > 0 && typeof window.addXP === "function") window.addXP(n); };
+function saveBest(key, right, total) {
+  const pct = total ? Math.round(100 * right / total) : 0;
+  if (!BEST[key] || pct > BEST[key]) { BEST[key] = pct; store.set("best", BEST); }
+}
+
+// ================= routing (mounted inside K-means Quest) =================
+const SUB = { sortlab: "types", code: "blank" };
+let VIEW = "quiz";
+function render() {
+  const root = document.getElementById("drill-root"); if (!root) return;
+  root.innerHTML = ({ quiz: quizView, cluster: clusterView, sortlab: sortlabView, code: codeView, summary: notesView })[VIEW]();
+}
+function mount(view, id) { VIEW = id; view.innerHTML = '<div id="drill-root"></div>'; render(); }
+
+// ================= QUIZ =================
+const TOPICS = [["all", "Everything"], ["slides", "Slides only"], ["code", "Code only"], ["data", "02 Data & stats"], ["kmeans", "03 K-means"], ["elbow", "04 Elbow & WCSS"], ["image", "05 Images"]];
+let QZ = { topic: "all", len: 10, run: null };
+// questions with fresh random numbers (code + clustering arithmetic)
+function genQuizQs() {
+  const out = [];
+  { // distance
+    const t = pick([[3, 4, 5], [6, 8, 10], [5, 12, 13], [8, 6, 10]]); const a = [ri(0, 5), ri(0, 5)]; const b = [a[0] + t[0], a[1] + t[1]];
+    out.push({ t: "kmeans", q: `Euclidean distance from P(${a}) to Q(${b})?`, o: [String(t[2]), String(t[0] + t[1]), String(t[2] * t[2]), String(Math.max(t[0], t[1]))], e: `√(${t[0]}² + ${t[1]}²) = √${t[2] * t[2]} = ${t[2]}. (${t[0] + t[1]} would be Manhattan distance.)` });
+  }
+  { // centroid of 3 points with integer mean
+    const c = [ri(2, 8), ri(2, 8)]; const o1 = [ri(-2, 2), ri(-2, 2)], o2 = [ri(-2, 2), ri(-2, 2)]; const o3 = [-o1[0] - o2[0], -o1[1] - o2[1]];
+    const P = [o1, o2, o3].map(o => [c[0] + o[0], c[1] + o[1]]);
+    out.push({ t: "kmeans", q: `New centroid of the cluster {(${P[0]}), (${P[1]}), (${P[2]})}?`, o: [`(${c[0]}, ${c[1]})`, `(${c[0] + 1}, ${c[1]})`, `(${c[0]}, ${c[1] - 1})`, `(${P[0][0] + P[1][0] + P[2][0]}, ${P[0][1] + P[1][1] + P[2][1]})`], e: `Sum each coordinate and divide by 3: x = ${P.map(p => p[0]).join(" + ")} = ${3 * c[0]} → ${c[0]}; y = ${P.map(p => p[1]).join(" + ")} = ${3 * c[1]} → ${c[1]}.` });
+  }
+  { // WCSS of 2 points
+    const a = [ri(0, 8), ri(0, 8)], b = [a[0] + pick([2, 4]), a[1] + pick([0, 2, 4])]; const m = [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2];
+    const w = ((a[0] - m[0]) ** 2 + (a[1] - m[1]) ** 2) * 2;
+    out.push({ t: "elbow", q: `Cluster {(${a}), (${b})}. Its centroid is (${m}). What is this cluster's WCSS?`, o: [...new Set([w, w / 2, Math.sqrt(w), w * 2, w + 1, w + 3].map(fmt))].slice(0, 4), e: `Each point is ${fmt(w / 2)} (squared distance) from the centroid, so WCSS = ${fmt(w / 2)} + ${fmt(w / 2)} = ${fmt(w)}.` });
+  }
+  { // argmin
+    const arr = shuffle([ri(1, 3), ri(4, 6), ri(7, 9), ri(10, 14)]); const idx = arr.indexOf(Math.min(...arr));
+    out.push({ t: "code", q: "Output?", c: `arr = np.array([${arr.join(", ")}])\nprint(np.argmin(arr))`, o: [String(idx)].concat([0, 1, 2, 3].filter(x => x !== idx).map(String)), e: `The smallest value is ${Math.min(...arr)}, at index ${idx}. argmin returns the index, not the value.` });
+  }
+  { // elbow
+    const { w, kStar } = makeElbow(6);
+    out.push({ t: "elbow", q: `WCSS for K = 1…6 is [${w.join(", ")}]. Where is the elbow?`, o: [`K = ${kStar}`, `K = 6`, `K = 1`, `K = ${kStar === 2 ? 3 : kStar - 1}`], e: `Big drops until K = ${kStar} (${w[kStar - 2]} → ${w[kStar - 1]}), then only small ones. K = 6 has the smallest WCSS but adds little.` });
+  }
+  return out;
+}
+function quizPool() {
+  const all = BANK.concat(genQuizQs());
+  const t = QZ.topic;
+  return all.filter(q => t === "all" || (t === "slides" ? q.t !== "code" : q.t === t));
+}
+function startQuiz() {
+  const pool = shuffle(quizPool());
+  const n = QZ.len === "all" ? pool.length : Math.min(QZ.len, pool.length);
+  const qs = pool.slice(0, n).map(q => { const order = shuffle(q.o.map((_, i) => i)); return { ...q, order, picked: null }; });
+  QZ.run = { qs, i: 0, right: 0 };
+}
+function quizView() {
+  const head = `<div class="row between"><div><div class="eyebrow">Multiple choice</div><h2>Quiz</h2></div>${QZ.run ? `<button class="btn ghost sm" data-act="quiz-restart">New attempt</button>` : ""}</div>`;
+  if (!QZ.run) {
+    return `<div class="stack"><div class="panel vstack">${head}
+      <p class="muted">Pick a topic and a length. Questions and answer order are shuffled every attempt, and the arithmetic and code-output questions get new numbers.</p>
+      <div><div class="small muted" style="margin-bottom:6px">Topic</div><div class="row">${TOPICS.map(([k, n]) => `<button class="pill" aria-pressed="${QZ.topic === k}" data-qtopic="${k}">${n}</button>`).join("")}</div></div>
+      <div><div class="small muted" style="margin-bottom:6px">Questions</div><div class="row">${[10, 20, 40, "all"].map(n => `<button class="pill" aria-pressed="${QZ.len === n}" data-qlen="${n}">${n === "all" ? "All " + quizPool().length : n}</button>`).join("")}</div></div>
+      <div><button class="btn lime" data-act="quiz-start">Start quiz</button></div>
+    </div></div>`;
+  }
+  const R = QZ.run;
+  if (R.i >= R.qs.length) {
+    const missed = R.qs.filter(q => q.picked !== 0);
+    saveBest("quiz", R.right, R.qs.length);
+    return `<div class="stack"><div class="panel vstack">${head}
+      <div class="lime-banner"><div class="big">${R.right}/${R.qs.length}</div><div><h3>${R.right === R.qs.length ? "Perfect score." : "Quiz finished."}</h3><div>${missed.length ? `Review the ${missed.length} you missed below.` : "Try another topic or a longer quiz."}</div></div></div>
+      ${missed.map(q => `<div class="card vstack"><div><b>${esc(q.q)}</b></div>${q.c ? `<pre class="code">${codeHTML(q.c)}</pre>` : ""}<div class="small">Your answer: <span class="muted">${q.picked == null ? "none" : esc(q.o[q.picked])}</span></div><div class="feedback ok"><b>${esc(q.o[0])}</b><br>${esc(q.e)}</div></div>`).join("")}
+      <div class="row"><button class="btn lime" data-act="quiz-restart">New attempt</button><button class="btn ghost" data-act="quiz-setup">Change topic</button></div>
+    </div></div>`;
+  }
+  const q = R.qs[R.i]; const done = q.picked != null;
+  const tl = { data: "Deck 02 · Data & stats", kmeans: "Deck 03 · K-means", elbow: "Deck 04 · Elbow & WCSS", image: "Deck 05 · Images", code: "Code worksheet" }[q.t];
+  return `<div class="stack"><div class="panel vstack">${head}
+    <div class="row between small"><span class="muted">${tl}</span><span class="qcount">Question ${R.i + 1} of ${R.qs.length} · ${R.right} right</span></div>
+    <div class="progress"><i style="width:${100 * R.i / R.qs.length}%"></i></div>
+    <h3>${esc(q.q)}</h3>
+    ${q.c ? `<pre class="code">${codeHTML(q.c)}</pre>` : ""}
+    <div class="opts">${q.order.map((oi, n) => `<button class="opt ${done ? (oi === 0 ? "right" : oi === q.picked ? "wrong" : "") : ""}" data-qopt="${oi}" ${done ? "disabled" : ""}><span class="k">${"ABCD"[n]}</span><span>${esc(q.o[oi])}</span></button>`).join("")}</div>
+    ${done ? `<div class="feedback ${q.picked === 0 ? "ok" : "no"}" aria-live="polite"><b>${q.picked === 0 ? "Correct." : "Not quite. Answer: " + esc(q.o[0])}</b><br>${esc(q.e)}</div>
+    <div><button class="btn lime" data-act="quiz-next">${R.i + 1 < R.qs.length ? "Next question" : "See results"}</button></div>` : ""}
+  </div></div>`;
+}
+
+// ================= CLUSTER SORT =================
+// Easy numbers: small whole-number points, every centroid a whole number, so squared distances and WCSS are whole numbers too.
+const sqd = (p, c) => p.reduce((s, v, i) => s + (v - c[i]) ** 2, 0);
+const isInt = v => Math.abs(v - Math.round(v)) < 1e-9;
+const AX = ["x", "y", "z"];
+const ptStr = p => `(${p.join(", ")})`;
+function offsets(m, D) {
+  for (let t = 0; t < 500; t++) {
+    const o = []; for (let i = 0; i < m - 1; i++) o.push(Array.from({ length: D }, () => ri(-1, 1)));
+    const last = Array.from({ length: D }, (_, j) => -o.reduce((a, p) => a + p[j], 0));
+    if (last.some(v => Math.abs(v) > 2)) continue; o.push(last);
+    if (new Set(o.map(p => p + "")).size === m) return o;
+  }
+  return null;
+}
+function simulate(pts, cents, k) {
+  const rounds = []; let prev = null;
+  for (let r = 0; r < 4; r++) {
+    const sq = pts.map(p => cents.map(c => sqd(p, c)));
+    let ok = true;
+    const lab = sq.map(row => { const s = row.map((v, i) => [Math.sqrt(v), i]).sort((a, b) => a[0] - b[0]); if (s[1][0] - s[0][0] < 0.3) ok = false; return s[0][1]; });
+    if (!ok) return null;
+    const sizes = Array(k).fill(0); lab.forEach(l => sizes[l]++); if (sizes.some(s => s === 0)) return null;
+    const nc = cents.map((_, j) => { const m = pts.filter((_, i) => lab[i] === j); return m[0].map((_, d) => m.reduce((a, p) => a + p[d], 0) / m.length); });
+    if (nc.some(c => c.some(v => !isInt(v)))) return null;
+    const changed = prev ? lab.some((l, i) => l !== prev[i]) : null;
+    rounds.push({ cents, sq, lab, nc, changed });
+    if (prev && !changed) return rounds;
+    prev = lab; cents = nc;
+  }
+  return null;
+}
+function genCluster(k, D, wantMove) {
+  const MAX = D === 3 ? 6 : 8;
+  for (let t = 0; t < 30000; t++) {
+    const sizes = k === 2 ? [ri(2, 3), ri(2, 3)] : [ri(2, 3), ri(2, 3), 2];
+    const centers = []; let g = 0;
+    while (centers.length < k && g++ < 100) { const c = Array.from({ length: D }, () => ri(1, MAX - 1)); if (centers.every(q => Math.sqrt(sqd(q, c)) >= (D === 3 ? 3.5 : 4))) centers.push(c); }
+    if (centers.length < k) continue;
+    let pts = [], bad = false;
+    centers.forEach((c, j) => { const o = offsets(sizes[j], D); if (!o) { bad = true; return; } o.forEach(v => pts.push(c.map((x, d) => x + v[d]))); });
+    if (bad || pts.some(p => p.some(v => v < 0 || v > MAX))) continue;
+    if (new Set(pts.map(p => p + "")).size !== pts.length) continue;
+    pts = shuffle(pts);
+    const n = pts.length, init = [];
+    while (init.length < k) { const i = ri(0, n - 1); if (!init.includes(i)) init.push(i); }
+    init.sort((a, b) => a - b);
+    const rounds = simulate(pts, init.map(i => pts[i].slice()), k);
+    if (!rounds) continue;
+    if (wantMove && rounds.length < 3 && t < 20000) continue;
+    if (rounds.length > 3) continue;
+    return { pts, init, rounds, k, D, MAX };
+  }
+  return null;
+}
+let CL = null;
+const CLO = { k: 3, D: 3, mode: "sq" }; // options kept across attempts
+function newCluster() {
+  CL = { g: genCluster(CLO.k, CLO.D, Math.random() < 0.65), r: 0, step: "dist", inp: {}, marks: {}, solved: false, hint: false, graded: {}, right: 0, total: 0, fb: null, yaw: 0.75, pitch: 0.5 };
+  initSortForRound();
+}
+function initSortForRound() {
+  const g = CL.g;
+  SORTERS.cl = { items: g.pts.map((p, i) => ({ id: String(i), html: `<b>${L[i]}</b><span class="mono">${ptStr(p)}</span>` })), buckets: g.rounds[CL.r].cents.map((c, j) => ({ id: String(j), title: `<i class="dot c${j}bg"></i>C${j + 1}`, sub: `centroid ${ptStr(c)}` })), place: {}, sel: null, marks: {} };
+}
+function grade(key, ok) { if (CL.graded[key] === undefined) { CL.graded[key] = ok; CL.total++; if (ok) { CL.right++; addXP(2); } } }
+const STEP_NAMES = { dist: "Distances", sort: "Sort", changed: "Changed?", cent: "New centroids" };
+function stepsFor(r) { return r === 0 ? ["dist", "sort", "cent"] : ["dist", "sort", "changed", "cent"]; }
+const xMark = (x, y, cls, extra = "", d = 8) => { const p = `M${x - d} ${y - d}L${x + d} ${y + d}M${x + d} ${y - d}L${x - d} ${y + d}`; return `<g ${extra}><path class="sv-xo" d="${p}"/><path class="sv-xi ${cls}" d="${p}"/></g>`; };
+function scatter2d({ pts, cents, lab, newC, max }) {
+  const u = 260 / max, X = x => 30 + x * u, Y = y => 290 - y * u;
+  let s = `<svg class="plot" viewBox="0 0 320 315" role="img" aria-label="2D scatter plot of the points and centroids">`;
+  for (let i = 0; i <= max; i++) s += `<line class="sv-grid" x1="${X(i)}" y1="${Y(0)}" x2="${X(i)}" y2="${Y(max)}"/><line class="sv-grid" x1="${X(0)}" y1="${Y(i)}" x2="${X(max)}" y2="${Y(i)}"/><text class="sv-t" x="${X(i)}" y="${Y(0) + 15}" text-anchor="middle">${i}</text><text class="sv-t" x="${X(0) - 8}" y="${Y(i) + 3}" text-anchor="end">${i}</text>`;
+  s += `<line class="sv-axis" x1="${X(0)}" y1="${Y(0)}" x2="${X(max)}" y2="${Y(0)}"/><line class="sv-axis" x1="${X(0)}" y1="${Y(0)}" x2="${X(0)}" y2="${Y(max)}"/>`;
+  if (lab) pts.forEach((p, i) => { const c = cents[lab[i]]; s += `<line class="sv-link s${lab[i]}" x1="${X(p[0])}" y1="${Y(p[1])}" x2="${X(c[0])}" y2="${Y(c[1])}"/>`; });
+  pts.forEach((p, i) => { s += `<circle class="sv-pt ${lab ? "f" + lab[i] : "sv-un"}" cx="${X(p[0])}" cy="${Y(p[1])}" r="6.5"/><text class="sv-lab" x="${X(p[0]) + 9}" y="${Y(p[1]) - 7}">${L[i]}</text>`; });
+  cents.forEach((c, j) => { s += xMark(X(c[0]), Y(c[1]), "s" + j, newC ? 'class="sv-old"' : ""); });
+  if (newC) newC.forEach((c, j) => { if (c + "" !== cents[j] + "") s += `<line class="sv-move" x1="${X(cents[j][0])}" y1="${Y(cents[j][1])}" x2="${X(c[0])}" y2="${Y(c[1])}"/>`; s += xMark(X(c[0]), Y(c[1]), "s" + j); });
+  return s + `</svg>`;
+}
+// 3D: simple rotatable projection (drag sideways or use the rotate buttons)
+function scatter3d({ pts, cents, lab, newC, max }) {
+  const h = max / 2, cy = Math.cos(CL.yaw), sy = Math.sin(CL.yaw), cp = Math.cos(CL.pitch), sp = Math.sin(CL.pitch), sc = 118 / (0.75 * max);
+  const P = p => { const X = p[0] - h, Y = p[1] - h, Z = p[2] - h; const x = cy * X - sy * Y, dep = sy * X + cy * Y; return [160 + x * sc, 150 - (Z * cp + dep * sp) * sc, dep]; };
+  const line = (a, b, cls, extra = "") => { const A = P(a), B = P(b); return `<line class="${cls}" ${extra} x1="${A[0].toFixed(1)}" y1="${A[1].toFixed(1)}" x2="${B[0].toFixed(1)}" y2="${B[1].toFixed(1)}"/>`; };
+  let s = `<svg class="plot plot3d" viewBox="0 0 320 300" role="img" aria-label="3D scatter plot of the points and centroids. Drag sideways to rotate.">`;
+  for (let i = 0; i <= max; i++) s += line([i, 0, 0], [i, max, 0], "sv-grid") + line([0, i, 0], [max, i, 0], "sv-grid");
+  s += line([0, 0, 0], [max, 0, 0], "sv-axis") + line([0, 0, 0], [0, max, 0], "sv-axis") + line([0, 0, 0], [0, 0, max], "sv-axis");
+  [["X", [max + 0.7, 0, 0]], ["Y", [0, max + 0.7, 0]], ["Z", [0, 0, max + 0.6]]].forEach(([n, p]) => { const q = P(p); s += `<text class="sv-name" x="${q[0].toFixed(1)}" y="${(q[1] + 4).toFixed(1)}" text-anchor="middle">${n}</text>`; });
+  [[max, 0, 0], [0, max, 0], [0, 0, max]].forEach(p => { const q = P(p); s += `<text class="sv-t" x="${(q[0] + 6).toFixed(1)}" y="${(q[1] - 4).toFixed(1)}">${max}</text>`; });
+  const items = [];
+  pts.forEach((p, i) => items.push({ dep: P(p)[2], html: () => { const q = P(p), r = Math.max(4.5, 7 - q[2] * 0.25); let t = line(p, [p[0], p[1], 0], "sv-drop"); if (lab) { const c = cents[lab[i]]; t += line(p, c, `sv-link s${lab[i]}`); } return t + `<circle class="sv-pt ${lab ? "f" + lab[i] : "sv-un"}" cx="${q[0].toFixed(1)}" cy="${q[1].toFixed(1)}" r="${r.toFixed(1)}"/><text class="sv-lab" x="${(q[0] + r + 2).toFixed(1)}" y="${(q[1] - r).toFixed(1)}">${L[i]}</text>`; } }));
+  cents.forEach((c, j) => items.push({ dep: P(c)[2], html: () => { const q = P(c); return line(c, [c[0], c[1], 0], "sv-drop") + xMark(q[0], q[1], "s" + j, newC ? 'class="sv-old"' : "", 7); } }));
+  if (newC) newC.forEach((c, j) => items.push({ dep: P(c)[2] - 0.01, html: () => { const q = P(c); return (c + "" !== cents[j] + "" ? line(cents[j], c, "sv-move") : "") + line(c, [c[0], c[1], 0], "sv-drop") + xMark(q[0], q[1], "s" + j, "", 7); } }));
+  items.sort((a, b) => b.dep - a.dep).forEach(it => { s += it.html(); });
+  return s + `</svg>`;
+}
+function plotState() {
+  const g = CL.g, R = g.rounds[CL.r];
+  let lab = null, newC = null, cents = R.cents;
+  if (CL.step === "wcss" || CL.step === "done") { const last = g.rounds[g.rounds.length - 1]; lab = last.lab; cents = last.cents; }
+  else {
+    const sorted = CL.step === "changed" || CL.step === "cent" || (CL.step === "sort" && CL.solved);
+    if (sorted) lab = R.lab; else if (CL.r > 0) lab = g.rounds[CL.r - 1].lab;
+    if (CL.step === "cent" && CL.solved) newC = R.nc;
+  }
+  return { pts: g.pts, cents, lab, newC, max: g.MAX };
+}
+function plotHTML() { return CL.g.D === 3 ? scatter3d(plotState()) : scatter2d(plotState()); }
+function clusterView() {
+  if (!CL) newCluster();
+  const g = CL.g, D = g.D;
+  const ptsStr = g.pts.map((p, i) => `${L[i]}${ptStr(p)}`).join(", ");
+  const initStr = g.init.map((pi, j) => `C${j + 1} = ${L[pi]}${ptStr(g.pts[pi])}`).join(", ");
+  const tracker = CL.step === "wcss" || CL.step === "done"
+    ? `<div class="steps">${g.rounds.map((_, r) => `<span class="done">Round ${r + 1}</span>`).join("")}<span class="${CL.step === "wcss" ? "now" : "done"}">WCSS</span></div>`
+    : `<div class="steps"><span class="round">Round ${CL.r + 1}</span>${stepsFor(CL.r).map((s, idx) => { const cur = stepsFor(CL.r).indexOf(CL.step); return `<span class="${idx < cur ? "done" : idx === cur ? "now" : ""}">${STEP_NAMES[s]}</span>`; }).join("")}</div>`;
+  const opt = (key, val, label) => `<button class="pill" aria-pressed="${CLO[key] === val}" data-clo="${key}:${val}">${label}</button>`;
+  return `<div class="stack"><div class="panel vstack">
+    <div class="row between"><div><div class="eyebrow">Sorting practice · K-means by hand</div><h2>Cluster sort</h2></div><button class="btn lime" data-act="cl-new">New attempt</button></div>
+    <div class="row small"><span class="muted">Data</span>${opt("D", 2, "2D")}${opt("D", 3, "3D")}<span class="muted" style="margin-left:8px">K</span>${opt("k", 2, "2")}${opt("k", 3, "3")}<span class="muted" style="margin-left:8px">Distances</span>${opt("mode", "sq", "d² (easy)")}${opt("mode", "d", "d, 1 decimal")}</div>
+    <div class="learn small"><b>Data (${D}D):</b> ${ptsStr}.<br><b>Starting centroids:</b> ${initStr}. K = ${g.k}. Every centroid in this puzzle is a whole number, so the squared distances and WCSS are whole numbers too. New attempt gives new numbers.</div>
+    <div class="row between small"><span>${tracker}</span><span class="qcount muted">Score ${CL.right}/${CL.total}</span></div>
+    <div class="dgrid">
+      <div class="dsticky vstack"><div id="cl-plot">${plotHTML()}</div>
+        ${D === 3 ? `<div class="row" style="justify-content:center"><button class="btn ghost sm" data-rot="-1" aria-label="Rotate left">↺ Rotate</button><span class="small muted">or drag the plot sideways</span><button class="btn ghost sm" data-rot="1" aria-label="Rotate right">Rotate ↻</button></div>` : ""}
+        <div class="small muted" style="text-align:center">Big X = centroid. Colours appear once a sort is correct.${D === 3 ? " Grey lines drop each point to the floor (z = 0)." : ""}</div></div>
+      <div class="vstack" id="cl-step">${clStep()}</div>
+    </div>
+  </div></div>`;
+}
+function inp(key, label) {
+  const m = CL.marks[key] || "";
+  return `<input type="text" class="num ${m}" id="in-${key}" data-in="${key}" inputmode="decimal" autocomplete="off" value="${esc(CL.inp[key] ?? "")}" aria-label="${label}">`;
+}
+const distTruth = sq => CLO.mode === "sq" ? sq : Math.sqrt(sq);
+const distShow = sq => CLO.mode === "sq" ? String(sq) : r1(Math.sqrt(sq));
+function clStep() {
+  const g = CL.g, R = g.rounds[CL.r], D = g.D;
+  const ch = R.cents.map((c, j) => `<th><i class="dot c${j}bg"></i>C${j + 1} ${ptStr(c)}</th>`).join("");
+  const nextBtn = (label, act) => `<button class="btn lime" data-act="${act}">${label}</button>`;
+  const fb = CL.fb ? `<div class="feedback ${CL.fb[0]}" aria-live="polite">${CL.fb[1]}</div>` : "";
+  const terms = AX.slice(0, D).map(a => `(${a} − c${a})²`).join(" + ");
+  if (CL.step === "dist") {
+    const formula = CLO.mode === "sq" ? `d² = ${terms} → a whole number` : `d = √(${terms}) → round to 1 decimal`;
+    return `<h3>Round ${CL.r + 1} · Step 1: distance from every point to every centroid</h3>
+      <div class="formula">${formula}</div>
+      ${CLO.mode === "sq" ? `<div class="small muted">Easy mode: skip the square root. The nearest centroid has the smallest d², so the sorting comes out the same.</div>` : ""}
+      <div class="tablewrap"><table class="t"><tr><th>Point</th>${ch}</tr>
+      ${g.pts.map((p, i) => `<tr><td><b>${L[i]}</b> ${ptStr(p)}</td>${R.cents.map((c, j) => `<td>${inp(`d${CL.r}-${i}-${j}`, `Distance from ${L[i]} to C${j + 1}`)}${CL.hint ? `<span class="hint">${CLO.mode === "sq" ? p.map((v, d) => `${(v - c[d]) ** 2}`).join("+") : "√" + R.sq[i][j]}</span>` : ""}</td>`).join("")}</tr>`).join("")}
+      </table></div>
+      <div class="row"><button class="btn" data-act="cl-check">Check</button><button class="btn ghost sm" data-act="cl-hint">${CL.hint ? "Hide" : "Show"} hints</button><button class="btn ghost sm" data-act="cl-show">Show answers</button></div>
+      ${fb}
+      ${CL.solved ? `<pre class="code">distances = np.linalg.norm(points[:, None] - centroids[None, :], axis=2)   <span class="cm"># works for 2D and 3D</span></pre>${nextBtn("Next: sort the points", "cl-next")}` : ""}`;
+  }
+  if (CL.step === "sort") {
+    return `<h3>Round ${CL.r + 1} · Step 2: sort each point into its nearest cluster</h3>
+      <p class="small muted">Tap a point, then tap a cluster (or drag it). The smallest ${CLO.mode === "sq" ? "d²" : "distance"} in each row wins.</p>
+      <div class="tablewrap"><table class="t"><tr><th>Point</th>${ch}</tr>${g.pts.map((p, i) => `<tr><td><b>${L[i]}</b></td>${R.sq[i].map((v, j) => `<td class="${CL.solved && R.lab[i] === j ? "min" : ""}">${distShow(v)}</td>`).join("")}</tr>`).join("")}</table></div>
+      <div id="sorter-cl">${sorterHTML("cl")}</div>
+      <div class="row"><button class="btn" data-act="cl-check">Check</button><button class="btn ghost sm" data-act="cl-show">Show answers</button></div>
+      ${fb}
+      ${CL.solved ? `<pre class="code">labels = np.argmin(distances, axis=1)
+<span class="cm"># → array([${R.lab.join(", ")}])</span></pre>${nextBtn(CL.r === 0 ? "Next: new centroids" : "Next: did anything change?", "cl-next")}` : ""}`;
+  }
+  if (CL.step === "changed") {
+    const prev = g.rounds[CL.r - 1].lab;
+    const moved = R.lab.map((l, i) => l !== prev[i] ? `${L[i]} moved from C${prev[i] + 1} to C${l + 1}` : null).filter(Boolean);
+    return `<h3>Round ${CL.r + 1} · Step 3: did any point change cluster?</h3>
+      <div class="tablewrap"><table class="t"><tr><th>Point</th><th>Round ${CL.r}</th><th>Round ${CL.r + 1}</th></tr>${g.pts.map((p, i) => `<tr><td><b>${L[i]}</b></td><td><i class="dot c${prev[i]}bg"></i>C${prev[i] + 1}</td><td><i class="dot c${R.lab[i]}bg"></i>C${R.lab[i] + 1}</td></tr>`).join("")}</table></div>
+      ${CL.solved ? "" : `<div class="row"><button class="btn" data-chg="yes">Yes, a point moved</button><button class="btn" data-chg="no">No, nothing changed</button></div>`}
+      ${fb}
+      ${CL.solved ? (R.changed ? `<div class="small">${moved.join(". ")}.</div>${nextBtn("Next: update the centroids", "cl-next")}` : `<pre class="code">if np.linalg.norm(new_centroids - centroids) &lt; tol:
+    break   <span class="cm"># converged</span></pre>${nextBtn("Next: calculate WCSS", "cl-next")}`) : ""}`;
+  }
+  if (CL.step === "cent") {
+    return `<h3>Round ${CL.r + 1} · ${CL.r === 0 ? "Step 3" : "Step 4"}: new centroid = mean of each cluster</h3>
+      <div class="formula">${AX.slice(0, D).map(a => `c${a} = (${a}₁ + ${a}₂ + …) / n`).join(" &nbsp; ")}</div>
+      <div class="tablewrap"><table class="t"><tr><th>Cluster</th><th>Members</th>${AX.slice(0, D).map(a => `<th>c${a}</th>`).join("")}</tr>
+      ${R.cents.map((c, j) => { const mem = g.pts.map((p, i) => R.lab[i] === j ? `${L[i]}${ptStr(p)}` : null).filter(Boolean); return `<tr><td><i class="dot c${j}bg"></i>C${j + 1}</td><td class="small">${mem.join(" ")}</td>${AX.slice(0, D).map((a, d) => `<td>${inp(`c${CL.r}-${j}-${d}`, `C${j + 1} new ${a}`)}</td>`).join("")}</tr>`; }).join("")}
+      </table></div>
+      <div class="row"><button class="btn" data-act="cl-check">Check</button><button class="btn ghost sm" data-act="cl-show">Show answers</button></div>
+      ${fb}
+      ${CL.solved ? `<pre class="code">new_centroids = np.array([points[labels == i].mean(axis=0) for i in range(k)])</pre>${nextBtn(`Next: round ${CL.r + 2}`, "cl-next")}` : ""}`;
+  }
+  const last = g.rounds[g.rounds.length - 1];
+  const wc = last.cents.map((c, j) => g.pts.reduce((a, p, i) => a + (last.lab[i] === j ? sqd(p, c) : 0), 0));
+  const total = wc.reduce((a, b) => a + b, 0);
+  if (CL.step === "wcss") {
+    return `<h3>Final step: WCSS of the converged clusters</h3>
+      <div class="formula">WCSS = Σ ${terms} &nbsp; (squared, no square root)</div>
+      <div class="tablewrap"><table class="t"><tr><th>Cluster</th><th>Centroid</th><th>Members</th><th>WCSS</th></tr>
+      ${last.cents.map((c, j) => { const mem = g.pts.map((p, i) => last.lab[i] === j ? i : null).filter(i => i !== null); return `<tr><td><i class="dot c${j}bg"></i>C${j + 1}</td><td class="mono">${ptStr(c)}</td><td class="small">${mem.map(i => `${L[i]}${ptStr(g.pts[i])}`).join(" ")}${CL.hint ? `<div class="hint" style="text-align:left">${mem.map(i => g.pts[i].map((v, d) => `(${v}−${c[d]})²`).join("+")).join(" + ")}</div>` : ""}</td><td>${inp(`w-${j}`, `WCSS of C${j + 1}`)}</td></tr>`; }).join("")}
+      <tr><td colspan="3"><b>Total WCSS</b></td><td>${inp("w-t", "Total WCSS")}</td></tr></table></div>
+      <div class="row"><button class="btn" data-act="cl-check">Check</button><button class="btn ghost sm" data-act="cl-hint">${CL.hint ? "Hide" : "Show"} working</button><button class="btn ghost sm" data-act="cl-show">Show answers</button></div>
+      ${fb}
+      ${CL.solved ? `<pre class="code">clusters = [points[labels == i] for i in range(k)]
+wcss = custom_wcss(clusters)   <span class="cm"># → ${fmt(total)}</span></pre>${nextBtn("Finish", "cl-next")}` : ""}`;
+  }
+  saveBest("cluster", CL.right, CL.total);
+  return `<div class="lime-banner"><div class="big">${CL.right}/${CL.total}</div><div><h3>Converged in ${g.rounds.length} rounds.</h3><div>Total WCSS = ${fmt(total)}. Press New attempt for fresh numbers.</div></div></div>
+    <div class="tablewrap"><table class="t"><tr><th>Cluster</th><th>Final centroid</th><th>Points</th><th>WCSS</th></tr>
+    ${last.cents.map((c, j) => `<tr><td><i class="dot c${j}bg"></i>C${j + 1}</td><td class="mono">${ptStr(c)}</td><td>${g.pts.map((p, i) => last.lab[i] === j ? L[i] : null).filter(Boolean).join(", ")}</td><td class="mono">${fmt(wc[j])}</td></tr>`).join("")}</table></div>
+    <pre class="code">centroids, labels = custom_kmeans(points, ${g.k})   <span class="cm"># points.shape = (${g.pts.length}, ${D})</span>
+<span class="cm"># labels → array([${last.lab.join(", ")}])</span></pre>
+    <div class="row"><button class="btn lime" data-act="cl-new">New attempt</button></div>`;
+}
+function clCheck(reveal) {
+  const g = CL.g, R = g.rounds[CL.r];
+  let all = true, blanks = 0, wrong = 0;
+  const doInputs = list => list.forEach(([key, truth, tol, show]) => {
+    if (reveal) { if (CL.marks[key] !== "ok") { grade(key, false); CL.inp[key] = show; CL.marks[key] = "shown"; } return; }
+    if (String(CL.inp[key] ?? "").trim() === "") { delete CL.marks[key]; all = false; blanks++; return; }
+    const ok = numOk(CL.inp[key], truth, tol); CL.marks[key] = ok ? "ok" : "bad"; grade(key, ok); if (!ok) { all = false; wrong++; }
+  });
+  const missing = () => [wrong ? `${wrong} wrong (orange)` : "", blanks ? `${blanks} still empty` : ""].filter(Boolean).join(", ") + ".";
+  if (CL.step === "dist") {
+    const tol = CLO.mode === "sq" ? 0 : 0.051;
+    const list = []; g.pts.forEach((p, i) => R.cents.forEach((c, j) => list.push([`d${CL.r}-${i}-${j}`, distTruth(R.sq[i][j]), tol, distShow(R.sq[i][j])])));
+    doInputs(list);
+    CL.fb = reveal ? ["info", "Answers filled in (blue). They count as missed in your score."] : all ? ["ok", "All distances correct."] : ["no", `${missing()} Subtract each coordinate, square, then add${CLO.mode === "sq" ? "" : " and take the square root"}. Hints show the pieces.`];
+  } else if (CL.step === "sort") {
+    const S = SORTERS.cl; S.marks = {};
+    g.pts.forEach((p, i) => {
+      const key = `s${CL.r}-${i}`;
+      if (reveal) { grade(key, S.place[i] != null && +S.place[i] === R.lab[i]); S.place[i] = String(R.lab[i]); S.marks[i] = "ok"; return; }
+      if (S.place[i] == null) { all = false; return; }
+      const ok = +S.place[i] === R.lab[i]; S.marks[i] = ok ? "ok" : "bad"; grade(key, ok); if (!ok) all = false;
+    });
+    CL.fb = reveal ? ["info", "Points placed for you."] : all ? ["ok", "Every point is in its nearest cluster."] : ["no", Object.keys(S.place).length < g.pts.length ? "Some points are still in the tray, or in the wrong cluster (orange)." : "Orange points are in the wrong cluster. Find the smallest value in their row."];
+  } else if (CL.step === "cent") {
+    const list = []; R.nc.forEach((c, j) => c.forEach((v, d) => list.push([`c${CL.r}-${j}-${d}`, v, 0.011, fmt(v)])));
+    doInputs(list);
+    CL.fb = reveal ? ["info", "Answers filled in."] : all ? ["ok", "Centroids updated. The X marks move on the plot."] : ["no", `${missing()} Add the members' values for each coordinate and divide by how many members there are.`];
+  } else if (CL.step === "wcss") {
+    const last = g.rounds[g.rounds.length - 1];
+    const wc = last.cents.map((c, j) => g.pts.reduce((a, p, i) => a + (last.lab[i] === j ? sqd(p, c) : 0), 0));
+    const list = wc.map((w, j) => [`w-${j}`, w, 0.011, fmt(w)]); list.push(["w-t", wc.reduce((a, b) => a + b, 0), 0.02, fmt(wc.reduce((a, b) => a + b, 0))]);
+    doInputs(list);
+    CL.fb = reveal ? ["info", "Answers filled in."] : all ? ["ok", "WCSS correct."] : ["no", `${missing()} Square each difference, add them per point, then add the points in the cluster. Show working lists the terms.`];
+  }
+  if (all || reveal) CL.solved = true;
+  if (CL.solved && CL.step === "sort") SORTERS.cl.locked = true;
+  rerenderCluster();
+  if (!all && !reveal) $$("#cl-step input.bad, #cl-step .chip.bad").forEach(e => e.classList.add("shake"));
+}
+function clNext() {
+  const R = CL.g.rounds[CL.r];
+  CL.solved = false; CL.fb = null; CL.hint = false;
+  if (CL.step === "dist") CL.step = "sort";
+  else if (CL.step === "sort") CL.step = CL.r === 0 ? "cent" : "changed";
+  else if (CL.step === "changed") CL.step = R.changed ? "cent" : "wcss";
+  else if (CL.step === "cent") { CL.r++; CL.step = "dist"; initSortForRound(); }
+  else if (CL.step === "wcss") CL.step = "done";
+  render();
+}
+function rerenderCluster() { const y = window.scrollY; render(); window.scrollTo(0, y); }
+function rotatePlot(dYaw, dPitch) { CL.yaw += dYaw; CL.pitch = Math.min(1.25, Math.max(0.05, CL.pitch + dPitch)); const el = $("#cl-plot"); if (el) el.innerHTML = plotHTML(); }
+
+// ================= shared sorter (tap or drag) =================
+const SORTERS = {};
+function sorterHTML(name) {
+  const S = SORTERS[name];
+  const chip = it => `<button class="chip ${S.sel === it.id ? "sel" : ""} ${S.marks[it.id] || ""}" draggable="${!S.locked}" data-chip="${it.id}" data-sorter="${name}">${it.html}</button>`;
+  return `<div class="vstack"><div class="tray" data-bucket="" data-sorter="${name}" aria-label="Unsorted items">${S.items.filter(it => S.place[it.id] == null).map(chip).join("")}</div>
+    <div class="buckets">${S.buckets.map(b => `<div class="bucket ${S.sel != null ? "armed" : ""}" role="button" tabindex="0" data-bucket="${b.id}" data-sorter="${name}"><h4>${b.title}</h4>${b.sub ? `<div class="sub">${b.sub}</div>` : ""}<div class="in">${S.items.filter(it => S.place[it.id] === b.id).map(chip).join("")}</div></div>`).join("")}</div></div>`;
+}
+function sorterRefresh(name) { const el = $("#sorter-" + name); if (el) el.innerHTML = sorterHTML(name); }
+function sorterMove(name, itemId, bucketId) {
+  const S = SORTERS[name]; if (S.locked) return;
+  if (bucketId === "") delete S.place[itemId]; else S.place[itemId] = bucketId;
+  delete S.marks[itemId]; S.sel = null; sorterRefresh(name);
+}
+
+// ================= SORTING LAB =================
+const TYPE_POOL = {
+  measure: { buckets: [["Nominal", "categories, no order"], ["Ordinal", "categories with order"], ["Discrete", "counted numbers"], ["Continuous", "measured numbers"]], items: [
+    ["Movie genre: Action, Comedy", 0], ["Director: James Gunn", 0], ["Iris species: setosa", 0], ["Country", 0], ["Product type", 0], ["Movie title", 0], ["Class: A or B", 0], ["Actors: Chris Pratt", 0],
+    ["Rating level: Low → High", 1], ["Revenue level: Low → High", 1], ["T-shirt size S / M / L", 1], ["Satisfaction: poor / ok / great", 1], ["Medal: bronze / silver / gold", 1],
+    ["Number of students: 35", 2], ["Number of clicks: 120", 2], ["IMDb votes: 757,074", 2], ["Number of clusters K: 3", 2], ["Pixels in the image: 194,400", 2], ["Flowers in Iris: 150", 2],
+    ["Sepal length: 5.1 cm", 3], ["Petal width: 0.2 cm", 3], ["IMDb rating: 8.1", 3], ["Revenue: 333.13", 3], ["Temperature: 21.5 °C", 3], ["WCSS: 14.33", 3]] },
+  structure: { buckets: [["Structured", "rows and columns"], ["Semi-structured", "tags, keys, labels"], ["Unstructured", "no fixed format"]], items: [
+    ["Iris CSV table", 0], ["IMDb dataset table", 0], ["Excel grade sheet", 0], ["Class score table", 0],
+    ["JSON file", 1], ["XML file", 1], ["HTML page", 1], ["API response with keys", 1],
+    ["Movie reviews", 2], ["Movie posters", 2], ["Photos", 2], ["Videos", 2], ["Student essays", 2], ["MRI scans", 2], ["Social media posts", 2]] }
+};
+let TY = null;
+function newTypes() {
+  const mk = (key, n) => { const P = TYPE_POOL[key]; const items = shuffle(P.items).slice(0, n); return { items: items.map((it, i) => ({ id: String(i), html: esc(it[0]), cat: it[1] })), buckets: P.buckets.map((b, j) => ({ id: String(j), title: b[0], sub: b[1] })), place: {}, sel: null, marks: {} }; };
+  SORTERS.ty1 = mk("measure", 10); SORTERS.ty2 = mk("structure", 7);
+  TY = { fb1: null, fb2: null };
+}
+function checkSorter(name, fbKey, obj) {
+  const S = SORTERS[name]; let right = 0;
+  S.items.forEach(it => { const ok = S.place[it.id] != null && +S.place[it.id] === it.cat; S.marks[it.id] = ok ? "ok" : "bad"; if (ok) right++; });
+  obj[fbKey] = right === S.items.length ? ["ok", `All ${right} sorted correctly.`] : ["no", `${right} of ${S.items.length} correct. Orange ones are wrong; move them and check again.`];
+  if (right === S.items.length && !S.done) { S.done = true; addXP(10); }
+  return [right, S.items.length];
+}
+// pixel mask
+let MK = null;
+function newMask() {
+  const th = pick([100, 120, 150]);
+  const I = Array.from({ length: 4 }, () => Array.from({ length: 4 }, () => ri(1, 25) * 10));
+  // keep a healthy mix of masked / unmasked
+  const cnt = I.flat().filter(v => v < th).length; if (cnt < 4 || cnt > 12) return newMask();
+  const qs = shuffle(Array.from({ length: 16 }, (_, i) => i)).slice(0, 3);
+  MK = { I, th, M: Array(16).fill(0), checked: false, fb: null, ans: {}, marks: {}, qs, fb2: null, done: false };
+}
+// RGB colour masks (worksheet: HI = 128, LO = 10)
+let CM = null;
+function rgbClass(c) { const [r, g, b] = c; const HI = 128, LO = 10; if (r >= HI && g <= LO && b <= LO) return 0; if (g >= HI && r <= LO && b <= LO) return 1; if (b >= HI && r <= LO && g <= LO) return 2; return 3; }
+function newColor() {
+  const hi = [130, 150, 200, 255], lo = [0, 5, 10], near = [15, 20, 50, 100, 120];
+  const make = cls => { const c = [pick(lo), pick(lo), pick(lo)]; if (cls < 3) { c[cls] = pick(hi); } else { const kind = ri(0, 2); const ch = ri(0, 2); if (kind === 0) { c[ch] = pick(hi); c[(ch + 1) % 3] = pick(near); } else if (kind === 1) { c[ch] = pick([100, 120, 127]); } else { c[0] = pick(hi); c[1] = pick(hi); } } return c; };
+  const cols = shuffle([0, 0, 1, 1, 2, 2, 3, 3, 3].map(make));
+  SORTERS.cm = { items: cols.map((c, i) => ({ id: String(i), html: `<span class="swatch" style="background:rgb(${c})"></span><span class="mono">[${c.join(", ")}]</span>`, cat: rgbClass(c) })), buckets: [["mask_red", "[128..255, 0..10, 0..10]"], ["mask_green", "[0..10, 128..255, 0..10]"], ["mask_blue", "[0..10, 0..10, 128..255]"], ["No mask", "fails every rule"]].map((b, j) => ({ id: String(j), title: `<code>${b[0]}</code>`, sub: b[1] })), place: {}, sel: null, marks: {} };
+  CM = { fb: null };
+}
+// elbow
+let EB = null;
+// whole-number WCSS curve with a clear elbow: big drops up to K*, then small ones
+function makeElbow(maxK) {
+  const kStar = pick([2, 3, 4]); let v = ri(20, 40) * 10; const w = [v];
+  for (let k = 2; k <= maxK; k++) { v = k <= kStar ? Math.round(v * (0.35 + Math.random() * 0.2)) : Math.max(1, v - Math.max(1, Math.round(v * 0.08) + ri(0, 2))); w.push(v); }
+  return { w, kStar };
+}
+function newElbow() {
+  const { w, kStar } = makeElbow(7);
+  EB = { w, kStar, pick: null, inp: {}, marks: {}, fb: null, fb2: null, done: false };
+}
+function elbowSVG(w, mark) {
+  const W = 340, H = 220, x = k => 40 + (k - 1) * 46, max = Math.ceil(w[0] / 50) * 50, y = v => 190 - v / max * 165;
+  let s = `<svg class="plot" viewBox="0 0 ${W} ${H}" role="img" aria-label="Elbow chart of WCSS against K">`;
+  for (let t = 0; t <= max; t += max / 5) s += `<line class="sv-grid" x1="40" x2="${x(7)}" y1="${y(t)}" y2="${y(t)}"/><text class="sv-t" x="34" y="${y(t) + 3}" text-anchor="end">${t}</text>`;
+  s += `<line class="sv-axis" x1="40" y1="190" x2="${x(7) + 6}" y2="190"/>`;
+  s += `<polyline class="sv-line" points="${w.map((v, i) => `${x(i + 1)},${y(v)}`).join(" ")}"/>`;
+  w.forEach((v, i) => { s += `<circle class="sv-dot" cx="${x(i + 1)}" cy="${y(v)}" r="${mark === i + 1 ? 7 : 4.5}" ${mark === i + 1 ? 'style="fill:var(--green)"' : ""}/><text class="sv-t" x="${x(i + 1)}" y="206" text-anchor="middle">${i + 1}</text><text class="sv-t" x="${x(i + 1) + 6}" y="${y(v) - 8}">${v}</text>`; });
+  return s + `<text class="sv-t" x="${x(7)}" y="218" text-anchor="end">K</text></svg>`;
+}
+function sortlabView() {
+  if (!TY) newTypes(); if (!MK) newMask(); if (!CM) newColor(); if (!EB) newElbow();
+  const sub = SUB.sortlab;
+  const subs = [["types", "Data types"], ["mask", "Pixel mask"], ["color", "Colour mask"], ["elbow", "Elbow"]];
+  let body = "";
+  const fbH = f => f ? `<div class="feedback ${f[0]}" aria-live="polite">${f[1]}</div>` : "";
+  if (sub === "types") {
+    body = `<div class="row between"><h3>Sort each variable by data type (deck 02)</h3><button class="btn lime sm" data-act="ty-new">New attempt</button></div>
+      <p class="small muted">Tap an item, then tap the right box (or drag). New attempt picks a new set.</p>
+      <div id="sorter-ty1">${sorterHTML("ty1")}</div>
+      <div class="row"><button class="btn" data-act="ty-check1">Check</button></div>${fbH(TY.fb1)}
+      <h3 style="margin-top:1rem">Now sort by data structure</h3>
+      <div id="sorter-ty2">${sorterHTML("ty2")}</div>
+      <div class="row"><button class="btn" data-act="ty-check2">Check</button></div>${fbH(TY.fb2)}`;
+  } else if (sub === "mask") {
+    const cells = MK.I.flat().map((v, idx) => { const g = 255 - v; const txt = v > 140 ? "#1C1C1C" : "#FFFFFF"; const mk = MK.marks["m" + idx] || ""; return `<button class="cell ${MK.M[idx] ? "on" : ""} ${mk}" data-cell="${idx}" style="background:rgb(${v},${v},${v});color:${txt}" aria-label="Pixel ${v}, mask ${MK.M[idx]}" aria-pressed="${!!MK.M[idx]}">${v}${MK.M[idx] ? `<span class="m">1</span>` : ""}</button>`; }).join("");
+    body = `<div class="row between"><h3>Build the mask M for threshold ${MK.th} (deck 05 · code 05)</h3><button class="btn lime sm" data-act="mk-new">New attempt</button></div>
+      <pre class="code">threshold = ${MK.th}
+M = (I &lt; threshold)      <span class="cm"># 1 where the pixel is darker than the threshold</span>
+I_masked = I * M          <span class="cm"># keeps pixels where M = 1, the rest become 0</span></pre>
+      <p class="small muted">I is a 4 × 4 grayscale image (0 = black, 255 = white). Tap every pixel that gets M = 1.</p>
+      <div class="pgrid" style="grid-template-columns:repeat(4,auto)">${cells}</div>
+      <div class="row"><button class="btn" data-act="mk-check">Check mask</button></div>${fbH(MK.fb)}
+      ${MK.checked ? `<h3>Now compute I_masked = I * M</h3><div class="row">${MK.qs.map(q => { const r = Math.floor(q / 4), c = q % 4; return `<label class="small">I_masked[${r}, ${c}] = <input type="text" class="num ${MK.marks["q" + q] || ""}" data-mk="${q}" inputmode="numeric" autocomplete="off" value="${esc(MK.ans[q] ?? "")}"></label>`; }).join("")}
+        <label class="small">Pixels with M = 1: <input type="text" class="num ${MK.marks.cnt || ""}" data-mk="cnt" inputmode="numeric" autocomplete="off" value="${esc(MK.ans.cnt ?? "")}"></label></div>
+        <div class="row"><button class="btn" data-act="mk-check2">Check</button></div>${fbH(MK.fb2)}` : ""}`;
+  } else if (sub === "color") {
+    body = `<div class="row between"><h3>Which mask catches each pixel? (code 05, HI = 128, LO = 10)</h3><button class="btn lime sm" data-act="cm-new">New attempt</button></div>
+      <pre class="code">lower = np.array([HI,   0,  0])    <span class="cm"># red rule</span>
+upper = np.array([255, LO, LO])
+mask_red = np.all(img &gt;= lower, axis=-1) &amp; np.all(img &lt;= upper, axis=-1)</pre>
+      <p class="small muted">Pixels are [R, G, B]. Each mask needs the main channel between 128 and 255 and both other channels at 10 or less.</p>
+      <div id="sorter-cm">${sorterHTML("cm")}</div>
+      <div class="row"><button class="btn" data-act="cm-check">Check</button></div>${fbH(CM.fb)}`;
+  } else {
+    const w = EB.w;
+    body = `<div class="row between"><h3>Read the elbow (deck 04)</h3><button class="btn lime sm" data-act="eb-new">New attempt</button></div>
+      <pre class="code">k_list = [1, 2, 3, 4, 5, 6, 7]
+wcss_list = [${w.join(", ")}]</pre>
+      ${elbowSVG(w, EB.pick)}
+      <p><b>1.</b> Which K is the elbow?</p>
+      <div class="row">${w.map((_, i) => `<button class="pill" aria-pressed="${EB.pick === i + 1}" data-eb="${i + 1}" ${EB.fb && EB.fb[0] === "ok" ? "disabled" : ""}>K = ${i + 1}</button>`).join("")}</div>${fbH(EB.fb)}
+      <p><b>2.</b> How much does WCSS drop from K = ${EB.kStar - 1} to K = ${EB.kStar}? <input type="text" class="num ${EB.marks.a || ""}" data-eb-in="a" inputmode="numeric" autocomplete="off" value="${esc(EB.inp.a ?? "")}"></p>
+      <p><b>3.</b> And from K = ${EB.kStar} to K = ${EB.kStar + 1}? <input type="text" class="num ${EB.marks.b || ""}" data-eb-in="b" inputmode="numeric" autocomplete="off" value="${esc(EB.inp.b ?? "")}"></p>
+      <div class="row"><button class="btn" data-act="eb-check">Check 2 and 3</button></div>${fbH(EB.fb2)}`;
+  }
+  return `<div class="stack"><div class="panel vstack">
+    <div><div class="eyebrow">Sorting practice</div><h2>Sorting lab</h2></div>
+    <div class="row">${subs.map(([k, n]) => `<button class="pill" aria-pressed="${sub === k}" data-sub="sortlab:${k}">${n}</button>`).join("")}</div>
+    ${body}
+  </div></div>`;
+}
+
+// ================= CODE LAB =================
+const BLANKS = [
+  { c: "labels = np.______(distances, axis=1)", a: ["argmin"], e: "argmin gives the index of the nearest centroid for each point (row)." },
+  { c: "distances = np.linalg.norm(points[:, None] - centroids[None, :], axis=____)", a: ["2"], e: "axis=2 is the x/y axis, so the norm collapses it into one distance." },
+  { c: "new_centroids = np.array([points[labels == i].______(axis=0) for i in range(k)])", a: ["mean"], e: "The new centroid is the mean of the cluster's points." },
+  { c: "new_centroids = np.array([points[labels == i].mean(axis=____) for i in range(k)])", a: ["0"], e: "axis=0 averages down the rows: one mean per column (x, y)." },
+  { c: "centroids = points[np.random.choice(len(points), k, replace=______)]", a: ["False"], e: "replace=False picks k different starting points." },
+  { c: "if np.linalg.norm(new_centroids - centroids) < ____:\n    break", a: ["tol"], e: "tol = 1e-4 is the \"close enough\" stopping limit." },
+  { c: "def distance(p1, p2):\n    dist = 0\n    for i in range(len(p1)):\n        dist = dist + (p1[i] - p2[i])**____\n    return dist**0.5", a: ["2"], e: "Square each difference." },
+  { c: "def distance(p1, p2):\n    dist = 0\n    for i in range(len(p1)):\n        dist = dist + (p1[i] - p2[i])**2\n    return dist**______", a: ["0.5", ".5", "(1/2)", "(0.5)"], e: "**0.5 is the square root." },
+  { c: "centroid_x = sum_x / ____(cluster)", a: ["len"], e: "Divide the sum by the number of points." },
+  { c: "for point in cluster:\n    distance_squared = (point[0] - centroid_x)**2 + (point[1] - centroid_y)**2\n    wcss = wcss + ______", a: ["distance_squared"], e: "Add each point's squared distance to the running total." },
+  { c: "clusters = [points[labels == ____] for i in range(k)]", a: ["i"], e: "Select the rows whose label is i: one array per cluster." },
+  { c: "for k in range(1, ____):   # test K = 1 ... 8\n    centroids, labels = custom_kmeans(points_4d, k, 100, 1e-4)", a: ["9"], e: "range stops before the end value, so 9 gives 1…8." },
+  { c: "k_list.append(k)\nwcss_list.______(wcss)", a: ["append"], e: "Add this K's WCSS to the list for the elbow plot." },
+  { c: "j = 0\nwhile j < max_iter:\n    ...\n    centroids = new_centroids\n    j = ______", a: ["j + 1", "j+1"], e: "Count one round, or the while loop never ends." },
+  { c: "fig = plt.figure(figsize=(8, 6))\nax = fig.add_subplot(projection='______')", a: ["3d"], e: "projection='3d' makes a 3D axis." },
+  { c: "plt.scatter(centroids[:, 0], centroids[:, 1], marker='____', s=200)", a: ["X", "x"], e: "Centroids are drawn as big X markers." },
+  { c: "img = np.zeros([300, 300, 3])\nimg.fill(______)   # white image", a: ["255"], e: "255 in every channel is white." },
+  { c: "img_yellow = np.zeros([300, 300, 3], dtype=np.uint8)\nimg_yellow[:, :, 0:3] = (0, 255, ______)   # BGR yellow", a: ["255"], e: "BGR (0, 255, 255): green + red = yellow." },
+  { c: "I_masked = I ____ M", a: ["*"], e: "Element-wise multiply keeps pixels where M is 1." },
+  { c: "image_array[np.____(image_array < threshold, axis=-1)] = mask_pixel", a: ["any"], e: "np.any: at least one channel is below the threshold." },
+  { c: "mask = mask_red ____ mask_green ____ mask_blue", a: ["|"], e: "| means \"or\" for boolean masks." },
+  { c: "img_rgb = cv2.cvtColor(img, cv2.COLOR_______)", a: ["BGR2RGB"], e: "OpenCV loads BGR; convert before plt.imshow." },
+  { c: "image_array = np.______(image_rgb)\nimage_array.shape   # (360, 540, 3)", a: ["array"], e: "np.array turns the PIL image into numbers." },
+  { c: "mask_green = np.all(img >= lower, axis=-1) ____ np.all(img <= upper, axis=-1)", a: ["&"], e: "& means \"and\": above the lower bound AND below the upper bound." },
+  { c: "features = ['sepal_length', 'sepal_width', 'petal_length', 'petal_width']\npoints_4d = iris_df[features].______()", a: ["to_numpy"], e: ".to_numpy() turns the DataFrame columns into a NumPy array." },
+];
+function genOutQs() {
+  const gens = [
+    () => { const t = pick([[3, 4, 5], [6, 8, 10], [5, 12, 13], [8, 15, 17]]); const a = [ri(0, 9), ri(0, 9)]; const b = [a[0] + t[0], a[1] + t[1]]; return { c: `p1 = np.array([${a.join(", ")}])\np2 = np.array([${b.join(", ")}])\nprint(np.linalg.norm(p1 - p2))`, a: t[2] + ".0", e: `√(${t[0]}² + ${t[1]}²) = √${t[2] ** 2} = ${t[2]}.0` }; },
+    () => { const v = [ri(1, 6), ri(1, 6)]; return { c: `v = [${v.join(", ")}]\ndist = 0\nfor i in v:\n    dist = dist + i**2\nprint(dist)`, a: String(v[0] ** 2 + v[1] ** 2), e: `${v[0]}² + ${v[1]}² = ${v[0] ** 2 + v[1] ** 2}. No **0.5, so no square root.` }; },
+    () => { const arr = shuffle([ri(1, 4), ri(5, 9), ri(10, 14), ri(15, 19), ri(20, 25)]); const i = arr.indexOf(Math.min(...arr)); return { c: `arr = np.array([${arr.join(", ")}])\nprint(np.argmin(arr))`, a: String(i), e: `Smallest value ${Math.min(...arr)} is at index ${i}.` }; },
+    () => { const m = [shuffle([ri(1, 3), ri(5, 7), ri(8, 12)]), shuffle([ri(1, 3), ri(5, 7), ri(8, 12)])]; const a = m.map(r => r.indexOf(Math.min(...r))); return { c: `matrix = np.array([[${m[0].join(", ")}],\n                   [${m[1].join(", ")}]])\nprint(np.argmin(matrix, axis=1))`, a: `[${a.join(" ")}]`, e: `axis=1 → per row: row 0 min at column ${a[0]}, row 1 min at column ${a[1]}.` }; },
+    () => { let m; do { m = [[ri(1, 9), ri(1, 9), ri(1, 9)], [ri(1, 9), ri(1, 9), ri(1, 9)]]; } while (m[0].some((v, i) => v === m[1][i])); const a = [0, 1, 2].map(c => m[0][c] < m[1][c] ? 0 : 1); return { c: `matrix = np.array([[${m[0].join(", ")}],\n                   [${m[1].join(", ")}]])\nprint(np.argmin(matrix, axis=0))`, a: `[${a.join(" ")}]`, e: "axis=0 → per column: which row (0 or 1) has the smaller value." }; },
+    () => { const t = ri(2, 7); return { c: `j = 0\nfor i in range(10):\n    j = j + 1\n    print(j)\n    if j > ${t}:\n        break`, a: String(t + 1), e: `It prints 1 to ${t + 1}; at ${t + 1}, j > ${t} is True and the loop breaks. (Type the last number printed.)`, q: "What is the last number printed?" }; },
+    () => { const c = [ri(2, 8), ri(2, 8)]; const o1 = [ri(-2, 2), ri(-2, 2)], o2 = [ri(-2, 2), ri(-2, 2)]; const P = [o1, o2, [-o1[0] - o2[0], -o1[1] - o2[1]]].map(o => [c[0] + o[0], c[1] + o[1]]); return { c: `cluster = [${P.map(p => `[${p}]`).join(", ")}]\nsum_x = 0\nsum_y = 0\nfor point in cluster:\n    sum_x += point[0]\n    sum_y += point[1]\nprint(sum_x / len(cluster), sum_y / len(cluster))`, a: `${c[0]}.0 ${c[1]}.0`, e: `x: ${3 * c[0]} / 3 = ${c[0]}.0, y: ${3 * c[1]} / 3 = ${c[1]}.0` }; },
+    () => { const a = [ri(0, 6), ri(0, 6)], b = [a[0] + pick([2, 4]), a[1] + pick([0, 2])]; const m = [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2]; const w = 2 * ((a[0] - m[0]) ** 2 + (a[1] - m[1]) ** 2); return { c: `cluster = [[${a}], [${b}]]\ncentroid = [${m}]\nWCSS = 0\nfor point in cluster:\n    WCSS += (point[0] - centroid[0])**2 + (point[1] - centroid[1])**2\nprint(WCSS)`, a: fmt(w), e: `Each point adds ${fmt(w / 2)}. Total ${fmt(w)}.` }; },
+    () => { const arr = [ri(5, 25) * 10, ri(5, 25) * 10, ri(5, 25) * 10]; const t = pick([100, 150, 200]); return { c: `arr = np.array([${arr.join(", ")}])\nprint(arr < ${t})`, a: `[${arr.map(v => v < t ? "True" : "False").join(" ")}]`, e: "The comparison runs on each element." }; },
+    () => { const h = pick([100, 200, 300, 360]), w = pick([150, 300, 540]); return { c: `img = np.zeros([${h}, ${w}, 3])\nprint(img.shape)`, a: `(${h}, ${w}, 3)`, e: "Shape is (rows/height, columns/width, channels)." }; },
+    () => { const r = ri(1, 4) * 20, c = ri(1, 4) * 20, hh = pick([20, 40, 50, 100]), ww = pick([20, 40, 50, 100]); return { c: `img = np.zeros([300, 300, 3], dtype=np.uint8)\nimg[${r}:${r + hh}, ${c}:${c + ww}, 0:3] = (255, 255, 255)\nprint((img[:, :, 0] == 255).sum())   # how many pixels are white?`, a: String(hh * ww), e: `${hh} rows × ${ww} columns = ${hh * ww} pixels.` }; },
+    () => { const I = [[ri(1, 9) * 10, ri(1, 9) * 10], [ri(1, 9) * 10, ri(1, 9) * 10]]; const M = [[ri(0, 1), ri(0, 1)], [ri(0, 1), ri(0, 1)]]; const o = I.map((r, i) => r.map((v, j) => v * M[i][j])); return { c: `I = np.array([[${I[0]}], [${I[1]}]])\nM = np.array([[${M[0]}], [${M[1]}]])\nprint(I * M)`, a: `[[${o[0].join(" ")}] [${o[1].join(" ")}]]`, e: "Multiply element by element: 1 keeps the pixel, 0 removes it." }; },
+    () => { const n = 8; const lab = Array.from({ length: n }, () => ri(0, 2)); const c = lab.filter(l => l === 1).length; return { c: `labels = np.array([${lab.join(", ")}])\nprint(len(points[labels == 1]))`, a: String(c), e: `labels == 1 is True ${c} times, so ${c} rows are selected.` }; },
+    () => { const ws = [ri(100, 300) + 0.75, ri(40, 99) + 0.27, ri(10, 39) + 0.33, ri(5, 9) + 0.67]; return { c: `wcss_list = [${ws.join(", ")}]\nprint([int(w) for w in wcss_list])`, a: `[${ws.map(Math.floor).join(", ")}]`, e: "int() drops the decimals (it does not round)." }; },
+    () => { const s = ri(0, 2), e2 = ri(5, 10); return { c: `count = 0\nfor k in range(${s}, ${e2}):\n    count = count + 1\nprint(count)`, a: String(e2 - s), e: `range(${s}, ${e2}) has ${e2} − ${s} = ${e2 - s} values.` }; },
+    () => { const arr = [[1, 2, 3, 4, 5], [6, 7, 8, 9, 10]]; const r = ri(0, 1), c = ri(0, 4); return { c: `arr = np.array([[1, 2, 3, 4, 5], [6, 7, 8, 9, 10]])\nprint(arr[${r}, ${c}])`, a: String(arr[r][c]), e: `Row ${r}, column ${c}.` }; },
+    () => { const a = shuffle([0, 0, 0, ri(1, 9)]); const all0 = pick([true, false]); const arr = all0 ? [0, 0, 0, 0] : a; return { c: `a = np.array([${arr.join(", ")}])\nprint(np.any(a))`, a: all0 ? "False" : "True", e: all0 ? "No element is non-zero, so np.any is False." : "At least one element is non-zero, so np.any is True." }; },
+  ];
+  return shuffle(gens).slice(0, 8).map(f => { const q = f(); return { ...q, q: q.q || "What does this print?", inp: "", mark: "" }; });
+}
+const ORDERS = [
+  { title: "The K-means function (code 02, exercise 07)", lines: [
+    ["def kmeans(points, k, max_iter, tol):", 0], ["  centroids = points[np.random.choice(len(points), k, replace=False)]", 1], ["  for i in range(max_iter):", 2],
+    ["    distances = np.linalg.norm(points[:, None] - centroids[None, :], axis=2)", 3], ["    labels = np.argmin(distances, axis=1)", 4],
+    ["    new_centroids = np.array([points[labels == i].mean(axis=0) for i in range(k)])", 5], ["    if np.linalg.norm(new_centroids - centroids) < tol:", 6],
+    ["      break", 7], ["    centroids = new_centroids", 8], ["  return centroids, labels", 9]] },
+  { title: "Distance function from scratch (code 02, 2-1)", lines: [
+    ["def distance(p1, p2):", 0], ["    dist = 0", 1], ["    for i in range(len(p1)):", 2], ["        dist = dist + (p1[i] - p2[i])**2", 3], ["    dist = dist**0.5", 4], ["    return dist", 5]] },
+  { title: "custom_wcss (code 03, 1-5)", lines: [
+    ["def custom_wcss(clusters):", 0], ["    wcss = 0", 1], ["    for cluster in clusters:", 2], ["        sum_x = 0", 3], ["        sum_y = 0", 3], ["        for point in cluster:", 4],
+    ["            sum_x += point[0]", 5], ["            sum_y += point[1]", 5], ["        centroid_x = sum_x / len(cluster)", 6], ["        centroid_y = sum_y / len(cluster)", 6],
+    ["        for point in cluster:", 7], ["            distance_squared = (point[0] - centroid_x)**2 + (point[1] - centroid_y)**2", 8], ["            wcss = wcss + distance_squared", 9], ["    return wcss", 10]] },
+  { title: "Elbow loop (code 03, 1-8)", lines: [
+    ["k_list = list()", 0], ["wcss_list = list()", 0], ["for k in range(1, 6):", 1], ["  centroids, labels = custom_kmeans(points, k)", 2], ["  clusters = [points[labels == i] for i in range(k)]", 3],
+    ["  wcss = custom_wcss(clusters)", 4], ["  k_list.append(k)", 5], ["  wcss_list.append(wcss)", 5], ["plt.plot(k_list, wcss_list, marker='*')", 6], ["plt.show()", 7]] },
+  { title: "Threshold mask on a picture (code 05, 02)", lines: [
+    ["image_rgb = Image.open(\"img_shiba_bw.jpg\")", 0], ["image_array = np.array(image_rgb)", 1], ["mask_pixel = [255, 0, 0]", 2], ["threshold = 100", 2],
+    ["image_array[np.any(image_array < threshold, axis=-1)] = mask_pixel", 3], ["image_array", 4]] },
+  { title: "3D K-means with a while loop (homework 02)", lines: [
+    ["j = 0", 0], ["while j < max_iter:", 1], ["    distances = np.linalg.norm(points[:, None] - centroids[None, :], axis=2)", 2], ["    labels = np.argmin(distances, axis=1)", 3],
+    ["    new_centroids = np.array([points[labels == i].mean(axis=0) for i in range(k)])", 4], ["    if np.linalg.norm(new_centroids - centroids) < tol:", 5], ["        break", 6],
+    ["    centroids = new_centroids", 7], ["    j = j + 1", 8], ["print(centroids)", 9]] },
+];
+let CD = null;
+function newBlanks() { CD.blanks = shuffle(BLANKS).slice(0, 8).map(b => ({ ...b, inp: "", mark: "" })); CD.bfb = null; }
+function newOuts() { CD.outs = genOutQs(); CD.ofb = null; }
+function newOrder(i) {
+  const idx = i != null ? i : (CD.order ? (CD.order.idx + 1) % ORDERS.length : ri(0, ORDERS.length - 1));
+  const P = ORDERS[idx]; let pool;
+  do { pool = shuffle(P.lines.map((l, n) => n)); } while (pool.every((v, n) => v === n));
+  CD.order = { idx, pool, built: [], marks: {}, fb: null };
+}
+function codeView() {
+  if (!CD) { CD = {}; newBlanks(); newOuts(); newOrder(); }
+  const sub = SUB.code;
+  const subs = [["blank", "Fill the blank"], ["out", "Predict the output"], ["order", "Line order"]];
+  const fbH = f => f ? `<div class="feedback ${f[0]}" aria-live="polite">${f[1]}</div>` : "";
+  let body = "";
+  if (sub === "blank") {
+    body = `<div class="row between"><h3>Type the missing piece (green box)</h3><button class="btn lime sm" data-act="bl-new">New attempt</button></div>
+      <p class="small muted">All lines come from your worksheet. 8 random lines per attempt.</p>
+      ${CD.blanks.map((b, i) => `<div class="card vstack"><pre class="code">${codeHTML(b.c)}</pre><div class="row"><span class="small">Answer:</span><input type="text" class="wide ${b.mark}" data-bl="${i}" autocomplete="off" autocapitalize="off" spellcheck="false" value="${esc(b.inp)}" aria-label="Missing code ${i + 1}"></div>${b.mark ? `<div class="small ${b.mark === "ok" ? "" : "muted"}">${b.mark === "ok" ? "✓ " : `Answer: <code>${esc(b.a[0])}</code>. `}${esc(b.e)}</div>` : ""}</div>`).join("")}
+      <div class="row"><button class="btn" data-act="bl-check">Check all</button></div>${fbH(CD.bfb)}`;
+  } else if (sub === "out") {
+    body = `<div class="row between"><h3>What does Python print?</h3><button class="btn lime sm" data-act="out-new">New attempt</button></div>
+      <p class="small muted">New numbers every attempt. Type the output as Python shows it, e.g. <code>5.0</code>, <code>[1 2]</code>, <code>(300, 540, 3)</code>, <code>[ True False]</code>. Spacing and brackets don't matter; the numbers and True/False do.</p>
+      ${CD.outs.map((q, i) => `<div class="card vstack"><div class="small"><b>${i + 1}.</b> ${esc(q.q)}</div><pre class="code">${codeHTML(q.c)}</pre><div class="row"><span class="small">Output:</span><input type="text" class="wide ${q.mark}" data-out="${i}" autocomplete="off" autocapitalize="off" spellcheck="false" value="${esc(q.inp)}" aria-label="Output ${i + 1}"></div>${q.mark ? `<pre class="out">${esc(q.a)}</pre><div class="small muted">${esc(q.e)}</div>` : ""}</div>`).join("")}
+      <div class="row"><button class="btn" data-act="out-check">Check all</button></div>${fbH(CD.ofb)}`;
+  } else {
+    const O = CD.order, P = ORDERS[O.idx];
+    body = `<div class="row between"><h3>${esc(P.title)}</h3><div class="row"><button class="btn ghost sm" data-act="or-next">Next puzzle</button><button class="btn lime sm" data-act="or-new">Reshuffle</button></div></div>
+      <p class="small muted">Tap the lines in the order Python runs them. Tap a line in your answer to send it back. Indentation is a clue.</p>
+      <div class="small muted">Your code</div>
+      <div class="built lines">${O.built.length ? O.built.map((n, i) => `<button class="lineitem ${O.marks[i] || ""}" data-unbuild="${i}"><span class="n">${i + 1}</span>${esc(P.lines[n][0])}</button>`).join("") : `<span class="small muted">Empty. Tap a line below.</span>`}</div>
+      <div class="small muted">Lines</div>
+      <div class="lines">${O.pool.filter(n => !O.built.includes(n)).map(n => `<button class="lineitem" data-build="${n}">${esc(P.lines[n][0])}</button>`).join("") || `<span class="small muted">All lines used. Press Check.</span>`}</div>
+      <div class="row"><button class="btn" data-act="or-check">Check</button><button class="btn ghost sm" data-act="or-clear">Clear</button></div>${fbH(O.fb)}`;
+  }
+  return `<div class="stack"><div class="panel vstack">
+    <div><div class="eyebrow">Deep practice · your code worksheet</div><h2>Code lab</h2></div>
+    <div class="row">${subs.map(([k, n]) => `<button class="pill" aria-pressed="${sub === k}" data-sub="code:${k}">${n}</button>`).join("")}</div>
+    ${body}
+  </div></div>`;
+}
+
+// ================= NOTES =================
+function notesView() {
+  return `<div class="stack"><div class="panel vstack prose" style="max-width:none">
+  <div><div class="eyebrow">Decks 02–05 + code worksheet</div><h2>Summary</h2></div>
+  <div class="toc"><a href="#n02">02 Data</a><a href="#n03">03 K-means</a><a href="#n04">04 Elbow</a><a href="#n05">05 Images</a><a href="#ncode">Code patterns</a></div>
+  <section class="prose" id="n02"><h3>02 · What is the problem with data?</h3>
+  <ul><li><b>Data types:</b> numbers, categories, text, images, time-series. Type = what the data contains; structure = how it is organised.</li>
+  <li><b>Categorical:</b> nominal (no order: genre, director) and ordinal (ordered: Low → Medium → High).</li>
+  <li><b>Numerical:</b> discrete (counted: 35 students, 120 clicks, votes) and continuous (measured: 5.1 cm, rating 8.1, revenue).</li>
+  <li><b>Structure:</b> structured (rows and columns: IMDb, Iris), semi-structured (JSON, XML, HTML), unstructured (reviews, posters, photos, videos).</li>
+  <li><b>pandas:</b> most common genre → <code>split()</code> + <code>explode()</code> + <code>value_counts()</code>; most frequent director → <code>value_counts()</code>; rating &gt; 8.0 → filtering; average by class → group-by.</li>
+  <li><b>Iris:</b> 150 flowers, 4 continuous features, 3 species (Setosa, Versicolor, Virginica).</li></ul>
+  <div class="tablewrap"><table class="t"><tr><th>Test</th><th>When</th></tr><tr><td>t-test</td><td>2 groups, 1 DV</td></tr><tr><td>One-way ANOVA</td><td>1 factor (3+ groups), 1 DV</td></tr><tr><td>Two-way ANOVA</td><td>2 factors, 1 DV</td></tr><tr><td>ANCOVA</td><td>1+ factors, 1 DV, with a covariate</td></tr><tr><td>MANOVA</td><td>1+ factors, 2+ DVs</td></tr><tr><td>MANCOVA</td><td>1+ factors, 2+ DVs, with a covariate</td></tr></table></div>
+  <ul><li>p &lt; 0.05 → reject H₀ → significant. p ≥ 0.05 → fail to reject H₀.</li><li>IV = species (groups). DV = petal length (measurement). H₀: same mean. H₁: at least one mean differs.</li>
+  <li>Petal ANOVA: length F = 1180.16, width F = 960.01, both p &lt; .001. Setosa petals are smallest (1.462 cm, 0.246 cm); Virginica largest (5.552 cm, 2.026 cm).</li>
+  <li>Write results as: overall finding → numbers → statistical evidence → meaning → conclusion.</li></ul>
+  <div class="callout exam"><b>The problem:</b> if the Species column is missing, can we discover the groups from the four measurements alone? That is clustering.</div></section>
+  <section class="prose" id="n03"><h3>03 · Clustering: K-means</h3>
+  <ul><li>Thresholds (petal length 5 cm, width 1.8 cm) fail when groups overlap, points fall in the wrong group, or the pattern needs several variables.</li>
+  <li><b>Clustering</b> groups similar points without labels: finding natural groups automatically.</li>
+  <li><b>Euclidean distance</b> d = √((x₂−x₁)² + (y₂−y₁)²), from Pythagoras, works in any dimension. Extensions: Manhattan, Supremum, Cosine similarity.</li>
+  <li><b>Centre</b> of two points = ((x₁+x₂)/2, (y₁+y₂)/2). Centroid = mean of all points in the cluster.</li></ul>
+  <div class="flow"><div><b>1. Pick K</b>Choose K starting centroids (A, D, G in class).</div><div><b>2. Distances</b>Every point to every centroid.</div><div><b>3. Assign</b>Each point joins its nearest centroid.</div><div><b>4. Update</b>Centroid = mean of its points.</div><div><b>5. Repeat</b>Stop when no point changes cluster.</div></div>
+  <p class="small" style="margin-top:.8rem">Class example A(2,10) B(2,5) C(8,4) D(5,8) E(7,5) F(6,4) G(1,2) H(4,9): round 1 centroids → (2,10), (6,6), (1.5,3.5); H moves to A in round 2; final ≈ (3.67, 9), (7, 4.33), (1.5, 3.5) with clusters {A, D, H}, {C, E, F}, {B, G}.</p></section>
+  <section class="prose" id="n04"><h3>04 · Finding the best K: Elbow method</h3>
+  <ul><li>Try K = 1, 2, 3 … and compute <b>WCSS</b> (Within-Cluster Sum of Squares) for each: the sum of squared distances from each point to its own centroid.</li>
+  <li>Smaller WCSS = more compact clusters. WCSS always falls as K rises (K = n gives 0), so pick the <b>elbow</b>: the K after which the improvement becomes small.</li>
+  <li>Class example K = 3: WCSS_A = 6.67, WCSS_D = 2.67, WCSS_G = 5.00 → 14.34. Python: [100.75, 68.27, 14.33, 9.33, 3.67] → elbow at K = 3.</li>
+  <li>Iris (4 features): ≈ 681 → 152 → 79 → 57 → 50 … elbow at K = 3, matching the 3 species. K = 3 matched Setosa 100%, Versicolor 96%, Virginica 72% (89.3% overall).</li></ul></section>
+  <section class="prose" id="n05"><h3>05 · Image data formats and filtering</h3>
+  <ul><li>A camera measures energy (light). Cones = colour in bright light; rods = dim light and night vision.</li>
+  <li>The image sensor turns each cell into a pixel value in [0, 255]. Number of pixels = spatial resolution.</li>
+  <li>Three cone types → RGB. (255,255,0) yellow, (255,0,255) purple, (0,0,0) black, (255,255,255) white.</li>
+  <li>Vision tasks: classification, localization, segmentation. Segmentation: semantic (label every pixel), instance (each object), panoptic (both). MRI: white matter, gray matter, CSF.</li>
+  <li><b>Mask</b> = 0/1 array; image × mask keeps the pixels where the mask is 1. <b>Threshold segmentation:</b> pixel &lt; 100 → paint [0, 0, 255].</li>
+  <li>Hand-picked thresholds break down for millions of pixels and many colours, so we need computers to find patterns themselves.</li></ul></section>
+  <section class="prose" id="ncode"><h3>Code patterns to know by heart</h3>
+  <pre class="code">distances = np.linalg.norm(points[:, None] - centroids[None, :], axis=2)  <span class="cm"># (n, k)</span>
+labels = np.argmin(distances, axis=1)                                     <span class="cm"># nearest centroid per point</span>
+new_centroids = np.array([points[labels == i].mean(axis=0) for i in range(k)])
+if np.linalg.norm(new_centroids - centroids) &lt; tol: break                  <span class="cm"># converged</span>
+clusters = [points[labels == i] for i in range(k)]
+wcss = custom_wcss(clusters)                                              <span class="cm"># squared distances, no sqrt</span>
+img = np.zeros([300, 300, 3], dtype=np.uint8); img[:, :, 0:3] = (0, 255, 255)  <span class="cm"># BGR yellow</span>
+img[100:200, 100:200] = (0, 0, 0)                                         <span class="cm"># rows, cols</span>
+I_masked = I * M
+image_array[np.any(image_array &lt; threshold, axis=-1)] = mask_pixel
+mask = mask_red | mask_green | mask_blue                                  <span class="cm"># | = or, &amp; = and</span></pre>
+  <div class="callout" style="margin-top:.8rem"><b>Common bugs from your homework:</b> call the function and save the result (<code>centroids, labels = kmeans(...)</code>); define a function before calling it (NameError); a while loop needs <code>j = j + 1</code>; OpenCV is BGR; <code>-O img_shiba_bw.</code> saves a file ending in a dot.</div></section>
+  </div></div>`;
+}
+
+// ================= events =================
+document.addEventListener("click", e => {
+  if (!e.target.closest || !e.target.closest("#drill-root")) return;
+  const a = e.target.closest('a[href^="#n"]'); if (a) { e.preventDefault(); const s = document.getElementById(a.getAttribute("href").slice(1)); if (s) s.scrollIntoView({ behavior: "smooth" }); return; }
+  const t = e.target.closest("button, [data-bucket], [data-chip]"); if (!t) return;
+  const d = t.dataset;
+  if (d.sub) { const [v, s] = d.sub.split(":"); SUB[v] = s; render(); return; }
+  if (d.chip != null) { e.stopPropagation(); const S = SORTERS[d.sorter]; if (S.locked) return; S.sel = S.sel === d.chip ? null : d.chip; sorterRefresh(d.sorter); return; }
+  if (d.bucket != null && d.sorter) { const S = SORTERS[d.sorter]; if (S.sel != null) sorterMove(d.sorter, S.sel, d.bucket); return; }
+  if (d.qtopic) { QZ.topic = d.qtopic; render(); return; }
+  if (d.qlen) { QZ.len = d.qlen === "all" ? "all" : +d.qlen; render(); return; }
+  if (d.qopt != null) { const q = QZ.run.qs[QZ.run.i]; if (q.picked != null) return; q.picked = +d.qopt; if (q.picked === 0) { QZ.run.right++; addXP(5); } render(); return; }
+  if (d.clo) { const [k, v] = d.clo.split(":"); CLO[k] = k === "mode" ? v : +v; newCluster(); render(); return; }
+  if (d.rot) { rotatePlot(+d.rot * 0.35, 0); return; }
+  if (d.chg) { const R = CL.g.rounds[CL.r]; const ok = (d.chg === "yes") === R.changed; grade(`chg${CL.r}`, ok); if (ok) { CL.solved = true; CL.fb = ["ok", R.changed ? "Yes: at least one point switched cluster, so K-means keeps going." : "Right: nothing moved, so the centroids stay put. K-means has converged."]; } else CL.fb = ["no", "Compare the two columns point by point."]; rerenderCluster(); return; }
+  if (d.cell != null) { if (MK.checked) return; const i = +d.cell; MK.M[i] = MK.M[i] ? 0 : 1; MK.marks = {}; MK.fb = null; render(); return; }
+  if (d.eb) { if (EB.fb && EB.fb[0] === "ok") return; EB.pick = +d.eb; const ok = EB.pick === EB.kStar; EB.fb = ok ? ["ok", `Yes. WCSS falls fast until K = ${EB.kStar}, then each extra cluster only removes a little.`] : ["no", EB.pick > EB.kStar ? "Smaller WCSS is not the goal. Look for where the big drops stop." : "The curve is still dropping steeply there. Look a bit further right."]; if (ok && !EB.done) { EB.done = true; addXP(5); } render(); return; }
+  if (d.build != null) { CD.order.built.push(+d.build); CD.order.marks = {}; CD.order.fb = null; render(); return; }
+  if (d.unbuild != null) { CD.order.built.splice(+d.unbuild, 1); CD.order.marks = {}; CD.order.fb = null; render(); return; }
+  const act = d.act; if (!act) return;
+  switch (act) {
+    case "quiz-start": case "quiz-restart": startQuiz(); render(); break;
+    case "quiz-setup": QZ.run = null; render(); break;
+    case "quiz-next": QZ.run.i++; render(); window.scrollTo(0, 0); break;
+    case "cl-new": newCluster(); render(); break;
+    case "cl-check": clCheck(false); break;
+    case "cl-show": clCheck(true); break;
+    case "cl-hint": CL.hint = !CL.hint; rerenderCluster(); break;
+    case "cl-next": clNext(); break;
+    case "ty-new": newTypes(); render(); break;
+    case "ty-check1": { const [a, b] = checkSorter("ty1", "fb1", TY); saveBest("sortlab", a, b); render(); break; }
+    case "ty-check2": checkSorter("ty2", "fb2", TY); render(); break;
+    case "mk-new": newMask(); render(); break;
+    case "mk-check": { let right = 0; MK.I.flat().forEach((v, i) => { const want = v < MK.th ? 1 : 0; const ok = MK.M[i] === want; MK.marks["m" + i] = ok ? "ok" : "bad"; if (ok) right++; }); if (right === 16) { MK.checked = true; MK.fb = ["ok", `Mask correct: ${MK.M.filter(Boolean).length} pixels are below ${MK.th}.`]; addXP(8); } else MK.fb = ["no", `${16 - right} pixels are wrong (orange). M = 1 only when the value is strictly less than ${MK.th}.`]; render(); break; }
+    case "mk-check2": { let all = true; MK.qs.forEach(q => { const r = Math.floor(q / 4), c = q % 4, v = MK.I[r][c] * MK.M[q]; const ok = numOk(MK.ans[q] ?? "", v, 0); MK.marks["q" + q] = ok ? "ok" : "bad"; if (!ok) all = false; }); const cnt = MK.M.filter(Boolean).length; const okc = numOk(MK.ans.cnt ?? "", cnt, 0); MK.marks.cnt = okc ? "ok" : "bad"; if (!okc) all = false; MK.fb2 = all ? ["ok", "Correct. Where M = 0 the pixel becomes 0; where M = 1 it keeps its value."] : ["no", `I_masked = I × M. Answers: ${MK.qs.map(q => `[${Math.floor(q / 4)}, ${q % 4}] = ${MK.I[Math.floor(q / 4)][q % 4] * MK.M[q]}`).join(", ")}; ${cnt} pixels with M = 1.`]; if (all && !MK.done) { MK.done = true; addXP(6); } render(); break; }
+    case "cm-new": newColor(); render(); break;
+    case "cm-check": checkSorter("cm", "fb", CM); render(); break;
+    case "eb-new": newElbow(); render(); break;
+    case "eb-check": { const w = EB.w, k = EB.kStar; const a = w[k - 2] - w[k - 1], b = w[k - 1] - w[k]; const oa = numOk(EB.inp.a ?? "", a, 0), ob = numOk(EB.inp.b ?? "", b, 0); EB.marks = { a: oa ? "ok" : "bad", b: ob ? "ok" : "bad" }; EB.fb2 = oa && ob ? ["ok", `${a} versus ${b}: a big drop, then a small one. That contrast is the elbow.`] : ["no", `Subtract: ${w[k - 2]} − ${w[k - 1]} = ${a}, and ${w[k - 1]} − ${w[k]} = ${b}.`]; if (oa && ob) addXP(4); render(); break; }
+    case "bl-new": newBlanks(); render(); break;
+    case "bl-check": { let right = 0; CD.blanks.forEach(b => { const v = b.inp.replace(/\s+/g, "").replace(/^["']|["']$/g, ""); const ok = b.a.some(a => a.replace(/\s+/g, "") === v); b.mark = ok ? "ok" : "bad"; if (ok) right++; }); CD.bfb = [right === CD.blanks.length ? "ok" : "no", `${right} of ${CD.blanks.length} correct.`]; saveBest("code", right, CD.blanks.length); addXP(right * 2); render(); break; }
+    case "out-new": newOuts(); render(); break;
+    case "out-check": { let right = 0; CD.outs.forEach(q => { const ok = sameOut(q.inp, q.a); q.mark = ok ? "ok" : "bad"; if (ok) right++; }); CD.ofb = [right === CD.outs.length ? "ok" : "no", `${right} of ${CD.outs.length} correct. The real output is under each one.`]; addXP(right * 2); render(); break; }
+    case "or-new": newOrder(CD.order.idx); render(); break;
+    case "or-next": newOrder(); render(); break;
+    case "or-clear": CD.order.built = []; CD.order.marks = {}; CD.order.fb = null; render(); break;
+    case "or-check": { const O = CD.order, P = ORDERS[O.idx]; let right = 0; O.built.forEach((n, i) => { const ok = i < P.lines.length && (P.lines[n][1] === P.lines[i][1] || P.lines[n][0] === P.lines[i][0]); O.marks[i] = ok ? "ok" : "bad"; if (ok) right++; }); const full = O.built.length === P.lines.length; O.fb = full && right === P.lines.length ? ["ok", "Correct order. This is exactly how the worksheet runs."] : ["no", `${right} of ${P.lines.length} lines in the right place${full ? "" : " (some lines are still unused)"}.`]; if (full && right === P.lines.length) addXP(10); render(); break; }
+  }
+});
+document.addEventListener("input", e => {
+  if (!e.target.closest || !e.target.closest("#drill-root")) return;
+  const d = e.target.dataset;
+  if (d.in) { CL.inp[d.in] = e.target.value; if (CL.marks[d.in] && CL.marks[d.in] !== "shown") { delete CL.marks[d.in]; e.target.classList.remove("ok", "bad"); } }
+  else if (d.mk) MK.ans[d.mk] = e.target.value;
+  else if (d.ebIn) EB.inp[d.ebIn] = e.target.value;
+  else if (d.bl != null) CD.blanks[+d.bl].inp = e.target.value;
+  else if (d.out != null) CD.outs[+d.out].inp = e.target.value;
+});
+document.addEventListener("keydown", e => {
+  if ((e.key === "Enter" || e.key === " ") && e.target.classList.contains("bucket")) { e.preventDefault(); e.target.click(); }
+});
+// drag and drop for the sorters (desktop); tapping works everywhere
+document.addEventListener("dragstart", e => { const c = e.target.closest && e.target.closest("[data-chip]"); if (!c) return; e.dataTransfer.setData("text/plain", c.dataset.sorter + "|" + c.dataset.chip); e.dataTransfer.effectAllowed = "move"; });
+document.addEventListener("dragover", e => { const b = e.target.closest && e.target.closest("[data-bucket]"); if (b) { e.preventDefault(); b.classList.add("over"); } });
+document.addEventListener("dragleave", e => { const b = e.target.closest && e.target.closest("[data-bucket]"); if (b) b.classList.remove("over"); });
+document.addEventListener("drop", e => { const b = e.target.closest && e.target.closest("[data-bucket]"); if (!b) return; e.preventDefault(); const [s, id] = (e.dataTransfer.getData("text/plain") || "").split("|"); if (s && s === b.dataset.sorter) sorterMove(s, id, b.dataset.bucket); });
+
+// rotate the 3D plot by dragging sideways
+let DRAG = null;
+document.addEventListener("pointerdown", e => { if (e.target.closest && e.target.closest("svg.plot3d")) DRAG = { x: e.clientX, y: e.clientY }; });
+document.addEventListener("pointermove", e => { if (!DRAG) return; const dx = e.clientX - DRAG.x, dy = e.clientY - DRAG.y; DRAG = { x: e.clientX, y: e.clientY }; rotatePlot(dx * 0.012, dy * 0.006); });
+["pointerup", "pointercancel"].forEach(t => document.addEventListener(t, () => { DRAG = null; }));
+
+window.Drill = { mount, debug: () => ({ CL, CLO, SORTERS, QZ, MK, CM, EB, CD, TY, r1, fmt, sqd, genCluster, genQuizQs, genOutQs, makeElbow, newMask, newColor, sameOut, newOrder, ORDERS, startQuiz, render, rotatePlot }) };
+})();
 </script>
 </body>
 </html>
