@@ -1,21 +1,25 @@
 # K-means Quest
 
-Study notes and practice games for Data Science decks 02–05: data types and statistical tests, Euclidean distance, the K-means algorithm, WCSS and the elbow method, and image data and masks. Includes a 3D lab for checking a K = 3, while-loop K-means implementation on 30 three-dimensional points.
+Study notes and practice for Data Science decks 02–05: data types and statistical tests, Euclidean distance, the K-means algorithm, WCSS and the elbow method, and image data and masks.
 
 **Play it:** https://nhi312.github.io/kmeans-quest/
 
-## What's inside
+## How it's organised
 
-- **Notes**: one tab for all four decks (02 data types and statistical tests, 03 K-means, 04 WCSS and the elbow, 05 images and masks), with worked examples, exam tips, a cheat sheet with the worksheet's code patterns, and self-check questions.
-- **7 levels**: Distance dash, Assign it, WCSS workshop, Elbow hunter, Bug hunt, Code builder, 3D lab.
-- **Homework checklist** for the 3D K-means assignment.
-- **Quiz**: 78 multiple-choice questions from decks 02–05 and the code worksheet, filtered by topic. Nothing repeats what the levels, Cluster sort or Code lab already practise.
-- **Cluster sort**: K-means by hand in 2D or 3D, K = 2 or 3. Every centroid is a whole number, so squared distances and WCSS are whole numbers too. Every new attempt has new numbers.
-- **Sorting lab**: sort data types, then build pixel and colour masks.
-- **Code lab**: fill the blank, predict the output, put the worksheet code back in order.
+Read the **Notes**, then work through six steps in order. Every exercise uses easy whole numbers and gives new ones each time you press **New numbers**. Each step ends with Previous / Next buttons and gets a ✓ in the tab bar when you finish it.
+
+1. **Distance**: Euclidean distance in 2D and 3D, centres, Manhattan distance and the nearest centroid.
+2. **K-means by hand**: distances → sort the points → new centroids → repeat → WCSS, in 2D or 3D, with an easy squared-distance mode.
+3. **WCSS & elbow**: add up squared distances per cluster, then pick K on an elbow chart.
+4. **Sorting lab**: sort data types, then build pixel and colour masks.
+5. **Code lab**: fill the blank, predict the output, put the worksheet code in order, and build the 3D homework K-means.
+6. **Quiz**: 79 multiple-choice questions on decks 02–05 and the code worksheet, as a final check.
+
+Also included:
+
+- **Homework**: the Assignment 2 checklist.
+- **Optional: 3D lab**: run K-means on 30 3D points, or paste your own, to check your Colab results.
 
 ## Works offline
 
-Everything lives in one file, `index.html`, with fonts and drawings built in. Download it and open it in any browser, no internet needed.
-
-On iPhone, file previews (Files, Drive, chat apps) turn JavaScript off. The page still works there: you get the notes and tap-to-answer versions of every level. Open the site in Safari for the full animated version.
+Everything lives in one file, `index.html`. Download it and open it in any browser.
